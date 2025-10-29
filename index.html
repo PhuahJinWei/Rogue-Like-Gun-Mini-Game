@@ -570,12 +570,10 @@
 
 .placement-preview-cell {
   position: absolute;
-  box-shadow: inset 0 0 0 2px rgba(0,0,0,.4);
 }
 
 .placement-preview-cell.invalid {
   background: rgba(255,0,0,0.22);
-  box-shadow: inset 0 0 0 2px rgba(255,0,0,.6);
 }
 
 
@@ -2630,13 +2628,16 @@ function buildOutlineSegments(coords, {
 			
 			const baseLeft = c * (CELL + CELL_GAP);
 			const baseTop  = r * (CELL + CELL_GAP);
-			cell.style.left = (baseLeft + dc * (CELL + CELL_GAP) + 1) + 'px';
-			cell.style.top  = (baseTop  + dr * (CELL + CELL_GAP) + 1) + 'px';
-			cell.style.width  = (CELL - 2) + 'px';
-			cell.style.height = (CELL - 2) + 'px';
-			cell.style.background = '#2F352E';
-			cell.style.border = '1px solid #414B43';
-			cell.style.borderRadius = '6px';
+			cell.style.left = (baseLeft + dc * (CELL + CELL_GAP)) + 'px';
+			cell.style.top  = (baseTop  + dr * (CELL + CELL_GAP)) + 'px';
+			cell.style.width  = CELL + 'px';
+			cell.style.height = CELL + 'px';
+			cell.style.position = 'absolute';
+			cell.style.backgroundImage = "url('src/img/UI_shop_slot_background_preview.png')";
+			cell.style.backgroundRepeat = 'no-repeat';
+			cell.style.backgroundSize = '100% 100%';
+			cell.style.backgroundPosition = 'center';
+			cell.style.opacity = (valid ? '1' : '0.8');
 			previewWrap.appendChild(cell);
 		}
 		previewWrap.style.display = 'block';
