@@ -524,12 +524,8 @@
 		user-select: none;
 		cursor: grab;
 	}
-	.gun-chip:active { cursor: grabbing; }
-	.gun-chip .mini-cell {
-		position: absolute;
-		width: 18px; height: 18px;
-		border-radius: 4px;
-		box-shadow: inset 0 0 0 1px rgba(0,0,0,.25);
+	.gun-chip:active {
+		cursor: grabbing;
 	}
 	/* placed item rendered as a single positioned container with internal cells */
 	.gun-placed {
@@ -539,12 +535,16 @@
 		pointer-events: auto;
 		cursor: grab;
 	}
-	.gun-placed .p-cell {
+	.gun-sprite,
+	.gun-sprite-mini {
 		position: absolute;
-		width: 46px; height: 46px;
-		border-radius: 6px;
-		box-shadow: inset 0 0 0 2px rgba(0,0,0,.25);
+		left: 0;
+		top: 0;
+		pointer-events: none;
+		image-rendering: pixelated;
+		image-rendering: crisp-edges;
 	}
+
 	.drag-ghost {
 		position: fixed;
 		z-index: 10001;
@@ -587,7 +587,6 @@
 	.merge-glow .p-cell,
 	.merge-glow .mini-cell {
 		animation: mergeShinePulse 1.7s ease-in-out infinite;
-		border-radius: 6px;
 	}
 
 
@@ -602,6 +601,8 @@
 	.slot-layer,
 	.shop-title,
 	#soldierSprite,
+	.gun-sprite,
+	.gun-sprite-mini,
 	.hud-btn,#speedBtn,.shop-start-button 
 	{
 		user-select: none;
@@ -825,6 +826,52 @@
 				postUseCooldown: 2,
 				bulletSpeed:BULLET_SPEED,
 				ability: "submachinegun_T3_GuaranteedCritAfter5"
+			}
+		},
+		"pistol":
+		{
+			1:{ 
+				name:"pistol",
+				tags:"normal",
+				range:460,
+				bulletsPerUse:4,
+				timeBetweenBullets:0.20,
+				damage:30,
+				postUseCooldown: 5.0/2.5,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
+			},
+			2: {
+				name:"pistol",
+				tags:"normal",
+				range:460,
+				bulletsPerUse:4,
+				timeBetweenBullets:0.18,
+				damage:40,
+				postUseCooldown: 2,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
+			},
+			3: {
+				name:"pistol",
+				tags:"normal",
+				range:460,
+				bulletsPerUse:6,
+				timeBetweenBullets:0.18,
+				damage:60, postUseCooldown: 2,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
+			},
+			4: {
+				name:"pistol",
+				tags:"normal",
+				range:480,
+				bulletsPerUse:6,
+				timeBetweenBullets:0.16,
+				damage:80,
+				postUseCooldown: 2,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
 			}
 		}
 	};
@@ -2049,7 +2096,8 @@ function spawnOneNormalMob() {
 		4: 0.5
 	};
 	const SHAPES = {
-		submachinegun: [[0,0],[0,1],[0,2],[1,0]]
+		submachinegun: [[0,0],[0,1],[0,2],[1,0]],
+		pistol: [[0,0],[0,1],[1,0]],
 	};
 
 	let shopState = {
@@ -2135,11 +2183,28 @@ function spawnOneNormalMob() {
 			}
 		}
 	}
+	function getShapeBounds(key) {
+		const shape = SHAPES[key] || [];
+		let maxDR = 0;
+		let maxDC = 0;
+		for (const [dr, dc] of shape) {
+			if (dr > maxDR) maxDR = dr;
+			if (dc > maxDC) maxDC = dc;
+		}
+		return {
+			cellCols: maxDC + 1, // horizontal span in cells
+			cellRows: maxDR + 1  // vertical span in cells
+		};
+	}
 	function renderPlaced() {
 		shopGridEl.querySelectorAll('.gun-placed').forEach(n => n.remove());
 		
 		for (const it of shopState.items) {
 			if (it.r == null || it.c == null) continue;
+			
+			const { cellCols, cellRows } = getShapeBounds(it.key);
+			const shapeWidthPx  = (cellCols - 1) * cellStep + CELL;
+			const shapeHeightPx = (cellRows - 1) * cellStep + CELL;
 			
 			const anchorX = it.c * cellStep;
 			const anchorY = it.r * cellStep;
@@ -2163,24 +2228,34 @@ function spawnOneNormalMob() {
 			wrap.style.height = wrapH + 'px';
 			wrap.style.pointerEvents = 'auto'; // so we can drag it
 			
-			const [c1,c2] = it.color;
-			
 			for (const [dr,dc] of SHAPES[it.key]){
 				const cell = document.createElement('div');
 				cell.className = 'p-cell';
 				cell.dataset.dr = dr;
 				cell.dataset.dc = dc;
 				cell.style.position = 'absolute';
-				
 				cell.style.left = (dc * cellStep) + 'px';
 				cell.style.top = (dr * cellStep) + 'px';
 				cell.style.width = CELL + 'px';
 				cell.style.height = CELL + 'px';
-				cell.style.background = `linear-gradient(180deg, ${c1}, ${c2})`;
-				cell.style.borderRadius = '6px';
-				cell.style.boxShadow='inset 0 0 0 2px rgba(0,0,0,.25)';
+				cell.style.backgroundImage = "url('src/img/UI_shop_slot_background_tier_" + it.tier + ".png')";
+				cell.style.backgroundSize = '100% 100%';
+				cell.style.backgroundRepeat = 'no-repeat';
+				cell.style.backgroundPosition = 'center';
+				cell.style.borderRadius = '0';
+				cell.style.boxShadow = 'none';
 				wrap.appendChild(cell);
 			}
+			
+			//gun image
+			const sprite = document.createElement('img');
+			sprite.className = 'gun-sprite';
+			sprite.src = 'src/img/gun_shop_' + it.key + '.png';
+			sprite.style.width  = shapeWidthPx  + 'px';
+			sprite.style.height = shapeHeightPx + 'px';
+			sprite.style.objectFit = 'contain';
+			wrap.appendChild(sprite);
+			
 			appendOutlineBorderFull(wrap, SHAPES[it.key]);
 			wrap.addEventListener('pointerdown', e => onDragStart(e, it, 'grid', wrap));
 			shopGridEl.appendChild(wrap);
@@ -2201,22 +2276,44 @@ function spawnOneNormalMob() {
 			chip.className = 'gun-chip';
 			chip.dataset.id = it.id;
 			
-			const [c1, c2] = TIER_COLORS[it.tier] || TIER_COLORS[1];
+			//gun image size calculate
+			const MINI_STEP = MINI_CELL;
+			const { cellCols, cellRows } = getShapeBounds(it.key);
+			const miniWidthPx  = (cellCols - 1) * MINI_CELL + MINI_CELL;
+			const miniHeightPx = (cellRows - 1) * MINI_CELL + MINI_CELL;
 			
 			for (const [dr,dc] of SHAPES[it.key]) {
 				const d = document.createElement('div');
 				d.className = 'mini-cell';
+				d.style.position = 'absolute';
 				d.dataset.dr = dr;
 				d.dataset.dc = dc;
 				d.style.left = (15 + dc*MINI_CELL) + 'px';
 				d.style.top  = (20 + dr*MINI_CELL) + 'px';
 				d.style.width = MINI_CELL + 'px';
 				d.style.height = MINI_CELL + 'px';
-				d.style.borderRadius = '4px';
-				d.style.boxShadow = 'inset 0 0 0 1px rgba(0,0,0,.25)';
-				d.style.background = `linear-gradient(180deg, ${c1}, ${c2})`;
+				d.style.backgroundImage = "url('src/img/UI_shop_slot_background_tier_" + it.tier + ".png')";
+				d.style.backgroundSize = '100% 100%';
+				d.style.backgroundRepeat = 'no-repeat';
+				d.style.backgroundPosition = 'center';
+				d.style.borderRadius = '0';
+				d.style.boxShadow = 'none';
 				chip.appendChild(d);
 			}
+			
+			//gun image
+			const spriteMini = document.createElement('img');
+			spriteMini.className = 'gun-sprite-mini';
+			spriteMini.src = 'src/img/gun_shop_' + it.key + '.png';
+			spriteMini.style.position = 'absolute';
+			spriteMini.style.left   = '15px';
+			spriteMini.style.top    = '20px';
+			spriteMini.style.width  = miniWidthPx  + 'px';
+			spriteMini.style.height = miniHeightPx + 'px';
+			spriteMini.style.objectFit = 'contain';
+			spriteMini.style.pointerEvents = 'none';
+			chip.appendChild(spriteMini);
+			
 			appendOutlineBorderMini(chip, SHAPES[it.key]);
 			chip.addEventListener('pointerdown', e => onDragStart(e, it, 'offer', chip));
 			shopOfferEl.appendChild(chip);
@@ -2683,9 +2780,8 @@ function stopGhostAnim() {
 
 	// create floating ghost
 	ghost = createGhostFromItem(item);
-	ghost.style.transform = 'none'; // ensure no translate(-50%,-50%) shift
-
-	// hide original element while dragging
+	ghost.style.transform = 'none';
+	
 	if (draggingSourceEl) {
 		draggingSourceEl.classList.add('drag-hidden');
 	}
@@ -2913,28 +3009,37 @@ function clearMergeHighlights() {
 		g.style.pointerEvents = 'none';
 		g.style.touchAction = 'none';
 		g.style.position = 'fixed';
-
-		const [c1, c2] = item.color;
-
-		// for each cell in the gun s	hape, draw a .p-cell sized like grid cells
+		
+		//gun image size calculate
+		const MINI_STEP = MINI_CELL;
+		const { cellCols, cellRows } = getShapeBounds(item.key);
+		const shapeWidthPx  = (cellCols - 1) * cellStep + CELL;
+		const shapeHeightPx = (cellRows - 1) * cellStep + CELL;
+		
 		for (const [dr, dc] of SHAPES[item.key]) {
 			const cell = document.createElement('div');
 			cell.className = 'p-cell';
 			cell.style.position = 'absolute';
+			cell.dataset.dr = dr;
+			cell.dataset.dc = dc;
 			cell.style.left = (dc * MINI_CELL) + 'px';
 			cell.style.top  = (dr * MINI_CELL) + 'px';
 			cell.style.width  = MINI_CELL + 'px';
 			cell.style.height = MINI_CELL + 'px';
-			cell.style.borderRadius = '6px';
-			cell.style.boxShadow = 'inset 0 0 0 2px rgba(0,0,0,.25)';
-			cell.style.background = `linear-gradient(180deg, ${c1}, ${c2})`;
-
-			// tag which local cell this is, so we know anchor offsets if user grabbed it
-			cell.dataset.dr = dr;
-			cell.dataset.dc = dc;
-
 			g.appendChild(cell);
 		}
+		
+		//gun image
+		const spriteMini = document.createElement('img');
+		spriteMini.className = 'gun-sprite-mini';
+		spriteMini.src = 'src/img/gun_shop_' + item.key + '.png';
+		spriteMini.style.position = 'absolute';
+		spriteMini.style.width  = shapeWidthPx  + 'px';
+		spriteMini.style.height = shapeHeightPx + 'px';
+		spriteMini.style.objectFit = 'contain';
+		spriteMini.style.pointerEvents = 'none';
+		g.appendChild(spriteMini);
+		
 		document.body.appendChild(g);
 		return g;
 	}
