@@ -516,65 +516,80 @@
 		background-position: center;
 		cursor: pointer;
 	}
+	/* ------- Shop Gun ------- */
+	.gun-chip {
+		position: relative;
+		width: 90px;
+		height: 60px;
+		user-select: none;
+		cursor: grab;
+	}
+	.gun-chip:active { cursor: grabbing; }
+	.gun-chip .mini-cell {
+		position: absolute;
+		width: 18px; height: 18px;
+		border-radius: 4px;
+		box-shadow: inset 0 0 0 1px rgba(0,0,0,.25);
+	}
+	/* placed item rendered as a single positioned container with internal cells */
+	.gun-placed {
+		position: absolute;
+		width: calc(48px * 4);
+		height: calc(48px * 2);
+		pointer-events: auto;
+		cursor: grab;
+	}
+	.gun-placed .p-cell {
+		position: absolute;
+		width: 46px; height: 46px;
+		border-radius: 6px;
+		box-shadow: inset 0 0 0 2px rgba(0,0,0,.25);
+	}
+	.drag-ghost {
+		position: fixed;
+		z-index: 10001;
+		pointer-events: none;
+		touch-action: none;
+		opacity: .9;
+	}
+	.drag-hidden {
+		opacity: 0;
+		visibility: hidden;
+	}
+	.placement-preview {
+		position: absolute;
+		left: 0;
+		top: 0;
+		pointer-events: none;
+		z-index: 5000; /* under ghost (10001) but above grid cells */
+	}
+	@keyframes mergeShinePulse {
+		0% {
+			filter: brightness(1) saturate(1);
+			box-shadow:
+				0 0 4px rgba(255,255,200,0.4),
+				0 0 8px rgba(255,255,150,0.25);
+		}
+		50% {
+			filter: brightness(1.9) saturate(1.4);
+			box-shadow:
+				0 0 6px rgba(255,255,255,0.9),
+				0 0 14px rgba(255,255,160,0.6),
+				0 0 22px rgba(255,255,120,0.35);
+		}
+		100% {
+			filter: brightness(1) saturate(1);
+			box-shadow:
+				0 0 4px rgba(255,255,200,0.4),
+				0 0 8px rgba(255,255,150,0.25);
+		}
+	}
+	.merge-glow .p-cell,
+	.merge-glow .mini-cell {
+		animation: mergeShinePulse 1.7s ease-in-out infinite;
+		border-radius: 6px;
+	}
 
-.gun-chip {
-  position: relative;
-  width: 90px;
-  height: 60px;
-  user-select: none;
-  cursor: grab;
-}
-.gun-chip:active { cursor: grabbing; }
-.gun-chip .mini-cell {
-  position: absolute;
-  width: 18px; height: 18px;
-  border-radius: 4px;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,.25);
-}
-/* placed item rendered as a single positioned container with internal cells */
-.gun-placed {
-  position: absolute;
-  width: calc(48px * 4);
-  height: calc(48px * 2);
-  pointer-events: auto;
-  cursor: grab;
-}
-.gun-placed .p-cell {
-  position: absolute;
-  width: 46px; height: 46px;
-  border-radius: 6px;
-  box-shadow: inset 0 0 0 2px rgba(0,0,0,.25);
-}
-.drag-ghost {
-  position: fixed;
-  z-index: 10001;
-  pointer-events: none;
-  touch-action: none;
-  opacity: .9;
-  transform: translate(-50%, -50%);
-}
-/* hide the original piece while dragging */
-.drag-hidden {
-  opacity: 0;
-  visibility: hidden;
-}
-
-/* preview where the shape would land */
-.placement-preview {
-  position: absolute;
-  left: 0;
-  top: 0;
-  pointer-events: none;
-  z-index: 5000; /* under ghost (10001) but above grid cells */
-}
-
-.placement-preview-cell {
-  position: absolute;
-}
-
-.placement-preview-cell.invalid {
-  background: rgba(255,0,0,0.22);
-}
 
 
 	/* ====================== Prevent Select, Highlight, Drag ====================== */
@@ -2013,9 +2028,13 @@ function spawnOneNormalMob() {
 	
 	// ----------------------- Configs ----------------------- //
 	const GRID_ROWS = 9, GRID_COLS = 9;
+	const MINI_CELL = 35;
 	const CELL = 49;
 	const CELL_GAP = 3;
 	const cellStep = CELL + CELL_GAP; //distance between consecutive cols/rows
+
+	const numShopItem = 3;
+	let mergeHighlightSet = new Set();
 	
 	const TIER_COLORS = {
 		1: ['#34d399', '#059669'], // green
@@ -2079,6 +2098,12 @@ function spawnOneNormalMob() {
     }
     return occ;
   }
+	function inBoundsShape(item, r, c) {
+		for (const [rr, cc] of shapeCells(item, r, c)) {
+			if (!inBounds(rr, cc)) return false;
+		}
+		return true;
+	}
 
 	function canPlace(item, r, c){
 		const occ = occupiedMap(item.id);
@@ -2086,6 +2111,29 @@ function spawnOneNormalMob() {
 			if (!inBounds(rr,cc) || occ.has(rr+','+cc)) return false;
 		}
 		return true;
+	}
+	function displaceConflicts(item, placeR, placeC) {
+		// cells new item would cover
+		const newCells = new Set(
+			shapeCells(item, placeR, placeC).map(([rr, cc]) => rr + ',' + cc)
+		);
+		for (const other of shopState.items) {
+			if (other === item) continue;
+			if (other.r == null || other.c == null) continue;
+
+			let overlaps = false;
+			for (const [rr, cc] of shapeCells(other, other.r, other.c)) {
+				if (newCells.has(rr + ',' + cc)) {
+					overlaps = true;
+					break;
+				}
+			}
+			if (overlaps) {
+				// kick this gun to offer
+				other.r = null;
+				other.c = null;
+			}
+		}
 	}
 	function renderPlaced() {
 		shopGridEl.querySelectorAll('.gun-placed').forEach(n => n.remove());
@@ -2137,6 +2185,7 @@ function spawnOneNormalMob() {
 			wrap.addEventListener('pointerdown', e => onDragStart(e, it, 'grid', wrap));
 			shopGridEl.appendChild(wrap);
 		}
+		applyMergeHighlights();
 	}
 	function renderOffer() {
 		const shopOfferEl  = document.getElementById('shopOffer');
@@ -2150,6 +2199,7 @@ function spawnOneNormalMob() {
 			// gun offer preview
 			const chip = document.createElement('div');
 			chip.className = 'gun-chip';
+			chip.dataset.id = it.id;
 			
 			const [c1, c2] = TIER_COLORS[it.tier] || TIER_COLORS[1];
 			
@@ -2158,10 +2208,10 @@ function spawnOneNormalMob() {
 				d.className = 'mini-cell';
 				d.dataset.dr = dr;
 				d.dataset.dc = dc;
-				d.style.left = (15 + dc*18) + 'px';
-				d.style.top  = (20 + dr*18) + 'px';
-				d.style.width = '18px';
-				d.style.height = '18px';
+				d.style.left = (15 + dc*MINI_CELL) + 'px';
+				d.style.top  = (20 + dr*MINI_CELL) + 'px';
+				d.style.width = MINI_CELL + 'px';
+				d.style.height = MINI_CELL + 'px';
 				d.style.borderRadius = '4px';
 				d.style.boxShadow = 'inset 0 0 0 1px rgba(0,0,0,.25)';
 				d.style.background = `linear-gradient(180deg, ${c1}, ${c2})`;
@@ -2171,7 +2221,95 @@ function spawnOneNormalMob() {
 			chip.addEventListener('pointerdown', e => onDragStart(e, it, 'offer', chip));
 			shopOfferEl.appendChild(chip);
 		}
+		applyMergeHighlights();
 	}
+	function resolveDropOnGrid(item, newR, newC) {
+	// Which placed guns would we collide with at (newR,newC)?
+	const overlaps = overlappingItemsAt(item, newR, newC);
+
+	// 1) Can we merge into any of them?
+	//    Pick the first merge-compatible one.
+	let mergeTarget = null;
+	for (const o of overlaps) {
+		if (canMergeItems(item, o)) {
+			mergeTarget = o;
+			break;
+		}
+	}
+	if (mergeTarget) {
+		// merging guns: mergeTarget stays where it was,
+		// dragged item is consumed
+		mergeIntoTarget(mergeTarget, item);
+		return; // we're done
+	}
+
+	// 2) Otherwise, classic behavior:
+	// Displace overlapping guns to offer
+	for (const o of overlaps) {
+		o.r = null;
+		o.c = null;
+	}
+
+	// Place the dragged gun at newR/newC
+	item.r = newR;
+	item.c = newC;
+}
+function resolveDropInOffer(e, item) {
+	const elUnder = document.elementFromPoint(e.clientX, e.clientY);
+	const chipEl = elUnder ? elUnder.closest('.gun-chip') : null;
+
+	if (chipEl) {
+		const targetId = chipEl.dataset.id;
+		const targetItem = shopState.items.find(
+			it => String(it.id) === String(targetId)
+		);
+
+		if (targetItem) {
+			// IMPORTANT: prevent self-merge
+			const isSameObject = (targetItem === item);
+
+			// check merge eligibility (same gun type, same tier, <4)
+			const canMerge = !isSameObject && canMergeItems(item, targetItem);
+
+			if (canMerge) {
+				// "must keep at least 1 gun in grid" rule:
+				const cameFromGridAndWasLast =
+					(dragFrom === 'grid' && countPlaced() <= 1);
+
+				if (!cameFromGridAndWasLast) {
+					// legal merge: targetItem stays, dragged item is consumed
+					mergeIntoTarget(targetItem, item);
+					return;
+				}
+
+				// if it WAS last gun in grid, we fall through to snap-back logic below
+			}
+
+			// If it's the same chip (self drop) or merge is illegal
+			// just restore item to where it logically belongs without deleting it.
+			// - If it came from grid and it's last gun: snap back.
+			// - Otherwise: keep / return to offer (r,c = null).
+			if (dragFrom === 'grid' && countPlaced() <= 1) {
+				item.r = startPos.r;
+				item.c = startPos.c;
+			} else {
+				item.r = null;
+				item.c = null;
+			}
+			return;
+		}
+	}
+
+	// No chip under pointer → normal offer drop rules.
+	// Respect the "must keep at least 1 gun in grid" rule if it came from grid
+	if (dragFrom === 'grid' && countPlaced() <= 1) {
+		item.r = startPos.r;
+		item.c = startPos.c;
+	} else {
+		item.r = null;
+		item.c = null;
+	}
+}
 function buildOutlineSegments(coords, {
   cellStepX,
   cellStepY,
@@ -2394,14 +2532,13 @@ function buildOutlineSegments(coords, {
 		}
 	}
 	function appendOutlineBorderMini(container, shapeCoords) {
-		const MINI_SIZE = 18;
 		const MINI_OFFSET_X = 15;
 		const MINI_OFFSET_Y = 20;
 
 		const segs = buildOutlineSegments(shapeCoords, {
-			cellStepX: MINI_SIZE,
-			cellStepY: MINI_SIZE,
-			cellSize: MINI_SIZE,
+			cellStepX: MINI_CELL,
+			cellStepY: MINI_CELL,
+			cellSize: MINI_CELL,
 			borderPx: 1,
 			offX: MINI_OFFSET_X,
 			offY: MINI_OFFSET_Y,
@@ -2422,162 +2559,353 @@ function buildOutlineSegments(coords, {
 	}
 
 	// ------- Drag & Drop -------
-	let ghost = null;               // the floating dragged shape (made of real cells)
-	let dragFrom = null;            // 'grid' | 'offer'
-	let startPos = null;            // {r, c} before drag (for revert)
-	let activePointerId = null;     // which finger/mouse started this drag
-	let dragAnchorCell = {dr:0, dc:0}; // which cell inside the shape was grabbed
-	let draggingItem = null;        // convenience ref (same as shopState.dragging, but cached)
-	let draggingSourceEl = null;    // the original DOM node we hide while dragging
-	let lastSnap = null;            // {r,c,ok} of the most recent grid snap preview
-	let previewWrap = null;			// placement preview overlay for "where it would land"
+	let ghost            = null;
+	let dragFrom         = null;   // 'grid' or 'offer'
+	let startPos         = null;   // { r, c } where the item started
+	let activePointerId  = null;
+	let draggingItem     = null;   // the shopState.items entry being dragged
+	let draggingSourceEl = null;   // the DOM element we picked up from
+	let lastSnap         = null;   // { r, c, ok:true } of the current preview
+	let previewWrap      = null;   // .placement-preview layer in the grid
+	let grabOffsetX      = 0;
+	let grabOffsetY      = 0;
+
+	let ghostAnimId   = null;
+	let ghostCurrX    = 0;
+	let ghostCurrY    = 0;
+	let ghostTargetX  = 0;
+	let ghostTargetY  = 0;
 	
+	function getShapeExtents(item) {
+	const shape = SHAPES[item.key] || [];
+	let maxDR = 0;
+	let maxDC = 0;
+	for (const [dr, dc] of shape) {
+		if (dr > maxDR) maxDR = dr;
+		if (dc > maxDC) maxDC = dc;
+	}
+	return { maxDR, maxDC };
+}
+function clampPlacementToGrid(item, baseR, baseC) {
+	const { maxDR, maxDC } = getShapeExtents(item);
+
+	const maxRowStart = GRID_ROWS - 1 - maxDR;
+	const maxColStart = GRID_COLS - 1 - maxDC;
+
+	let r = baseR;
+	let c = baseC;
+
+	if (r < 0) r = 0;
+	if (c < 0) c = 0;
+	if (r > maxRowStart) r = maxRowStart;
+	if (c > maxColStart) c = maxColStart;
+
+	return { r, c };
+}
+// Return the pixel top-left where the shape would render if its grid anchor is (r, c)
+function getPreviewTopLeftPixels(r, c) {
+	const gridRect = shopGridEl.getBoundingClientRect();
+	return {
+		left: gridRect.left + c * cellStep,
+		top:  gridRect.top  + r * cellStep
+	};
+}
+function positionGhostAtPreview(r, c) {
+	if (!ghost) return;
+	const { left, top } = getPreviewTopLeftPixels(r, c);
+	const OFFSET = 4; // tiny nudge so preview peeks out
+
+	ghostTargetX = left + OFFSET;
+	ghostTargetY = top  + OFFSET;
+}
+
+function positionGhostCenteredOnPointer(pointerX, pointerY) {
+	if (!ghost) return;
+	ghostTargetX = pointerX - grabOffsetX;
+	ghostTargetY = pointerY - grabOffsetY;
+}
+function isInside(el, x, y) {
+	const r = el.getBoundingClientRect();
+	return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+}
+
 	function countPlaced(){
 		return shopState.items.filter(it => it.r!=null && it.c!=null).length;
 	}
+	function startGhostAnim() {
+	// avoid multiple loops if already running
+	if (ghostAnimId != null) return;
+
+	function step() {
+		// simple easing toward target
+		const SMOOTH = 0.25; // smaller = slower, larger = snappier
+		ghostCurrX += (ghostTargetX - ghostCurrX) * SMOOTH;
+		ghostCurrY += (ghostTargetY - ghostCurrY) * SMOOTH;
+
+		if (ghost) {
+			ghost.style.left = ghostCurrX + 'px';
+			ghost.style.top  = ghostCurrY + 'px';
+		}
+
+		ghostAnimId = requestAnimationFrame(step);
+	}
+
+	ghostAnimId = requestAnimationFrame(step);
+}
+
+function stopGhostAnim() {
+	if (ghostAnimId != null) {
+		cancelAnimationFrame(ghostAnimId);
+		ghostAnimId = null;
+	}
+}
+
 	function onDragStart(e, item, from, sourceEl) {
-		e.preventDefault();
+	if (draggingItem) return;
+	e.preventDefault();
 
-		dragFrom = from;
-		shopState.dragging = item;
-		draggingItem = item;
-		draggingSourceEl = sourceEl;
-		activePointerId = e.pointerId ?? null;
+	activePointerId  = e.pointerId ?? null;
+	draggingItem     = item;
+	dragFrom         = from;
+	draggingSourceEl = sourceEl || null;
+	startPos         = { r: item.r, c: item.c };
 
-		// remember original grid placement, so we can revert if needed
-		startPos = { r: item.r, c: item.c };
-
-		// figure out which exact sub-cell in the shape was touched
-		// we look for .mini-cell or .p-cell that has dataset.dr/dc
-		const grabbedCellEl = e.target.closest('.mini-cell, .p-cell');
-		if (grabbedCellEl && grabbedCellEl.dataset) {
-			dragAnchorCell.dr = +grabbedCellEl.dataset.dr || 0;
-			dragAnchorCell.dc = +grabbedCellEl.dataset.dc || 0;
-		}
-		else {
-			dragAnchorCell.dr = 0;
-			dragAnchorCell.dc = 0;
-		}
-
-		// build a ghost that looks exactly like the gun shape
-		ghost = createGhostFromItem(item);
-
-		// hide the original while dragging
-		if (draggingSourceEl) {
-			draggingSourceEl.classList.add('drag-hidden');
-		}
-
-		// position ghost initially
-		positionGhost(e.clientX, e.clientY);
-
-		// grab pointer so we keep receiving move events on mobile
-		if (e.target.setPointerCapture && activePointerId != null) {
-			e.target.setPointerCapture(activePointerId);
-		}
-		
-		window.addEventListener('pointermove', onDragMove, { passive: false });
-		window.addEventListener('pointerup', onDragEnd, { passive: false, once: true });
-	}
-	function onDragMove(e) {
-		if (activePointerId != null && e.pointerId !== activePointerId) return;
-		e.preventDefault(); // stop page scroll on mobile
-
-		if (!draggingItem) return;
-		positionGhost(e.clientX, e.clientY);
-		
-		const shopGridEl = document.getElementById('shopGrid');
-		const shopOfferEl = document.getElementById('shopOffer');
-		const overGrid  = isInside(shopGridEl,  e.clientX, e.clientY);
-		if (overGrid) {
-			const { r, c } = snapToGrid(e.clientX, e.clientY);
-			const ok = canPlace(draggingItem, r, c);
-
-			// live preview
-			showPlacementPreview(r, c, draggingItem, ok);
-			lastSnap = { r, c, ok };
-		}
-		else {
-			hidePlacementPreview();
-			lastSnap = null;
+	// --- NEW: compute mergeHighlightSet ---
+	mergeHighlightSet.clear();
+	for (const other of shopState.items) {
+		if (other === item) continue;
+		if (canMergeItems(item, other)) {
+			mergeHighlightSet.add(other.id);
 		}
 	}
+	// Make sure renderPlaced() / renderOffer() have already drawn DOM for chips/placed with data-id
+	applyMergeHighlights();
+
+	// create floating ghost
+	ghost = createGhostFromItem(item);
+	ghost.style.transform = 'none'; // ensure no translate(-50%,-50%) shift
+
+	// hide original element while dragging
+	if (draggingSourceEl) {
+		draggingSourceEl.classList.add('drag-hidden');
+	}
+
+	// measure ghost for off-grid pointer centering
+	const gRect = ghost.getBoundingClientRect();
+	grabOffsetX = gRect.width  / 2;
+	grabOffsetY = gRect.height / 2;
+
+	// lock pointer (mobile)
+	if (e.target.setPointerCapture && activePointerId != null) {
+		try { e.target.setPointerCapture(activePointerId); } catch (_) {}
+	}
+
+	window.addEventListener('pointermove', onDragMove, { passive: false });
+	window.addEventListener('pointerup',   onDragEnd,  { passive: false, once: true });
+
+	// immediate preview at original grid pos (if placed)
+	if (item.r != null && item.c != null) {
+		lastSnap = { r: item.r, c: item.c, ok: true };
+		showPlacementPreview(item.r, item.c, item, true);
+		positionGhostAtPreview(item.r, item.c); // sets ghostTargetX/Y
+	} else {
+		lastSnap = null;
+		hidePlacementPreview();
+		positionGhostCenteredOnPointer(e.clientX, e.clientY); // sets ghostTargetX/Y
+	}
+
+	ghostCurrX = ghostTargetX;
+	ghostCurrY = ghostTargetY;
+	startGhostAnim(); // smoothing loop
+}
+function onDragMove(e) {
+	if (activePointerId != null && e.pointerId !== activePointerId) return;
+	e.preventDefault();
+	if (!draggingItem) return;
+
+	const overGrid = isInside(shopGridEl, e.clientX, e.clientY);
+
+	if (!overGrid) {
+		// cursor/finger has left the grid: no preview, just follow pointer
+		lastSnap = null;
+		hidePlacementPreview();
+
+		positionGhostCenteredOnPointer(e.clientX, e.clientY);
+		return;
+	}
+
+	// still inside grid:
+	const snap = snapToGrid(e.clientX, e.clientY);
+
+	// clamp so shape won't overflow the grid even near edges
+	const { r: clampedR, c: clampedC } = clampPlacementToGrid(draggingItem, snap.r, snap.c);
+
+	lastSnap = { r: clampedR, c: clampedC, ok: true };
+
+	showPlacementPreview(clampedR, clampedC, draggingItem, true);
+
+	// instead of teleporting ghost,
+	// just update the target to sit just offset from preview:
+	positionGhostAtPreview(clampedR, clampedC);
+}
 	function positionGhost(pointerX, pointerY) {
-		if (!ghost) return;
-		
-		const anchorOffsetX = (dragAnchorCell.dc + 0.5) * CELL;
-		const anchorOffsetY = (dragAnchorCell.dr + 0.5) * CELL;
-
-		ghost.style.left = (pointerX - anchorOffsetX) + 'px';
-		ghost.style.top  = (pointerY - anchorOffsetY) + 'px';
-	}
+	if (!ghost) return;
+	ghost.style.left = (pointerX - grabOffsetX) + 'px';
+	ghost.style.top  = (pointerY - grabOffsetY) + 'px';
+}
 	function isInside(el, x, y){
 		const r=el.getBoundingClientRect();
 		return x>=r.left && x<=r.right && y>=r.top && y<=r.bottom;
 	}
-	function snapToGrid(x,y){
-		const r = shopGridEl.getBoundingClientRect();
-		const gx = x - r.left;
-		const gy = y - r.top;
-		const step = CELL + CELL_GAP;
-		return {
-			r: Math.floor(gy / step),
-			c: Math.floor(gx / step)
-		};
-	}
+	function snapToGrid(clientX, clientY) {
+	const r = shopGridEl.getBoundingClientRect();
+	const gx = clientX - r.left;
+	const gy = clientY - r.top;
+	const c  = Math.floor(gx / cellStep);
+	const rr = Math.floor(gy / cellStep);
+	return { r: rr, c };
+}
 	function onDragEnd(e) {
-		if (activePointerId != null && e.pointerId !== activePointerId) return;
+	if (activePointerId != null && e.pointerId !== activePointerId) return;
+	e.preventDefault();
 
-		window.removeEventListener('pointermove', onDragMove);
-		if (e.target.releasePointerCapture && activePointerId != null) {
-			try { e.target.releasePointerCapture(activePointerId); } catch (_) {}
-		}
-		activePointerId = null;
-		if (ghost) {
-			ghost.remove();
-			ghost = null;
-		}
-		hidePlacementPreview();
+	window.removeEventListener('pointermove', onDragMove);
 
-		// finalize drop logic
-		const item = draggingItem;
-		draggingItem = null;
-		shopState.dragging = null;
-		
-		const shopGridEl = document.getElementById('shopGrid');
-		const shopOfferEl = document.getElementById('shopOffer');
-		const overGrid  = isInside(shopGridEl,  e.clientX, e.clientY);
-		const overOffer = isInside(shopOfferEl, e.clientX, e.clientY);
-		if (overGrid) {
-			// if we had a valid snap at release, lock it in
-			if (lastSnap && lastSnap.ok) {
-				item.r = lastSnap.r;
-				item.c = lastSnap.c;
-			}
-			else {
-				item.r = startPos.r;
-				item.c = startPos.c;
-			}
-		}
-		else if (overOffer) {
-			// moving into offer (taking gun out of inventory)
-			if (dragFrom === 'grid' && countPlaced() <= 1) {
-				item.r = startPos.r;
-				item.c = startPos.c;
-			}
-			else {
-				item.r = null;
-				item.c = null;
-			}
-		}
-		else {
-			item.r = startPos.r;
-			item.c = startPos.c;
-		}
-		lastSnap = null;
-		renderPlaced();
-		renderOffer();
-		updateContinueEnabled();
+	// release pointer capture
+	if (e.target.releasePointerCapture && activePointerId != null) {
+		try { e.target.releasePointerCapture(activePointerId); } catch (_) {}
 	}
+	activePointerId = null;
+
+	// stop ghost animation
+	stopGhostAnim();
+
+	// unhide original element
+	if (draggingSourceEl) {
+		draggingSourceEl.classList.remove('drag-hidden');
+	}
+
+	// remove ghost DOM
+	if (ghost) {
+		ghost.remove();
+		ghost = null;
+	}
+
+	// clear preview highlight
+	hidePlacementPreview();
+
+	const item = draggingItem;
+	draggingItem = null;
+	shopState.dragging = null;
+
+	// Clear glow on potential merge targets
+	clearMergeHighlights();
+
+	if (lastSnap && lastSnap.ok) {
+		// We had a valid (clamped) grid preview → drop on grid
+		const newR = lastSnap.r;
+		const newC = lastSnap.c;
+		resolveDropOnGrid(item, newR, newC);
+
+	} else {
+		// no valid grid preview → treat as drop in offer area (including offer merge)
+		resolveDropInOffer(e, item);
+	}
+
+	lastSnap = null;
+
+	// re-render UI (which will also reapply glow if still dragging, but we aren't dragging now)
+	renderPlaced();
+	renderOffer();
+}
+
+// Update an item's color after tier change
+function applyTierColor(it) {
+	const grad = TIER_COLORS[Math.min(it.tier,4)] || TIER_COLORS[1];
+	it.color = grad;
+}
+
+// Return array of all grid cells [rr,cc] that an item would occupy if anchored at (baseR, baseC).
+function getShapeCellsAt(item, baseR, baseC) {
+	const shape = SHAPES[item.key] || [];
+	const out = [];
+	for (const [dr, dc] of shape) {
+		out.push([baseR + dr, baseC + dc]);
+	}
+	return out;
+}
+
+// Return array of all grid cells [rr,cc] that a placed item currently occupies.
+function getCurrentCells(item) {
+	if (item.r == null || item.c == null) return [];
+	return getShapeCellsAt(item, item.r, item.c);
+}
+
+// Find which placed items in the grid overlap the given item if
+// it were placed at (placeR, placeC). (Does NOT include the item itself.)
+function overlappingItemsAt(item, placeR, placeC) {
+	const hits = new Set();
+	const newCells = getShapeCellsAt(item, placeR, placeC)
+		.map(([rr,cc]) => rr + ',' + cc);
+
+	for (const other of shopState.items) {
+		if (other === item) continue;
+		if (other.r == null || other.c == null) continue; // only placed
+		const ocells = getCurrentCells(other);
+		for (const [orow, ocol] of ocells) {
+			if (newCells.includes(orow + ',' + ocol)) {
+				hits.add(other);
+				break;
+			}
+		}
+	}
+	return [...hits];
+}
+
+
+function canMergeItems(a, b) {
+	if (!a || !b) return false;
+	if (a.key !== b.key) return false;
+	if (a.tier !== b.tier) return false;
+	if (a.tier >= 4) return false;
+	return true;
+}
+
+// Execute a merge: keep target, consume source.
+// target.tier += 1 (capped 4), target color updates.
+// source is removed from shopState.items entirely.
+function mergeIntoTarget(target, source) {
+	target.tier = Math.min(4, target.tier + 1);
+	applyTierColor(target);
+
+	// remove 'source' from the array
+	shopState.items = shopState.items.filter(it => it !== source);
+}
+
+// Highlight: add glow to all ".gun-placed" and ".gun-chip" that match ids in mergeHighlightSet.
+function applyMergeHighlights() {
+	// Clear any old glow first
+	document.querySelectorAll('.merge-glow').forEach(el => {
+		el.classList.remove('merge-glow');
+	});
+	// Add new glow on targets
+	for (const id of mergeHighlightSet) {
+		const placed = shopGridEl.querySelector(`.gun-placed[data-id="${id}"]`);
+		if (placed) placed.classList.add('merge-glow');
+		const chip = shopOfferEl.querySelector(`.gun-chip[data-id="${id}"]`);
+		if (chip) chip.classList.add('merge-glow');
+	}
+}
+
+// Remove all glow
+function clearMergeHighlights() {
+	document.querySelectorAll('.merge-glow').forEach(el => {
+		el.classList.remove('merge-glow');
+	});
+	mergeHighlightSet.clear();
+}
+
+
 	function createGhostFromItem(item) {
 		const g = document.createElement('div');
 		g.className = 'drag-ghost';
@@ -2593,10 +2921,10 @@ function buildOutlineSegments(coords, {
 			const cell = document.createElement('div');
 			cell.className = 'p-cell';
 			cell.style.position = 'absolute';
-			cell.style.left = (dc * cellStep) + 'px';
-			cell.style.top  = (dr * cellStep) + 'px';
-			cell.style.width  = CELL + 'px';
-			cell.style.height = CELL + 'px';
+			cell.style.left = (dc * MINI_CELL) + 'px';
+			cell.style.top  = (dr * MINI_CELL) + 'px';
+			cell.style.width  = MINI_CELL + 'px';
+			cell.style.height = MINI_CELL + 'px';
 			cell.style.borderRadius = '6px';
 			cell.style.boxShadow = 'inset 0 0 0 2px rgba(0,0,0,.25)';
 			cell.style.background = `linear-gradient(180deg, ${c1}, ${c2})`;
@@ -2612,7 +2940,6 @@ function buildOutlineSegments(coords, {
 	}
 	function ensurePreviewWrap() {
 		if (!previewWrap) {
-			const shopGridEl = document.getElementById('shopGrid');
 			previewWrap = document.createElement('div');
 			previewWrap.className = 'placement-preview';
 			shopGridEl.appendChild(previewWrap);
@@ -2707,14 +3034,14 @@ if (initial) {
   shopState.items.push(starter);
 
   // plus starting offers
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < numShopItem; i++) {
     shopState.items.push(makeShopItem());
   }
 }
 else {
   // (existing logic for keeping placed guns, topping up offers…)
   const inOffer = shopState.items.filter(it => it.r == null && it.c == null).length;
-  for (let i = inOffer; i < 4; i++) {
+  for (let i = inOffer; i < numShopItem; i++) {
     shopState.items.push(makeShopItem());
   }
 }
