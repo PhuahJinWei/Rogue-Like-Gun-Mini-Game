@@ -837,6 +837,100 @@
 			1:{ 
 				name:"pistol",
 				tags:"normal",
+				range:400,
+				bulletsPerUse:3,
+				timeBetweenBullets:0.20,
+				damage:30,
+				postUseCooldown: 1,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
+			},
+			2: {
+				name:"pistol",
+				tags:"normal",
+				range:400,
+				bulletsPerUse:3,
+				timeBetweenBullets:0.20,
+				damage:40,
+				postUseCooldown: 1,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
+			},
+			3: {
+				name:"pistol",
+				tags:"normal",
+				range:400,
+				bulletsPerUse:3,
+				timeBetweenBullets:0.20,
+				damage:60, 
+				postUseCooldown: 1,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
+			},
+			4: {
+				name:"pistol",
+				tags:"normal",
+				range:400,
+				bulletsPerUse:3,
+				timeBetweenBullets:0.20,
+				damage:80,
+				postUseCooldown: 1,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
+			}
+		},
+		"sniperriffle":
+		{
+			1:{ 
+				name:"sniperriffle",
+				tags:"normal",
+				range:650,
+				bulletsPerUse:1,
+				timeBetweenBullets:0,
+				damage:130,
+				postUseCooldown: 9,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
+			},
+			2: {
+				name:"sniperriffle",
+				tags:"normal",
+				range:650,
+				bulletsPerUse:1,
+				timeBetweenBullets:0,
+				damage:140,
+				postUseCooldown: 9,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
+			},
+			3: {
+				name:"sniperriffle",
+				tags:"normal",
+				range:650,
+				bulletsPerUse:1,
+				timeBetweenBullets:0,
+				damage:160,
+				postUseCooldown: 9,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
+			},
+			4: {
+				name:"sniperriffle",
+				tags:"normal",
+				range:650,
+				bulletsPerUse:1,
+				timeBetweenBullets:0,
+				damage:180,
+				postUseCooldown: 9,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
+			}
+		},
+		"assultriffle":
+		{
+			1:{ 
+				name:"assultriffle",
+				tags:"normal",
 				range:460,
 				bulletsPerUse:4,
 				timeBetweenBullets:0.20,
@@ -846,7 +940,7 @@
 				ability: ""
 			},
 			2: {
-				name:"pistol",
+				name:"assultriffle",
 				tags:"normal",
 				range:460,
 				bulletsPerUse:4,
@@ -857,7 +951,7 @@
 				ability: ""
 			},
 			3: {
-				name:"pistol",
+				name:"assultriffle",
 				tags:"normal",
 				range:460,
 				bulletsPerUse:6,
@@ -867,7 +961,53 @@
 				ability: ""
 			},
 			4: {
-				name:"pistol",
+				name:"assultriffle",
+				tags:"normal",
+				range:480,
+				bulletsPerUse:6,
+				timeBetweenBullets:0.16,
+				damage:80,
+				postUseCooldown: 2,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
+			}
+		},
+		"grenadelauncher":
+		{
+			1:{ 
+				name:"grenadelauncher",
+				tags:"normal",
+				range:460,
+				bulletsPerUse:4,
+				timeBetweenBullets:0.20,
+				damage:30,
+				postUseCooldown: 5.0/2.5,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
+			},
+			2: {
+				name:"grenadelauncher",
+				tags:"normal",
+				range:460,
+				bulletsPerUse:4,
+				timeBetweenBullets:0.18,
+				damage:40,
+				postUseCooldown: 2,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
+			},
+			3: {
+				name:"grenadelauncher",
+				tags:"normal",
+				range:460,
+				bulletsPerUse:6,
+				timeBetweenBullets:0.18,
+				damage:60, postUseCooldown: 2,
+				bulletSpeed:BULLET_SPEED,
+				ability: ""
+			},
+			4: {
+				name:"grenadelauncher",
 				tags:"normal",
 				range:480,
 				bulletsPerUse:6,
@@ -2102,6 +2242,9 @@ function spawnOneNormalMob() {
 	const SHAPES = {
 		submachinegun: [[0,0],[0,1],[0,2],[1,0]],
 		pistol: [[0,0],[0,1],[1,0]],
+		sniperriffle: [[0,0],[1,0],[2,0],[3,0],[3,1]],
+		assultriffle: [[0,0],[0,1],[1,1],[0,2],[0,3]],
+		grenadelauncher: [[1,0],[1,1],[0,1],[0,2]],
 	};
 
 	let shopState = {
