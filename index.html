@@ -614,6 +614,10 @@
 		-webkit-tap-highlight-color: transparent;
 	}
 </style>
+
+<!-- ---- Imports ---- -->
+<script src="src/js/error-log.js"></script>
+
 </head>
 <body>
   <div id="fitWrap" class="fit-wrap">
@@ -2133,7 +2137,7 @@ function spawnOneNormalMob() {
 		const shape = SHAPES[item.key] || [];
 		return shape.map(([dr,dc]) => [anchorR + dr, anchorC + dc]);
 	}
-  function inBounds(r,c){ return r>=0 && r<GRID_ROWS && c>=0 && c<GRID_COLS; }
+	function inBounds(r,c){ return r>=0 && r<GRID_ROWS && c>=0 && c<GRID_COLS; }
 
   function occupiedMap(ignoreId=null){
     const occ = new Set();
