@@ -8,32 +8,29 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --frame-w: 600px;
-    --frame-h: 1080px;
-    --canvas-h: 750px;
-    
-    --wave-left: 42px;  --wave-top: 76px;  --wave-w: 80px; --wave-h: 55px; --wave-txt-size: 50px;
-    --level-left: 191px; --level-top: 28px; --level-w: 40px; --level-h: 33px; --level-txt-size: 24px;
-    --exp-left: 268px; --exp-top: 34px; --exp-w: 188px; --exp-h: 14.5px;
-    --coin-left: 185px; --coin-top: 71px; --coin-w: 100px; --coin-txt-size: 17px;
-    --score-left: 340px; --score-top: 71px; --score-w: 100px; --score-txt-size: 17px;
-    --speed-left: 474px; --speed-top: 33px; --speed-size: 49px; --speed-txt-size: 25px;
-    --pause-left: 534px; --pause-top: 33px; --pause-size: 49px;
-  }
-  * { box-sizing: border-box; }
-  html, body { height:100%; width:100%; overflow:hidden; overscroll-behavior:none; }
-  body {
-    margin:0;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", "Helvetica Neue", Arial;
-    background: linear-gradient(180deg, #0b0f1a 0%, #0e1526 100%);
-    color:#fff;
-    display:flex; align-items:center; justify-content:center;
-    padding:0;
-    touch-action: manipulation;
-  }
-  .fit-wrap { transform-origin:center center; width:var(--frame-w); height:var(--frame-h); }
-  
+	* { box-sizing: border-box; }
+	html, 
+	body {
+		height:100%;
+		width:100%;
+		overflow:hidden;
+		overscroll-behavior:none;
+	}
+	body {
+	margin:0;
+		font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", "Helvetica Neue", Arial;
+		background: linear-gradient(180deg, #0b0f1a 0%, #0e1526 100%);
+		color:#fff;
+		display:flex; align-items:center; justify-content:center;
+		padding:0;
+		touch-action: manipulation;
+	}
+	.fit-wrap {
+		transform-origin:center center;
+		width:var(--frame-w);
+		height:var(--frame-h);
+	}
+	:root { --frame-w: 600px; --frame-h: 1080px; --canvas-h: 750px; }
 	.game-frame {
 		display:inline-block;
 		width: var(--frame-w);
@@ -45,8 +42,19 @@
 		background-position: center center;
 		background-size: contain;
 		background-color: #32342F;
+		
+		/* --- prevents dragging --- */
+		user-select: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		-webkit-user-drag: none;
+		-webkit-touch-callout: none;
+		-webkit-tap-highlight-color: transparent;
 	}
-  .game-shell { width:var(--frame-w); max-width:100%; }
+	.game-shell {
+		width:var(--frame-w); max-width:100%;
+	}
 
 	/* ============================ TOP HUD ============================ */
 	.hud {
@@ -67,6 +75,13 @@
 	
 	
 	/* ------------- Scoreboard ------------- */
+	:root {
+		--wave-left: 42px; --wave-top: 76px; --wave-w: 80px; --wave-h: 55px; --wave-txt-size: 50px;
+		--level-left: 191px; --level-top: 28px; --level-w: 40px; --level-h: 33px; --level-txt-size: 24px;
+		--exp-left: 268px; --exp-top: 34px; --exp-w: 188px; --exp-h: 14.5px;
+		--coin-left: 185px; --coin-top: 71px; --coin-w: 100px; --coin-txt-size: 17px;
+		--score-left: 340px; --score-top: 71px; --score-w: 100px; --score-txt-size: 17px;
+	}
 	#waveNum {
 		left: var(--wave-left);
 		top: var(--wave-top);
@@ -151,6 +166,10 @@
 		color: #F7F4EF;
 	}
 	/* ------------- Button ------------- */
+	:root {
+		--speed-left: 474px; --speed-top: 33px; --speed-size: 49px; --speed-txt-size: 25px;
+		--pause-left: 534px; --pause-top: 33px; --pause-size: 49px;
+	}
 	.hud-btn {
 		position:absolute;
 		background: transparent;
@@ -180,29 +199,35 @@
 	}
 
 
-  .stage-wrap { display:flex; align-items:center; justify-content:center; padding:0; margin:0; }
-  .stage {
-    width: var(--frame-w);
-    height: var(--canvas-h);
-    position: relative;
-    background-image: url('src/img/background_battlefield_1000x1250.png');
-    background-size: cover; background-position:center;
-    border:none; border-radius:0; box-shadow:none;
-  }
-  .soldier-sprite{
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 0;
-    width: 118px;
-    height: 128px;
-    pointer-events: none;
-  }
-
-	
+	/* ========================== Middle Section ========================== */
+	.stage-wrap {
+		display:flex;
+		align-items:center;
+		justify-content:center;
+		padding:0;
+		margin:0;
+	}
+	.stage {
+		width: var(--frame-w);
+		height: var(--canvas-h);
+		position: relative;
+		background-image: url('src/img/background_battlefield_1000x1250.png');
+		background-size: cover; background-position:center;
+		border:none; border-radius:0; box-shadow:none;
+	}
+	.soldier-sprite{
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: 0;
+		width: 118px;
+		height: 128px;
+		pointer-events: none;
+	}
 	canvas {
 		display:block; width:100%; height:100%;
 	}
+	
 	
 	/* ============================ HP Bar ============================ */
 	.hp-container {
@@ -263,8 +288,6 @@
 		-webkit-text-stroke: 0.6px #661E1A;
 		text-shadow: 0 1px 0 #000, 0 -1px 0 #000, 1px 0 0 #000, -1px 0 0 #000;
 	}
-  
-  
 	
 	
 	/* ============================ Overlay panel ============================ */
@@ -278,38 +301,165 @@
 	
 	
 	/* ============================ Trait Overlay ============================ */
+	:root {
+		--trait-panel-w: 560px;
+		--trait-layout-top-h: 659px;
+		--trait-layout-bot-h: 89px;
+		--trait-card-h: 134px;
+		--trait-card-gap: 8px;
+		--trait-card-icon-size: 133px;
+		--trait-card-border-color: #2A94DB;
+		--trait-card-radio-size: 38px;
+	}
 	.trait-overlay.hidden { display:none; }
 	.trait-overlay {
-		position: fixed; inset: 0; z-index: 9999;
-		background: rgba(0,0,0,.55);
-		display: grid; place-items: center;
+		position: fixed;
+		inset: 0;
+		z-index: 10000;
+		display: grid;
+		place-items: center;
+		background: rgba(0,0,0,.8);
 	}
 	.trait-panel {
-		min-width: 520px; max-width: 760px;
-		background: #2a2a2e; color: #eee;
-		border-radius: 10px;
-		box-shadow: 0 10px 40px rgba(0,0,0,.6);
-		padding: 16px 18px 14px;
+		display: flex;
+		width: var(--trait-panel-w);
+		flex-direction: column;
+		background: transparent;
+		overflow: hidden;
+		overscroll-behavior:none;
 	}
-	.trait-title {
-		font: 700 28px/1.2 "Rajdhani", system-ui, sans-serif;
-		letter-spacing:.06em; text-align:center; margin: 6px 0 14px;
-		color:#cfe7ff; text-shadow: 0 2px 0 #000;
-	}
-	.trait-cards {
+	.trait-layout-top {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr); /* 4 max; we’ll hide the last if only 3 */
-		gap: 12px;
+		flex: 0 0 var(--trait-layout-top-h);
+		height: var(--trait-layout-top-h);
+		grid-template-columns: 1fr;
+		padding-top: 95px;
+		background-image: url('src/img/UI_trait_overlay_top2.png');
+		background-size: cover;
+		background-position: top center;
+		overflow: hidden;
+	}
+	.trait-layout-bottom {
+		display: block;
+		height: var(--trait-layout-bot-h);
+		flex: 1 1 auto;
+		overflow-y: auto;
+		background-image: url('src/img/UI_trait_overlay_bottom.png');
+		background-size: cover;
+		background-position: center;
+	}
+	#traitCards.trait-vertical {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		gap: var(--trait-card-gap);
 	}
 	.trait-card {
-		background:#3a3a3e; border:2px solid #5a5a5e; border-radius:10px; padding:12px;
-		cursor:pointer; transition: transform .08s ease, border-color .08s ease, background .08s ease;
+		height: var(--trait-card-h);
+		display: grid;
+		grid-template-columns: 46px var(--trait-card-icon-size) 1fr;
+		align-items: center;
+		cursor: pointer;
 	}
-	.trait-card:hover { transform: translateY(-2px); border-color:#a9c7ff; background:#45454a; }
-	.trait-card .tier { font-weight:700; color:#ffd06b; margin-bottom:6px; }
-	.trait-card .name { font-weight:700; font-size:18px; margin-bottom:4px; color:#fff; }
-	.trait-card .desc { font-size:14px; color:#d6d6db; line-height:1.25; }
-	.trait-actions { display:flex; justify-content:center; gap:10px; margin-top:14px; }
+	.trait-radio {
+		display: grid;
+		height: 100%;
+		place-items: center; 
+	}
+	.trait-radio::before {
+		content:"";
+		width: var(--trait-card-radio-size);
+		height: var(--trait-card-radio-size);
+	}
+	.trait-card.selected .trait-radio::before {
+		background-image: url('src/img/UI_trait_card_radio_selected.png');
+		background-size: cover;
+		background-position: center;
+		pointer-event: none;
+	}
+	.trait-icon {
+		width: var(--trait-card-h);
+		height: var(--trait-card-h);
+		display: grid;
+		place-items: center;
+		overflow: hidden;
+		border-radius: 13px;
+		border: 0;
+	}
+	.trait-card.selected .trait-icon {
+		border: 2px solid var(--trait-card-border-color);
+	}
+	.trait-icon-img {
+		width: 79px;
+		height: 79px;
+	}
+	.trait-text {
+		height: 100%;
+		display: flex;
+		padding: 10px;
+		flex-direction: column;
+		justify-content: center;
+		min-width: 0;
+	}
+	.trait-title {
+		font: 800 22px/1.2 "Rajdhani", system-ui, sans-serif;
+		color: #e5efff;
+		position: relative;
+		padding-bottom: 8px;
+	}
+	.trait-title::after {
+		content: "";
+		position: absolute;
+		left: 0; right: 0; bottom: 0;
+		height: 2px;
+		background: #45B4BF;
+	}
+	.trait-desc {
+		color: #b7c3d6;
+		font: 600 16px/1.35 "Rajdhani", system-ui, sans-serif;
+	}
+	.trait-desc .accent {
+		color: #63b3ff;
+		font-weight: 800;
+	}
+	.trait-actions { 
+		display: flex;
+		height: 100%;
+		width: 100%;
+		justify-content: center;
+		gap: 10px;
+		padding: 18px 38px 18px 37px;
+	}
+	.trait-actions-2 { 
+		display: flex;
+		width: var(--trait-panel-w);
+		flex: 0 0 auto;
+		justify-content: center;
+		align-items: center;
+		padding: 6px 0;
+	}
+	.trait-btn {
+		width: 100%;
+		height: 100%;
+		cursor: pointer;
+	}
+	#traitStartBtn {
+		width: 200px;
+		aspect-ratio: 200 / 62;
+		max-width: 200px;
+		background-image: url('src/img/UI_trait_select_button_enabled.png');
+		background-size: cover;
+		background-position: center;
+		cursor: pointer;
+	}
+	#traitStartBtn.is-disabled {
+		background-image: url('src/img/UI_trait_select_button_disabled.png');
+		background-size: cover;
+		background-position: center;
+		cursor: not-allowed;
+	}
+	
+	
 	.trait-list { display:grid; gap:8px; max-height: 50vh; overflow:auto; }
 	.trait-pill {
 		font-family: 'Rajdhani', sans-serif;
@@ -430,23 +580,11 @@
 		z-index: 10000;
 		display: grid;
 		place-items: center;
-		background: rgba(0, 0, 0, 0.65);
+		background: rgba(0, 0, 0, 0.8);
 	}
 	.shop-panel {
 		display: flex;
 		width: var(--shop-panel-w);
-		flex-direction: column;
-	}
-	.shop-overlay {
-		display: grid;
-		position: fixed;
-		inset: 0;
-		z-index: 10000;
-		place-items: center;
-		background: rgba(0,0,0,.65);
-	}
-	.shop-panel {
-		display: flex;
 		flex-direction: column;
 		background: transparent;
 		overflow: hidden;
@@ -588,31 +726,6 @@
 	.merge-glow .mini-cell {
 		animation: mergeShinePulse 1.7s ease-in-out infinite;
 	}
-
-
-
-	/* ====================== Prevent Select, Highlight, Drag ====================== */
-	.hud,
-	#waveNum,#coinNum,#scoreNum,
-	.hp-container,
-	.inventory-wrap,
-	.inventory-frame,
-	.inventory-grid,
-	.slot-layer,
-	.shop-title,
-	#soldierSprite,
-	.gun-sprite,
-	.gun-sprite-mini,
-	.hud-btn,#speedBtn,.shop-start-button 
-	{
-		user-select: none;
-		-webkit-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-		-webkit-user-drag: none;
-		-webkit-touch-callout: none;
-		-webkit-tap-highlight-color: transparent;
-	}
 </style>
 
 <!-- ---- Imports ---- -->
@@ -620,117 +733,111 @@
 
 </head>
 <body>
-  <div id="fitWrap" class="fit-wrap">
-    <div class="game-frame">
-      <div class="game-shell">
+<div id="fitWrap" class="fit-wrap">
+<div class="game-frame">
+<div class="game-shell">
 
-        <!-- =============== Top HUD =============== -->
-        <div class="hud" id="topHUD">
-          <div id="waveNum"  class="num big">1</div>
-          <div id="levelNum" class="num">1</div>
-          <div class="exp-track">
-			<div class="exp-fill" id="expFill"></div>
-			<div class="exp-frame"></div>
-          </div>
-          <div id="coinNum"  class="num sm right">0</div>
-          <div id="scoreNum" class="num sm right">0</div>
-          <button id="speedBtn" class="hud-btn" data-sfx="src/sfx/button_press_default.mp3">1x</button>
-          <button id="pauseBtn" class="hud-btn" data-sfx="src/sfx/button_battle_pause.mp3"></button>
-        </div>
+	<!-- =============== Top HUD =============== -->
+	<div class="hud" id="topHUD">
+		<div id="waveNum"  class="num big">1</div>
+			<div id="levelNum" class="num">1</div>
+			<div class="exp-track">
+				<div class="exp-fill" id="expFill"></div>
+				<div class="exp-frame"></div>
+			</div>
+		<div id="coinNum"  class="num sm right">0</div>
+		<div id="scoreNum" class="num sm right">0</div>
+		<button id="speedBtn" class="hud-btn" data-sfx="src/sfx/button_press_default.mp3">1x</button>
+		<button id="pauseBtn" class="hud-btn" data-sfx="src/sfx/button_battle_pause.mp3"></button>
+	</div>
 
-        <!-- =============== Battlefield =============== -->
-        <div class="stage-wrap">
-          <div class="stage">
-            <canvas id="game"></canvas>
+	<!-- =============== Battlefield =============== -->
+	<div class="stage-wrap">
+	<div class="stage">
+		<canvas id="game"></canvas>
+		<img id="soldierSprite" src="src/img/character_model_1_angle_3.gif" class="soldier-sprite" alt="soldier">
+		<div id="bossWarn" class="warn-banner">BOSS APPROACHING</div>
+
+		<!-- ----- Pause / Restart Overlay ----- -->
+		<div class="overlay" id="overlay">
+		<div class="panel">
+			<h2 id="overlayTitle">Paused</h2>
+			<div class="actions">
+				<button id="viewTraitsBtn" class="btn">View All Traits</button>
+				<button id="resumeBtn" class="primary">▶︎</button>
+				<button id="restartBtn">Restart</button>
+			</div>
+		</div>
+		</div>
 			
-			<!-- player -->
-			<img id="soldierSprite" src="src/img/character_model_1_angle_3.gif" class="soldier-sprite" alt="soldier">
-            
-			<!-- Boss warning banner -->
-            <div id="bossWarn" class="warn-banner">BOSS APPROACHING</div>
-            
-			<!-- Trait selection overlay -->
-			<div class="overlay" id="overlay">
-              <div class="panel">
-                <h2 id="overlayTitle">Paused</h2>
-                <div class="actions">
-                  <button id="viewTraitsBtn" class="btn">View All Traits</button>
-                  <button id="resumeBtn" class="primary">▶︎</button>
-                  <button id="restartBtn">Restart</button>
-                </div>
-              </div>
-            </div>
-			
-			<!-- Trait selection overlay -->
-			<div id="traitOverlay" class="trait-overlay hidden">
-				<div class="trait-panel">
-					<div class="trait-title">Select Trait</div>
-					<div id="traitCards" class="trait-cards"></div>
+		<!--  ----- Trait overlay ----- -->
+		<div id="traitOverlay" class="trait-overlay hidden">
+		<div class="trait-panel">
+			<div class="trait-layout-top">
+				<div id="traitCards" class="trait-cards"></div>
+			</div>
+			<div class="trait-layout-bottom">
+				<div class="trait-actions">
+					<div id="" class="trait-btn"></div>
+					<div id="" class="trait-btn"></div>
 				</div>
 			</div>
-			<!-- Trait viewer (from Pause) -->
+			<div class="shop-actions">
+				<div id="traitStartBtn" class="shop-start-button is-disabled"></div>
+			</div>
+		</div>
+		</div>
+		<div id="traitViewer" class="trait-overlay hidden">
+		<div class="trait-panel">
+			<div class="trait-title">Traits Obtained</div>
+			<div id="traitList" class="trait-list"></div>
+			<div class="trait-actions"><button id="closeTraitViewerBtn" class="btn">Close</button></div>
+		</div>
+		</div>
 			
-			<!-- Shop overlay -->
-			<div id="shopOverlay" class="shop-overlay hidden">
-			  <div class="shop-panel">
-				<div class="shop-layout-top">
-				  <div class="shop-title">Shop</div>
-				  <div class="shop-grid-wrap">
-					<div id="shopGrid" class="shop-grid"></div>
-				  </div>
-				</div>
-				
-				<div class="shop-layout-bottom">
-				  <div id="shopOffer" class="shop-offer"></div>
-				</div>
-				<div class="shop-actions">
-				  <div id="shopStartBtn" class="shop-start-button"></div>
-				</div>
-				
-			  </div>
+		<!-- Shop overlay -->
+		<div id="shopOverlay" class="shop-overlay hidden">
+		<div class="shop-panel">
+			<div class="shop-layout-top">
+				<div class="shop-title">Shop</div>
+				<div class="shop-grid-wrap"><div id="shopGrid" class="shop-grid"></div></div>
 			</div>
-
-					<div id="traitViewer" class="trait-overlay hidden">
-					<div class="trait-panel">
-					<div class="trait-title">Traits Obtained</div>
-					<div id="traitList" class="trait-list"></div>
-					<div class="trait-actions"><button id="closeTraitViewerBtn" class="btn">Close</button></div>
-				</div>
+			<div class="shop-layout-bottom">
+				<div id="shopOffer" class="shop-offer"></div>
 			</div>
+			<div class="shop-actions"><div id="shopStartBtn" class="shop-start-button"></div></div>
+		</div>
+		</div>
 
-          </div>
-        </div>
+	</div>
+	</div>
+	
+	<!-- =============== Bottom Section =============== -->
+	<!-- Barricade HP -->
+	<div class="hp-container">
+	<div class="hp-bar" id="hpBar">
+		<div class="fill" id="hpFill"></div>
+		<div class="text" id="hpText">100%</div>
+	</div>
+	<div class="hp-frame"></div>
+	</div>
+
+	<!-- Inventory -->
+	<div class="inventory-wrap">
+		<div class="inventory-frame"></div>
+		<div class="inventory-grid" id="inventoryGrid"></div>
+	</div>
 		
-		
-		<!-- =============== Bottom Section =============== -->
-        <!-- Barricade HP -->
-        <div class="hp-container">
-          <div class="hp-bar" id="hpBar">
-            <div class="fill" id="hpFill"></div>
-            <div class="text" id="hpText">100%</div>
-          </div>
-		  <div class="hp-frame"></div>
-        </div>
-
-        <!-- Inventory -->
-        <div class="inventory-wrap">
-          <div class="inventory-frame"></div>
-		  <div class="inventory-grid" id="inventoryGrid"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 
 <script>
-
-/* Shop overlay bootstrap stub: queues calls until real function is loaded */
 (function(){
-  if (typeof window!=='undefined' && typeof window.openShopOverlay!=='function') {
-    window.__pendingShopCalls = [];
-    window.openShopOverlay = function(){
-      window.__pendingShopCalls.push([].slice.call(arguments));
-    };
-  }
+	if (typeof window!=='undefined' && typeof window.openShopOverlay!=='function') {
+		window.__pendingShopCalls = [];
+		window.openShopOverlay = function(){ window.__pendingShopCalls.push([].slice.call(arguments)); };
+	}
 })();
 
 (() => {
@@ -1913,7 +2020,6 @@ function spawnOneNormalMob() {
 		
 		// How many cards? 3 + maybe 1 extra
 		const count = TRAIT_BASE_CARD_COUNT + (Math.random() < TRAIT_EXTRA_CARD_CHANCE ? 1 : 0);
-
 		const offer = [];
 		const usedPairs = new Set();
 		let guard = 200; // safety to avoid infinite loops if trait pool is too small
@@ -1928,30 +2034,74 @@ function spawnOneNormalMob() {
 			offer.push({ id: def.id, tier });
 			usedPairs.add(key);
 		}
-
+		
+		state.traitSelected = null;
+		const cardsWrap   = document.getElementById('traitCards');
+		const traitStart  = document.getElementById('traitStartBtn');
+		
 		// Render cards
 		traitCardsBox.innerHTML = "";
+		traitCardsBox.classList.add("trait-vertical");
 		offer.forEach(o => {
 			const def = TRAITS.find(x => x.id === o.id);
 			const nameTxt = typeof def.name === 'function' ? def.name(o.tier) : def.name;
-			const descTxt = typeof def.desc === 'function' ? def.desc(o.tier) : def.desc;
-			const scleTxt = typeof def.scaling === 'function' ? def.scaling(o.tier) : def.scaling;
+			const descTxt = typeof def.desc === 'function' ? def.desc(o.tier) : (def.desc || '');
+			const scaleTxt = typeof def.scaling === 'function' ? def.scaling(o.tier) : (def.scaling ?? '');
 
 			const card = document.createElement('div');
 			card.className = 'trait-card';
-			card.innerHTML  = '<div class="tier">Tier ' + o.tier + '</div>';
-			card.innerHTML += '<div class="name">' + nameTxt + '</div>';
-			card.innerHTML += '<div class="desc">' + descTxt + scleTxt + '%' + '</div>';
+			card.dataset.tier = String(o.tier);
+			
+			//trait radio button
+			const radio = document.createElement('div');
+			radio.className = 'trait-radio';
+			
+			//trait picture
+			const icon = document.createElement('div');
+			icon.className = 'trait-icon';
+			const icon_img = document.createElement('div');
+			icon_img.className = 'trait-icon-img';
+			icon.appendChild(icon_img);
+			
+			//text body
+			const body = document.createElement('div');
+			body.className = 'trait-text';
+			const title = document.createElement('div');
+			title.className = 'trait-title';
+			title.textContent = nameTxt;
 
+			const desc = document.createElement('div');
+			desc.className = 'trait-desc';
+			desc.innerHTML = descTxt + '<span class="accent">' + scaleTxt + '%' + '</span>';
+			
+			body.appendChild(title);
+			body.appendChild(desc);
+			card.appendChild(radio);
+			card.appendChild(icon);
+			card.appendChild(body);
+			
+			//Click on Card
 			card.addEventListener('click', () => {
-				applyTrait(o.id, o.tier);
-				closeTraitOverlay();
+				cardsWrap.querySelectorAll('.trait-card.selected').forEach(el => el.classList.remove('selected'));
+				card.classList.add('selected');
+				state.traitSelected = { id: o.id, tier: o.tier };
+				if (traitStart) traitStart.classList.toggle('is-disabled', false);
 			});
-
+			
 			traitCardsBox.appendChild(card);
 		});
 		traitCardsBox.style.gridTemplateColumns = `repeat(${offer.length}, 1fr)`;
 		traitOverlay.classList.remove('hidden');
+		
+		if (traitStart && !traitStart._wired) {
+			traitStart._wired = true;
+			traitStart.addEventListener('click', onTraitStartConfirm);
+		}
+		
+		//set trait-layout-top Height based on num of traits produced
+		const traitCardHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--trait-card-h').trim());
+		const traitCardGap = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--trait-card-gap').trim());
+		document.querySelector('.trait-layout-top').style.setProperty('--trait-layout-top-h', Number(offer.length) * Number(traitCardHeight) + (Number(offer.length) -1) * Number(traitCardGap));
 	}
 	function closeTraitOverlay() {
 		state.traitOverlayOpen = false;
@@ -1963,6 +2113,17 @@ function spawnOneNormalMob() {
 			return;
 		}
 		maybeResumeGameIfNoOverlays();
+	}
+	function onTraitStartConfirm() {
+		const btn = this; // #traitStartBtn
+		if (!state.traitSelected) return;
+		
+		const { id, tier } = state.traitSelected;
+		applyTrait(id, tier);
+		
+		state.traitSelected = null;
+		btn.disabled = true;
+		closeTraitOverlay();
 	}
 	function maybeResumeGameIfNoOverlays() {
 		const anyShopOpen = !document.getElementById('shopOverlay')?.classList.contains('hidden');
@@ -2246,6 +2407,24 @@ function spawnOneNormalMob() {
 		assultriffle: [[0,0],[0,1],[1,1],[0,2],[0,3]],
 		grenadelauncher: [[1,0],[1,1],[0,1],[0,2]],
 	};
+	
+	// ------- Drag & Drop -------
+	let ghost            = null;
+	let dragFrom         = null;   // 'grid' or 'offer'
+	let startPos         = null;   // { r, c } where the item started
+	let activePointerId  = null;
+	let draggingItem     = null;   // the shopState.items entry being dragged
+	let draggingSourceEl = null;   // the DOM element we picked up from
+	let lastSnap         = null;   // { r, c, ok:true } of the current preview
+	let previewWrap      = null;   // .placement-preview layer in the grid
+	let grabOffsetX      = 0;
+	let grabOffsetY      = 0;
+
+	let ghostAnimId   = null;
+	let ghostCurrX    = 0;
+	let ghostCurrY    = 0;
+	let ghostTargetX  = 0;
+	let ghostTargetY  = 0;
 
 	let shopState = {
 		items: [],
@@ -2280,27 +2459,25 @@ function spawnOneNormalMob() {
 		const shape = SHAPES[item.key] || [];
 		return shape.map(([dr,dc]) => [anchorR + dr, anchorC + dc]);
 	}
-	function inBounds(r,c){ return r>=0 && r<GRID_ROWS && c>=0 && c<GRID_COLS; }
-
-  function occupiedMap(ignoreId=null){
-    const occ = new Set();
-    for (const it of shopState.items) {
-      if (it.r==null || it.c==null) continue;
-      if (ignoreId && it.id===ignoreId) continue;
-      for (const [r,c] of shapeCells(it, it.r, it.c)) {
-        occ.add(r+','+c);
-      }
-    }
-    return occ;
-  }
+	function inBounds(r,c){
+		return r>=0 && r<GRID_ROWS && c>=0 && c<GRID_COLS;
+	}
+	function occupiedMap(ignoreId=null) {
+		const occ = new Set();
+		for (const it of shopState.items) {
+			if (it.r==null || it.c==null) continue;
+			if (ignoreId && it.id===ignoreId) continue;
+			for (const [r,c] of shapeCells(it, it.r, it.c)) { occ.add(r+','+c); }
+		}
+		return occ;
+	}
 	function inBoundsShape(item, r, c) {
 		for (const [rr, cc] of shapeCells(item, r, c)) {
 			if (!inBounds(rr, cc)) return false;
 		}
 		return true;
 	}
-
-	function canPlace(item, r, c){
+	function canPlace(item, r, c) {
 		const occ = occupiedMap(item.id);
 		for (const [rr,cc] of shapeCells(item, r, c)) {
 			if (!inBounds(rr,cc) || occ.has(rr+','+cc)) return false;
@@ -2308,7 +2485,6 @@ function spawnOneNormalMob() {
 		return true;
 	}
 	function displaceConflicts(item, placeR, placeC) {
-		// cells new item would cover
 		const newCells = new Set(
 			shapeCells(item, placeR, placeC).map(([rr, cc]) => rr + ',' + cc)
 		);
@@ -2468,290 +2644,247 @@ function spawnOneNormalMob() {
 		applyMergeHighlights();
 	}
 	function resolveDropOnGrid(item, newR, newC) {
-	// Which placed guns would we collide with at (newR,newC)?
-	const overlaps = overlappingItemsAt(item, newR, newC);
-
-	// 1) Can we merge into any of them?
-	//    Pick the first merge-compatible one.
-	let mergeTarget = null;
-	for (const o of overlaps) {
-		if (canMergeItems(item, o)) {
-			mergeTarget = o;
-			break;
+		const overlaps = overlappingItemsAt(item, newR, newC);
+		let mergeTarget = null;
+		for (const o of overlaps) {
+			if (canMergeItems(item, o)) {
+				mergeTarget = o;
+				break;
+			}
 		}
-	}
-	if (mergeTarget) {
-		// merging guns: mergeTarget stays where it was,
-		// dragged item is consumed
-		mergeIntoTarget(mergeTarget, item);
-		return; // we're done
-	}
-
-	// 2) Otherwise, classic behavior:
-	// Displace overlapping guns to offer
-	for (const o of overlaps) {
-		o.r = null;
-		o.c = null;
-	}
-
-	// Place the dragged gun at newR/newC
-	item.r = newR;
-	item.c = newC;
-}
-function resolveDropInOffer(e, item) {
-	const elUnder = document.elementFromPoint(e.clientX, e.clientY);
-	const chipEl = elUnder ? elUnder.closest('.gun-chip') : null;
-
-	if (chipEl) {
-		const targetId = chipEl.dataset.id;
-		const targetItem = shopState.items.find(
-			it => String(it.id) === String(targetId)
-		);
-
-		if (targetItem) {
-			// IMPORTANT: prevent self-merge
-			const isSameObject = (targetItem === item);
-
-			// check merge eligibility (same gun type, same tier, <4)
-			const canMerge = !isSameObject && canMergeItems(item, targetItem);
-
-			if (canMerge) {
-				// "must keep at least 1 gun in grid" rule:
-				const cameFromGridAndWasLast =
-					(dragFrom === 'grid' && countPlaced() <= 1);
-
-				if (!cameFromGridAndWasLast) {
-					// legal merge: targetItem stays, dragged item is consumed
-					mergeIntoTarget(targetItem, item);
-					return;
-				}
-
-				// if it WAS last gun in grid, we fall through to snap-back logic below
-			}
-
-			// If it's the same chip (self drop) or merge is illegal
-			// just restore item to where it logically belongs without deleting it.
-			// - If it came from grid and it's last gun: snap back.
-			// - Otherwise: keep / return to offer (r,c = null).
-			if (dragFrom === 'grid' && countPlaced() <= 1) {
-				item.r = startPos.r;
-				item.c = startPos.c;
-			} else {
-				item.r = null;
-				item.c = null;
-			}
+		if (mergeTarget) {
+			mergeIntoTarget(mergeTarget, item);
 			return;
 		}
+		for (const o of overlaps) {
+			o.r = null;
+			o.c = null;
+		}
+		item.r = newR;
+		item.c = newC;
 	}
+	function resolveDropInOffer(e, item) {
+		const elUnder = document.elementFromPoint(e.clientX, e.clientY);
+		const chipEl = elUnder ? elUnder.closest('.gun-chip') : null;
 
-	// No chip under pointer → normal offer drop rules.
-	// Respect the "must keep at least 1 gun in grid" rule if it came from grid
-	if (dragFrom === 'grid' && countPlaced() <= 1) {
-		item.r = startPos.r;
-		item.c = startPos.c;
-	} else {
-		item.r = null;
-		item.c = null;
+		if (chipEl) {
+			const targetId = chipEl.dataset.id;
+			const targetItem = shopState.items.find(it => String(it.id) === String(targetId));
+			if (targetItem) {
+				const isSameObject = (targetItem === item);
+				const canMerge = !isSameObject && canMergeItems(item, targetItem);
+				if (canMerge) {
+					const cameFromGridAndWasLast = (dragFrom === 'grid' && countPlaced() <= 1);
+					if (!cameFromGridAndWasLast) {
+						mergeIntoTarget(targetItem, item);
+						return;
+					}
+				}
+				if (dragFrom === 'grid' && countPlaced() <= 1) {
+					item.r = startPos.r;
+					item.c = startPos.c;
+				}
+				else {
+					item.r = null;
+					item.c = null;
+				}
+				return;
+			}
+		}
+		if (dragFrom === 'grid' && countPlaced() <= 1) {
+			item.r = startPos.r;
+			item.c = startPos.c;
+		}
+		else {
+			item.r = null;
+			item.c = null;
+		}
 	}
-}
-function buildOutlineSegments(coords, {
-  cellStepX,
-  cellStepY,
-  cellSize,
-  borderPx,
-  offX,
-  offY,
-}) {
-  const occ = new Set(coords.map(([r,c]) => r + "," + c));
+	function buildOutlineSegments(coords, {
+		cellStepX,
+		cellStepY,
+		cellSize,
+		borderPx,
+		offX,
+		offY,
+	}) {
+		const occ = new Set(coords.map(([r,c]) => r + "," + c));
+		const topEdges = new Map();
+		const bottomEdges = new Map();
+		const leftEdges = new Map();
+		const rightEdges = new Map();
 
-  const topEdges = new Map();
-  const bottomEdges = new Map();
-  const leftEdges = new Map();
-  const rightEdges = new Map();
+		for (const [dr, dc] of coords) {
+			if (!occ.has((dr - 1) + "," + dc)) {
+				if (!topEdges.has(dr)) topEdges.set(dr, []);
+				topEdges.get(dr).push(dc);
+			}
+			if (!occ.has((dr + 1) + "," + dc)) {
+				if (!bottomEdges.has(dr)) bottomEdges.set(dr, []);
+				bottomEdges.get(dr).push(dc);
+			}
+			if (!occ.has(dr + "," + (dc - 1))) {
+				if (!leftEdges.has(dc)) leftEdges.set(dc, []);
+				leftEdges.get(dc).push(dr);
+			}
+			if (!occ.has(dr + "," + (dc + 1))) {
+				if (!rightEdges.has(dc)) rightEdges.set(dc, []);
+				rightEdges.get(dc).push(dr);
+			}
+		}
 
-  for (const [dr, dc] of coords) {
-    if (!occ.has((dr - 1) + "," + dc)) {
-      if (!topEdges.has(dr)) topEdges.set(dr, []);
-      topEdges.get(dr).push(dc);
-    }
-    if (!occ.has((dr + 1) + "," + dc)) {
-      if (!bottomEdges.has(dr)) bottomEdges.set(dr, []);
-      bottomEdges.get(dr).push(dc);
-    }
-    if (!occ.has(dr + "," + (dc - 1))) {
-      if (!leftEdges.has(dc)) leftEdges.set(dc, []);
-      leftEdges.get(dc).push(dr);
-    }
-    if (!occ.has(dr + "," + (dc + 1))) {
-      if (!rightEdges.has(dc)) rightEdges.set(dc, []);
-      rightEdges.get(dc).push(dr);
-    }
-  }
+		function makeRuns(sortedList) {
+			const runs = [];
+			if (!sortedList.length) return runs;
+			let start = sortedList[0];
+			let prev  = sortedList[0];
+			for (let i = 1; i < sortedList.length; i++) {
+				const v = sortedList[i];
+				if (v === prev + 1) {
+					prev = v;
+				}
+				else {
+					runs.push([start, prev]);
+					start = v;
+					prev = v;
+				}
+			}
+			runs.push([start, prev]);
+			return runs;
+		}
 
-  function makeRuns(sortedList) {
-    const runs = [];
-    if (!sortedList.length) return runs;
-    let start = sortedList[0];
-    let prev  = sortedList[0];
-    for (let i = 1; i < sortedList.length; i++) {
-      const v = sortedList[i];
-      if (v === prev + 1) {
-        prev = v;
-      } else {
-        runs.push([start, prev]);
-        start = v;
-        prev  = v;
-      }
-    }
-    runs.push([start, prev]);
-    return runs;
-  }
+		const segs = [];
+		for (const [row, dcs] of topEdges.entries()) {
+			const sorted = dcs.slice().sort((a,b)=>a-b);
+			const runs = makeRuns(sorted);
+			for (const [dcStart, dcEnd] of runs) {
+				const leftPx  = offX + dcStart * cellStepX;
+				const rightPx = offX + dcEnd * cellStepX + cellSize;
+				const cellTopY = offY + row * cellStepY;
+				const yPx = cellTopY - borderPx;
+				segs.push({
+					x: leftPx,
+					y: yPx,
+					w: rightPx - leftPx,
+					h: borderPx,
+				});
+			}
+		}
+		for (const [row, dcs] of bottomEdges.entries()) {
+			const sorted = dcs.slice().sort((a,b)=>a-b);
+			const runs = makeRuns(sorted);
+			for (const [dcStart, dcEnd] of runs) {
+				const leftPx  = offX + dcStart * cellStepX;
+				const rightPx = offX + dcEnd * cellStepX + cellSize;
+				const cellBottomY = offY + row * cellStepY + cellSize;
+				const yPx = cellBottomY;
+				segs.push({
+					x: leftPx,
+					y: yPx,
+					w: rightPx - leftPx,
+					h: borderPx,
+				});
+			}
+		}
+		for (const [col, drs] of leftEdges.entries()) {
+		const sorted = drs.slice().sort((a,b)=>a-b);
+			const runs = makeRuns(sorted);
+			for (const [drStart, drEnd] of runs) {
+				const topPx    = offY + drStart * cellStepY;
+				const bottomPx = offY + drEnd   * cellStepY + cellSize;
+				const cellLeftX = offX + col * cellStepX;
+				const xPx = cellLeftX - borderPx;
+				segs.push({
+					x: xPx,
+					y: topPx,
+					w: borderPx,
+					h: bottomPx - topPx,
+				});
+			}
+		}
+		for (const [col, drs] of rightEdges.entries()) {
+			const sorted = drs.slice().sort((a,b)=>a-b);
+			const runs = makeRuns(sorted);
+			for (const [drStart, drEnd] of runs) {
+				const topPx    = offY + drStart * cellStepY;
+				const bottomPx = offY + drEnd   * cellStepY + cellSize;
+				const cellRightX = offX + col * cellStepX + cellSize;
+				const xPx = cellRightX;
+				segs.push({
+					x: xPx,
+					y: topPx,
+					w: borderPx,
+					h: bottomPx - topPx,
+				});
+			}
+		}
+		
+		let minR = Infinity, maxR = -Infinity, minC = Infinity, maxC = -Infinity;
+		for (const [dr, dc] of coords) {
+			if (dr < minR) minR = dr;
+			if (dr > maxR) maxR = dr;
+			if (dc < minC) minC = dc;
+			if (dc > maxC) maxC = dc;
+		}
 
-  const segs = [];
+		for (let r = minR - 1; r <= maxR + 1; r++) {
+			for (let c = minC - 1; c <= maxC + 1; c++) {
+				const hereKey = r + "," + c;
+				if (occ.has(hereKey)) continue;
 
-  // --- Horizontal runs (TOP and BOTTOM) ---
-  // NOTE the Y positions are pushed outward
+				const up    = occ.has((r-1) + "," + c);
+				const down  = occ.has((r+1) + "," + c);
+				const left  = occ.has(r + "," + (c-1));
+				const right = occ.has(r + "," + (c+1));
 
-  for (const [row, dcs] of topEdges.entries()) {
-    const sorted = dcs.slice().sort((a,b)=>a-b);
-    const runs = makeRuns(sorted);
-    for (const [dcStart, dcEnd] of runs) {
-      const leftPx  = offX + dcStart * cellStepX;
-      const rightPx = offX + dcEnd   * cellStepX + cellSize;
-      const cellTopY = offY + row * cellStepY;
-      const yPx = cellTopY - borderPx; // shift UP, outside
-      segs.push({
-        x: leftPx,
-        y: yPx,
-        w: rightPx - leftPx,
-        h: borderPx,
-      });
-    }
-  }
-
-  for (const [row, dcs] of bottomEdges.entries()) {
-    const sorted = dcs.slice().sort((a,b)=>a-b);
-    const runs = makeRuns(sorted);
-    for (const [dcStart, dcEnd] of runs) {
-      const leftPx  = offX + dcStart * cellStepX;
-      const rightPx = offX + dcEnd   * cellStepX + cellSize;
-      const cellBottomY = offY + row * cellStepY + cellSize;
-      const yPx = cellBottomY; // shift DOWN, outside
-      segs.push({
-        x: leftPx,
-        y: yPx,
-        w: rightPx - leftPx,
-        h: borderPx,
-      });
-    }
-  }
-  for (const [col, drs] of leftEdges.entries()) {
-    const sorted = drs.slice().sort((a,b)=>a-b);
-    const runs = makeRuns(sorted);
-    for (const [drStart, drEnd] of runs) {
-      const topPx    = offY + drStart * cellStepY;
-      const bottomPx = offY + drEnd   * cellStepY + cellSize;
-      const cellLeftX = offX + col * cellStepX;
-      const xPx = cellLeftX - borderPx; // shift LEFT, outside
-      segs.push({
-        x: xPx,
-        y: topPx,
-        w: borderPx,
-        h: bottomPx - topPx,
-      });
-    }
-  }
-
-  for (const [col, drs] of rightEdges.entries()) {
-    const sorted = drs.slice().sort((a,b)=>a-b);
-    const runs = makeRuns(sorted);
-    for (const [drStart, drEnd] of runs) {
-      const topPx    = offY + drStart * cellStepY;
-      const bottomPx = offY + drEnd   * cellStepY + cellSize;
-      const cellRightX = offX + col * cellStepX + cellSize;
-      const xPx = cellRightX; // shift RIGHT, outside
-      segs.push({
-        x: xPx,
-        y: topPx,
-        w: borderPx,
-        h: bottomPx - topPx,
-      });
-    }
-  }
-
-  let minR = Infinity, maxR = -Infinity, minC = Infinity, maxC = -Infinity;
-  for (const [dr, dc] of coords) {
-    if (dr < minR) minR = dr;
-    if (dr > maxR) maxR = dr;
-    if (dc < minC) minC = dc;
-    if (dc > maxC) maxC = dc;
-  }
-
-  for (let r = minR - 1; r <= maxR + 1; r++) {
-    for (let c = minC - 1; c <= maxC + 1; c++) {
-      const hereKey = r + "," + c;
-      if (occ.has(hereKey)) continue;
-
-      const up    = occ.has((r-1) + "," + c);
-      const down  = occ.has((r+1) + "," + c);
-      const left  = occ.has(r + "," + (c-1));
-      const right = occ.has(r + "," + (c+1));
-
-      // We'll patch where two occupied neighbors meet at a concave angle.
-      // For each case we push a square of size borderPx x borderPx that
-      // sits just OUTSIDE that corner.
-
-      // Up + Left occupied -> outside patch goes UP-LEFT from that corner
-      if (up && left && !down && !right) {
-        const cornerX = offX + c * cellStepX - borderPx;
-        const cornerY = offY + r * cellStepY - borderPx;
-        segs.push({
-          x: cornerX,
-          y: cornerY,
-          w: borderPx,
-          h: borderPx,
-        });
-      }
-
-      // Up + Right occupied -> patch goes UP-RIGHT
-      if (up && right && !down && !left) {
-        const cornerX = offX + c * cellStepX + cellSize;
-        const cornerY = offY + r * cellStepY - borderPx;
-        segs.push({
-          x: cornerX,
-          y: cornerY,
-          w: borderPx,
-          h: borderPx,
-        });
-      }
-
-      // Down + Left occupied -> patch goes DOWN-LEFT
-      if (down && left && !up && !right) {
-        const cornerX = offX + c * cellStepX - borderPx;
-        const cornerY = offY + r * cellStepY + cellSize;
-        segs.push({
-          x: cornerX,
-          y: cornerY,
-          w: borderPx,
-          h: borderPx,
-        });
-      }
-
-      // Down + Right occupied -> patch goes DOWN-RIGHT
-      if (down && right && !up && !left) {
-        const cornerX = offX + c * cellStepX + cellSize;
-        const cornerY = offY + r * cellStepY + cellSize;
-        segs.push({
-          x: cornerX,
-          y: cornerY,
-          w: borderPx,
-          h: borderPx,
-        });
-      }
-    }
-  }
-  return segs;
-}
+				// Up + Left occupied -> outside patch goes UP-LEFT from that corner
+				if (up && left && !down && !right) {
+					const cornerX = offX + c * cellStepX - borderPx;
+					const cornerY = offY + r * cellStepY - borderPx;
+					segs.push({
+						x: cornerX,
+						y: cornerY,
+						w: borderPx,
+						h: borderPx,
+					});
+				}
+				// Up + Right occupied -> patch goes UP-RIGHT
+				if (up && right && !down && !left) {
+					const cornerX = offX + c * cellStepX + cellSize;
+					const cornerY = offY + r * cellStepY - borderPx;
+					segs.push({
+						x: cornerX,
+						y: cornerY,
+						w: borderPx,
+						h: borderPx,
+					});
+				}
+				// Down + Left occupied -> patch goes DOWN-LEFT
+				if (down && left && !up && !right) {
+					const cornerX = offX + c * cellStepX - borderPx;
+					const cornerY = offY + r * cellStepY + cellSize;
+					segs.push({
+						x: cornerX,
+						y: cornerY,
+						w: borderPx,
+						h: borderPx,
+					});
+				}
+				// Down + Right occupied -> patch goes DOWN-RIGHT
+				if (down && right && !up && !left) {
+					const cornerX = offX + c * cellStepX + cellSize;
+					const cornerY = offY + r * cellStepY + cellSize;
+					segs.push({
+						x: cornerX,
+						y: cornerY,
+						w: borderPx,
+						h: borderPx,
+					});
+				}
+			}
+		}
+		return segs;
+	}
 	function appendOutlineBorderFull(container, shapeCoords) {
 		const segs = buildOutlineSegments(shapeCoords, {
 			cellStepX: CELL + CELL_GAP,
@@ -2801,354 +2934,276 @@ function buildOutlineSegments(coords, {
 			container.appendChild(edgeDiv);
 		}
 	}
-
-	// ------- Drag & Drop -------
-	let ghost            = null;
-	let dragFrom         = null;   // 'grid' or 'offer'
-	let startPos         = null;   // { r, c } where the item started
-	let activePointerId  = null;
-	let draggingItem     = null;   // the shopState.items entry being dragged
-	let draggingSourceEl = null;   // the DOM element we picked up from
-	let lastSnap         = null;   // { r, c, ok:true } of the current preview
-	let previewWrap      = null;   // .placement-preview layer in the grid
-	let grabOffsetX      = 0;
-	let grabOffsetY      = 0;
-
-	let ghostAnimId   = null;
-	let ghostCurrX    = 0;
-	let ghostCurrY    = 0;
-	let ghostTargetX  = 0;
-	let ghostTargetY  = 0;
 	
+	// -------------------- Drag and Drop ----------------------------- //
 	function getShapeExtents(item) {
-	const shape = SHAPES[item.key] || [];
-	let maxDR = 0;
-	let maxDC = 0;
-	for (const [dr, dc] of shape) {
-		if (dr > maxDR) maxDR = dr;
-		if (dc > maxDC) maxDC = dc;
+		const shape = SHAPES[item.key] || [];
+		let maxDR = 0;
+		let maxDC = 0;
+		for (const [dr, dc] of shape) {
+			if (dr > maxDR) maxDR = dr;
+			if (dc > maxDC) maxDC = dc;
+		}
+		return { maxDR, maxDC };
 	}
-	return { maxDR, maxDC };
-}
-function clampPlacementToGrid(item, baseR, baseC) {
-	const { maxDR, maxDC } = getShapeExtents(item);
+	function clampPlacementToGrid(item, baseR, baseC) {
+		const { maxDR, maxDC } = getShapeExtents(item);
 
-	const maxRowStart = GRID_ROWS - 1 - maxDR;
-	const maxColStart = GRID_COLS - 1 - maxDC;
+		const maxRowStart = GRID_ROWS - 1 - maxDR;
+		const maxColStart = GRID_COLS - 1 - maxDC;
 
-	let r = baseR;
-	let c = baseC;
+		let r = baseR;
+		let c = baseC;
 
-	if (r < 0) r = 0;
-	if (c < 0) c = 0;
-	if (r > maxRowStart) r = maxRowStart;
-	if (c > maxColStart) c = maxColStart;
+		if (r < 0) r = 0;
+		if (c < 0) c = 0;
+		if (r > maxRowStart) r = maxRowStart;
+		if (c > maxColStart) c = maxColStart;
+		
+		return { r, c };
+	}
+	function getPreviewTopLeftPixels(r, c) {
+		const gridRect = shopGridEl.getBoundingClientRect();
+		return {
+			left: gridRect.left + c * cellStep,
+			top: gridRect.top  + r * cellStep
+		};
+	}
+	function positionGhostAtPreview(r, c) {
+		if (!ghost) return;
+		const { left, top } = getPreviewTopLeftPixels(r, c);
+		const OFFSET = 2; // tiny nudge so preview peeks out
 
-	return { r, c };
-}
-// Return the pixel top-left where the shape would render if its grid anchor is (r, c)
-function getPreviewTopLeftPixels(r, c) {
-	const gridRect = shopGridEl.getBoundingClientRect();
-	return {
-		left: gridRect.left + c * cellStep,
-		top:  gridRect.top  + r * cellStep
-	};
-}
-function positionGhostAtPreview(r, c) {
-	if (!ghost) return;
-	const { left, top } = getPreviewTopLeftPixels(r, c);
-	const OFFSET = 4; // tiny nudge so preview peeks out
-
-	ghostTargetX = left + OFFSET;
-	ghostTargetY = top  + OFFSET;
-}
-
-function positionGhostCenteredOnPointer(pointerX, pointerY) {
-	if (!ghost) return;
-	ghostTargetX = pointerX - grabOffsetX;
-	ghostTargetY = pointerY - grabOffsetY;
-}
-function isInside(el, x, y) {
-	const r = el.getBoundingClientRect();
-	return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
-}
-
+		ghostTargetX = left + OFFSET;
+		ghostTargetY = top  + OFFSET;
+	}
+	function positionGhostCenteredOnPointer(pointerX, pointerY) {
+		if (!ghost) return;
+		ghostTargetX = pointerX - grabOffsetX;
+		ghostTargetY = pointerY - grabOffsetY;
+	}
+	function isInside(el, x, y) {
+		const r = el.getBoundingClientRect();
+		return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+	}
 	function countPlaced(){
 		return shopState.items.filter(it => it.r!=null && it.c!=null).length;
 	}
 	function startGhostAnim() {
-	// avoid multiple loops if already running
-	if (ghostAnimId != null) return;
+		// avoid multiple loops if already running
+		if (ghostAnimId != null) return;
 
-	function step() {
-		// simple easing toward target
-		const SMOOTH = 0.25; // smaller = slower, larger = snappier
-		ghostCurrX += (ghostTargetX - ghostCurrX) * SMOOTH;
-		ghostCurrY += (ghostTargetY - ghostCurrY) * SMOOTH;
+		function step() {
+			const SMOOTH = 0.25; // smaller = slower, larger = snappier
+			ghostCurrX += (ghostTargetX - ghostCurrX) * SMOOTH;
+			ghostCurrY += (ghostTargetY - ghostCurrY) * SMOOTH;
 
-		if (ghost) {
-			ghost.style.left = ghostCurrX + 'px';
-			ghost.style.top  = ghostCurrY + 'px';
+			if (ghost) {
+				ghost.style.left = ghostCurrX + 'px';
+				ghost.style.top  = ghostCurrY + 'px';
+			}
+			ghostAnimId = requestAnimationFrame(step);
 		}
-
 		ghostAnimId = requestAnimationFrame(step);
 	}
-
-	ghostAnimId = requestAnimationFrame(step);
-}
-
-function stopGhostAnim() {
-	if (ghostAnimId != null) {
-		cancelAnimationFrame(ghostAnimId);
-		ghostAnimId = null;
-	}
-}
-
-	function onDragStart(e, item, from, sourceEl) {
-	if (draggingItem) return;
-	e.preventDefault();
-
-	activePointerId  = e.pointerId ?? null;
-	draggingItem     = item;
-	dragFrom         = from;
-	draggingSourceEl = sourceEl || null;
-	startPos         = { r: item.r, c: item.c };
-
-	// --- NEW: compute mergeHighlightSet ---
-	mergeHighlightSet.clear();
-	for (const other of shopState.items) {
-		if (other === item) continue;
-		if (canMergeItems(item, other)) {
-			mergeHighlightSet.add(other.id);
+	function stopGhostAnim() {
+		if (ghostAnimId != null) {
+			cancelAnimationFrame(ghostAnimId);
+			ghostAnimId = null;
 		}
 	}
-	// Make sure renderPlaced() / renderOffer() have already drawn DOM for chips/placed with data-id
-	applyMergeHighlights();
+	function onDragStart(e, item, from, sourceEl) {
+		if (draggingItem) return;
+		e.preventDefault();
 
-	// create floating ghost
-	ghost = createGhostFromItem(item);
-	ghost.style.transform = 'none';
-	
-	if (draggingSourceEl) {
-		draggingSourceEl.classList.add('drag-hidden');
+		activePointerId  = e.pointerId ?? null;
+		draggingItem     = item;
+		dragFrom         = from;
+		draggingSourceEl = sourceEl || null;
+		startPos         = { r: item.r, c: item.c };
+		
+		mergeHighlightSet.clear();
+		for (const other of shopState.items) {
+			if (other === item) continue;
+			if (canMergeItems(item, other)) {
+				mergeHighlightSet.add(other.id);
+			}
+		}
+		
+		applyMergeHighlights();
+		ghost = createGhostFromItem(item);
+		ghost.style.transform = 'none';
+
+		if (draggingSourceEl) {
+			draggingSourceEl.classList.add('drag-hidden');
+		}
+		
+		const gRect = ghost.getBoundingClientRect();
+		grabOffsetX = gRect.width  / 2;
+		grabOffsetY = gRect.height / 2;
+		
+		if (e.target.setPointerCapture && activePointerId != null) {
+			try { e.target.setPointerCapture(activePointerId); } catch (_) {}
+		}
+		
+		window.addEventListener('pointermove', onDragMove, { passive: false });
+		window.addEventListener('pointerup',   onDragEnd,  { passive: false, once: true });
+		
+		if (item.r != null && item.c != null) {
+			lastSnap = { r: item.r, c: item.c, ok: true };
+			showPlacementPreview(item.r, item.c, item, true);
+			positionGhostAtPreview(item.r, item.c); // sets ghostTargetX/Y
+		}
+		else {
+			lastSnap = null;
+			hidePlacementPreview();
+			positionGhostCenteredOnPointer(e.clientX, e.clientY); // sets ghostTargetX/Y
+		}
+
+		ghostCurrX = ghostTargetX;
+		ghostCurrY = ghostTargetY;
+		startGhostAnim();
 	}
+	function onDragMove(e) {
+		if (activePointerId != null && e.pointerId !== activePointerId) return;
+		e.preventDefault();
+		if (!draggingItem) return;
 
-	// measure ghost for off-grid pointer centering
-	const gRect = ghost.getBoundingClientRect();
-	grabOffsetX = gRect.width  / 2;
-	grabOffsetY = gRect.height / 2;
+		const overGrid = isInside(shopGridEl, e.clientX, e.clientY);
 
-	// lock pointer (mobile)
-	if (e.target.setPointerCapture && activePointerId != null) {
-		try { e.target.setPointerCapture(activePointerId); } catch (_) {}
+		if (!overGrid) {
+			lastSnap = null;
+			hidePlacementPreview();
+			positionGhostCenteredOnPointer(e.clientX, e.clientY);
+			return;
+		}
+		
+		const snap = snapToGrid(e.clientX, e.clientY);
+		const { r: clampedR, c: clampedC } = clampPlacementToGrid(draggingItem, snap.r, snap.c);
+		lastSnap = { r: clampedR, c: clampedC, ok: true };
+		showPlacementPreview(clampedR, clampedC, draggingItem, true);
+		
+		positionGhostAtPreview(clampedR, clampedC);
 	}
-
-	window.addEventListener('pointermove', onDragMove, { passive: false });
-	window.addEventListener('pointerup',   onDragEnd,  { passive: false, once: true });
-
-	// immediate preview at original grid pos (if placed)
-	if (item.r != null && item.c != null) {
-		lastSnap = { r: item.r, c: item.c, ok: true };
-		showPlacementPreview(item.r, item.c, item, true);
-		positionGhostAtPreview(item.r, item.c); // sets ghostTargetX/Y
-	} else {
-		lastSnap = null;
-		hidePlacementPreview();
-		positionGhostCenteredOnPointer(e.clientX, e.clientY); // sets ghostTargetX/Y
-	}
-
-	ghostCurrX = ghostTargetX;
-	ghostCurrY = ghostTargetY;
-	startGhostAnim(); // smoothing loop
-}
-function onDragMove(e) {
-	if (activePointerId != null && e.pointerId !== activePointerId) return;
-	e.preventDefault();
-	if (!draggingItem) return;
-
-	const overGrid = isInside(shopGridEl, e.clientX, e.clientY);
-
-	if (!overGrid) {
-		// cursor/finger has left the grid: no preview, just follow pointer
-		lastSnap = null;
-		hidePlacementPreview();
-
-		positionGhostCenteredOnPointer(e.clientX, e.clientY);
-		return;
-	}
-
-	// still inside grid:
-	const snap = snapToGrid(e.clientX, e.clientY);
-
-	// clamp so shape won't overflow the grid even near edges
-	const { r: clampedR, c: clampedC } = clampPlacementToGrid(draggingItem, snap.r, snap.c);
-
-	lastSnap = { r: clampedR, c: clampedC, ok: true };
-
-	showPlacementPreview(clampedR, clampedC, draggingItem, true);
-
-	// instead of teleporting ghost,
-	// just update the target to sit just offset from preview:
-	positionGhostAtPreview(clampedR, clampedC);
-}
-	function positionGhost(pointerX, pointerY) {
-	if (!ghost) return;
-	ghost.style.left = (pointerX - grabOffsetX) + 'px';
-	ghost.style.top  = (pointerY - grabOffsetY) + 'px';
-}
 	function isInside(el, x, y){
 		const r=el.getBoundingClientRect();
 		return x>=r.left && x<=r.right && y>=r.top && y<=r.bottom;
 	}
 	function snapToGrid(clientX, clientY) {
-	const r = shopGridEl.getBoundingClientRect();
-	const gx = clientX - r.left;
-	const gy = clientY - r.top;
-	const c  = Math.floor(gx / cellStep);
-	const rr = Math.floor(gy / cellStep);
-	return { r: rr, c };
-}
+		const r = shopGridEl.getBoundingClientRect();
+		const gx = clientX - r.left;
+		const gy = clientY - r.top;
+		const c  = Math.floor(gx / cellStep);
+		const rr = Math.floor(gy / cellStep);
+		return { r: rr, c };
+	}
 	function onDragEnd(e) {
-	if (activePointerId != null && e.pointerId !== activePointerId) return;
-	e.preventDefault();
+		if (activePointerId != null && e.pointerId !== activePointerId) return;
+		e.preventDefault();
+		
+		window.removeEventListener('pointermove', onDragMove);
+		
+		// release pointer capture
+		if (e.target.releasePointerCapture && activePointerId != null) {
+			try { e.target.releasePointerCapture(activePointerId); } catch (_) {}
+		}
+		
+		activePointerId = null;
+		stopGhostAnim();
+		
+		if (draggingSourceEl) {
+			draggingSourceEl.classList.remove('drag-hidden');
+		}
+		
+		if (ghost) {
+			ghost.remove();
+			ghost = null;
+		}
+		
+		hidePlacementPreview();
+		
+		const item = draggingItem;
+		draggingItem = null;
+		shopState.dragging = null;
+		
+		clearMergeHighlights();
 
-	window.removeEventListener('pointermove', onDragMove);
-
-	// release pointer capture
-	if (e.target.releasePointerCapture && activePointerId != null) {
-		try { e.target.releasePointerCapture(activePointerId); } catch (_) {}
+		if (lastSnap && lastSnap.ok) {
+			const newR = lastSnap.r;
+			const newC = lastSnap.c;
+			resolveDropOnGrid(item, newR, newC);
+		}
+		else {
+			resolveDropInOffer(e, item);
+		}
+		
+		lastSnap = null;
+		renderPlaced();
+		renderOffer();
 	}
-	activePointerId = null;
-
-	// stop ghost animation
-	stopGhostAnim();
-
-	// unhide original element
-	if (draggingSourceEl) {
-		draggingSourceEl.classList.remove('drag-hidden');
+	function applyTierColor(it) {
+		const grad = TIER_COLORS[Math.min(it.tier,4)] || TIER_COLORS[1];
+		it.color = grad;
 	}
-
-	// remove ghost DOM
-	if (ghost) {
-		ghost.remove();
-		ghost = null;
+	function getShapeCellsAt(item, baseR, baseC) {
+		const shape = SHAPES[item.key] || [];
+		const out = [];
+		for (const [dr, dc] of shape) {
+			out.push([baseR + dr, baseC + dc]);
+		}
+		return out;
 	}
-
-	// clear preview highlight
-	hidePlacementPreview();
-
-	const item = draggingItem;
-	draggingItem = null;
-	shopState.dragging = null;
-
-	// Clear glow on potential merge targets
-	clearMergeHighlights();
-
-	if (lastSnap && lastSnap.ok) {
-		// We had a valid (clamped) grid preview → drop on grid
-		const newR = lastSnap.r;
-		const newC = lastSnap.c;
-		resolveDropOnGrid(item, newR, newC);
-
-	} else {
-		// no valid grid preview → treat as drop in offer area (including offer merge)
-		resolveDropInOffer(e, item);
+	function getCurrentCells(item) {
+		if (item.r == null || item.c == null) return [];
+		return getShapeCellsAt(item, item.r, item.c);
 	}
-
-	lastSnap = null;
-
-	// re-render UI (which will also reapply glow if still dragging, but we aren't dragging now)
-	renderPlaced();
-	renderOffer();
-}
-
-// Update an item's color after tier change
-function applyTierColor(it) {
-	const grad = TIER_COLORS[Math.min(it.tier,4)] || TIER_COLORS[1];
-	it.color = grad;
-}
-
-// Return array of all grid cells [rr,cc] that an item would occupy if anchored at (baseR, baseC).
-function getShapeCellsAt(item, baseR, baseC) {
-	const shape = SHAPES[item.key] || [];
-	const out = [];
-	for (const [dr, dc] of shape) {
-		out.push([baseR + dr, baseC + dc]);
-	}
-	return out;
-}
-
-// Return array of all grid cells [rr,cc] that a placed item currently occupies.
-function getCurrentCells(item) {
-	if (item.r == null || item.c == null) return [];
-	return getShapeCellsAt(item, item.r, item.c);
-}
-
-// Find which placed items in the grid overlap the given item if
-// it were placed at (placeR, placeC). (Does NOT include the item itself.)
-function overlappingItemsAt(item, placeR, placeC) {
-	const hits = new Set();
-	const newCells = getShapeCellsAt(item, placeR, placeC)
+	function overlappingItemsAt(item, placeR, placeC) {
+		const hits = new Set();
+		const newCells = getShapeCellsAt(item, placeR, placeC)
 		.map(([rr,cc]) => rr + ',' + cc);
-
-	for (const other of shopState.items) {
-		if (other === item) continue;
-		if (other.r == null || other.c == null) continue; // only placed
-		const ocells = getCurrentCells(other);
-		for (const [orow, ocol] of ocells) {
-			if (newCells.includes(orow + ',' + ocol)) {
-				hits.add(other);
-				break;
+		
+		for (const other of shopState.items) {
+			if (other === item) continue;
+			if (other.r == null || other.c == null) continue; // only placed
+			const ocells = getCurrentCells(other);
+			for (const [orow, ocol] of ocells) {
+				if (newCells.includes(orow + ',' + ocol)) {
+					hits.add(other);
+					break;
+				}
 			}
 		}
+		return [...hits];
 	}
-	return [...hits];
-}
-
-
-function canMergeItems(a, b) {
-	if (!a || !b) return false;
-	if (a.key !== b.key) return false;
-	if (a.tier !== b.tier) return false;
-	if (a.tier >= 4) return false;
-	return true;
-}
-
-// Execute a merge: keep target, consume source.
-// target.tier += 1 (capped 4), target color updates.
-// source is removed from shopState.items entirely.
-function mergeIntoTarget(target, source) {
-	target.tier = Math.min(4, target.tier + 1);
-	applyTierColor(target);
-
-	// remove 'source' from the array
-	shopState.items = shopState.items.filter(it => it !== source);
-}
-
-// Highlight: add glow to all ".gun-placed" and ".gun-chip" that match ids in mergeHighlightSet.
-function applyMergeHighlights() {
-	// Clear any old glow first
-	document.querySelectorAll('.merge-glow').forEach(el => {
-		el.classList.remove('merge-glow');
-	});
-	// Add new glow on targets
-	for (const id of mergeHighlightSet) {
-		const placed = shopGridEl.querySelector(`.gun-placed[data-id="${id}"]`);
-		if (placed) placed.classList.add('merge-glow');
-		const chip = shopOfferEl.querySelector(`.gun-chip[data-id="${id}"]`);
-		if (chip) chip.classList.add('merge-glow');
+	// -------------- Merge -------------- //
+	function canMergeItems(a, b) {
+		if (!a || !b) return false;
+		if (a.key !== b.key) return false;
+		if (a.tier !== b.tier) return false;
+		if (a.tier >= 4) return false;
+		return true;
 	}
-}
-
-// Remove all glow
-function clearMergeHighlights() {
-	document.querySelectorAll('.merge-glow').forEach(el => {
-		el.classList.remove('merge-glow');
-	});
-	mergeHighlightSet.clear();
-}
-
-
+	function mergeIntoTarget(target, source) {
+		target.tier = Math.min(4, target.tier + 1);
+		applyTierColor(target);
+		
+		shopState.items = shopState.items.filter(it => it !== source);
+	}
+	// -------------- Glow Animation -------------- //
+	function applyMergeHighlights() {
+		document.querySelectorAll('.merge-glow').forEach(el => {el.classList.remove('merge-glow');});
+		
+		for (const id of mergeHighlightSet) {
+			const placed = shopGridEl.querySelector(`.gun-placed[data-id="${id}"]`);
+			if (placed) placed.classList.add('merge-glow');
+			const chip = shopOfferEl.querySelector(`.gun-chip[data-id="${id}"]`);
+			if (chip) chip.classList.add('merge-glow');
+		}
+	}
+	function clearMergeHighlights() {
+		document.querySelectorAll('.merge-glow').forEach(el => {el.classList.remove('merge-glow');});
+		mergeHighlightSet.clear();
+	}
 	function createGhostFromItem(item) {
 		const g = document.createElement('div');
 		g.className = 'drag-ghost';
@@ -3226,121 +3281,8 @@ function clearMergeHighlights() {
 			previewWrap.style.display = 'none';
 		}
 	}
-
-
-  function placePackedToTopLeft(){
-    // simple packing used when there is no saved layout
-    let r=0, c=0;
-    for (const it of shopState.items){
-      if (it.r==null && it.c==null) continue; // skip offer
-      // ensure inside
-      for (let rr=0; rr<GRID_ROWS; rr++){
-        for (let cc=0; cc<GRID_COLS; cc++){
-          if (canPlace(it, rr, cc)){ it.r=rr; it.c=cc; rr=GRID_ROWS; break; }
-        }
-      }
-    }
-  }
-
-  
-  
-function openShopOverlay(nextWave, nextCount, initial=false) {
-  const state = window.__gameState;
-  const currentWave = window.__gameState.wave;
-  if (!state) {
-    // Queue until game state exists
-    window.__pendingShopCalls = window.__pendingShopCalls || [];
-    window.__pendingShopCalls.push([nextWave, nextCount, initial]);
-    if (!window.__shopWaiter2) {
-      window.__shopWaiter2 = true;
-      const wait = () => {
-        if (window.__gameState && typeof window.openShopOverlay === 'function') {
-          const q = window.__pendingShopCalls.splice(0);
-          for (const a of q) window.openShopOverlay.apply(null, a);
-        } else {
-          requestAnimationFrame(wait);
-        }
-      };
-      requestAnimationFrame(wait);
-    }
-    return;
-  }
-
-  shopState.pending = { n: nextWave, count: nextCount };
-  // Freeze game while shopping
-  state.paused = true;
-  try { fadeAudio(bgm, 0, 200); } catch(_){}
-  
-if (initial) {
-  shopState.items = [];
-
-  // guaranteed starter gun in grid at (0,0) = tier 1 SMG
-  const starter = {
-    id: 'itm_starter',
-    key: 'submachinegun',
-    tier: 1,
-    color: TIER_COLORS[1],
-    r: 0,
-    c: 0
-  };
-  shopState.items.push(starter);
-
-  // plus starting offers
-  for (let i = 0; i < numShopItem; i++) {
-    shopState.items.push(makeShopItem());
-  }
-}
-else {
-  // (existing logic for keeping placed guns, topping up offers…)
-  const inOffer = shopState.items.filter(it => it.r == null && it.c == null).length;
-  for (let i = inOffer; i < numShopItem; i++) {
-    shopState.items.push(makeShopItem());
-  }
-}
-  renderPlaced();
-  renderOffer();
-  shopOverlay.classList.remove('hidden');
-}
-function closeShopOverlayAndStart() {
-	const state = window.__gameState;
-	if (!state) return;
-
-	// Collect guns that are placed on shop grid
-	const placed = shopState.items.filter(it => it.r != null && it.c != null);
-	if (placed.length < 1) {return;}
 	
-	// Convert placed guns into in game
-	state.weapons = placed.map(it => {return makeWeaponInstance(it.key, it.tier);});
-	state.inventory = new Array(16).fill(null);
-	for (let i = 0; i < placed.length && i < 16; i++) {
-		state.inventory[i] = {
-			name: placed[i].key,
-			tier: placed[i].tier
-		};
-	}
-	renderInventory();
-	
-	const shopOverlayEl = document.getElementById('shopOverlay');
-	if (shopOverlayEl) {shopOverlayEl.classList.add('hidden');}
-	
-	const nextWaveNum   = (shopState.pending && shopState.pending.n) || (state.wave + 1);
-	const nextWaveCount = (shopState.pending && shopState.pending.count) || 1;
-	startWave(nextWaveNum, nextWaveCount);
-	
-	//close shop
-	const traitsStillPending =(state.traitOverlayOpen === true) || ((state.traitQueue || 0) > 0);
-	if (traitsStillPending) {
-		state.paused = true;
-	}
-	else {
-		state.paused = false;
-		window.fadeAudio(bgm, 0.35, 200);
-	}
-}
-
-	function allGunKeys() {
-		return Object.keys(window.GUNS);
-	}
+	// --------------------- Shop Offer --------------------- //
 	function pickTierForShop() {
 		const bag = [];
 		for (const tierStr in SHOP_TIER_CHANCE) {
@@ -3365,9 +3307,8 @@ function closeShopOverlayAndStart() {
 		}
 		return 1;
 	}
-
 	function makeShopItem() {
-		const gunKeys = allGunKeys();
+		const gunKeys = Object.keys(window.GUNS);
 		const key = gunKeys[(Math.random()*gunKeys.length)|0];
 		const tier = pickTierForShop();
 		const colorPair = TIER_COLORS[tier] || TIER_COLORS[1];
@@ -3383,21 +3324,111 @@ function closeShopOverlayAndStart() {
 	}
 	
 	
+	// -------------------------- Open / Close Shop -------------------------- //
+	function openShopOverlay(nextWave, nextCount, initial=false) {
+		const state = window.__gameState;
+		const currentWave = window.__gameState.wave;
+		if (!state) {
+			// Queue until game state exists
+			window.__pendingShopCalls = window.__pendingShopCalls || [];
+			window.__pendingShopCalls.push([nextWave, nextCount, initial]);
+			if (!window.__shopWaiter2) {
+				window.__shopWaiter2 = true;
+				const wait = () => {
+					if (window.__gameState && typeof window.openShopOverlay === 'function') {
+						const q = window.__pendingShopCalls.splice(0);
+						for (const a of q) window.openShopOverlay.apply(null, a);
+					}
+					else {
+						requestAnimationFrame(wait);
+					}
+				};
+				requestAnimationFrame(wait);
+			}
+			return;
+		}
+		
+		shopState.pending = { n: nextWave, count: nextCount };
+		// Freeze game while shopping
+		state.paused = true;
+		try { fadeAudio(bgm, 0, 200); } catch(_){}
+
+		if (initial) {
+			shopState.items = [];
+
+			// guaranteed starter gun in grid at (0,0) = tier 1 SMG
+			const starter = {
+				id: 'itm_starter',
+				key: 'submachinegun',
+				tier: 1,
+				color: TIER_COLORS[1],
+				r: 0,
+				c: 0
+			};
+			shopState.items.push(starter);
+
+			// plus starting offers
+			for (let i = 0; i < numShopItem; i++) {
+				shopState.items.push(makeShopItem());
+			}
+		}
+		else {
+			const inOffer = shopState.items.filter(it => it.r == null && it.c == null).length;
+			for (let i = inOffer; i < numShopItem; i++) {
+				shopState.items.push(makeShopItem());
+			}
+		}
+		renderPlaced();
+		renderOffer();
+		shopOverlay.classList.remove('hidden');
+	}
+	function closeShopOverlayAndStart() {
+		const state = window.__gameState;
+		if (!state) return;
+
+		// Collect guns that are placed on shop grid
+		const placed = shopState.items.filter(it => it.r != null && it.c != null);
+		if (placed.length < 1) {return;}
+
+		// Convert placed guns into in game
+		state.weapons = placed.map(it => {return makeWeaponInstance(it.key, it.tier);});
+		state.inventory = new Array(16).fill(null);
+		for (let i = 0; i < placed.length && i < 16; i++) {
+			state.inventory[i] = {
+				name: placed[i].key,
+				tier: placed[i].tier
+			};
+		}
+		renderInventory();
+
+		const shopOverlayEl = document.getElementById('shopOverlay');
+		if (shopOverlayEl) {shopOverlayEl.classList.add('hidden');}
+
+		const nextWaveNum   = (shopState.pending && shopState.pending.n) || (state.wave + 1);
+		const nextWaveCount = (shopState.pending && shopState.pending.count) || 1;
+		startWave(nextWaveNum, nextWaveCount);
+
+		//close shop
+		const traitsStillPending =(state.traitOverlayOpen === true) || ((state.traitQueue || 0) > 0);
+		if (traitsStillPending) {
+			state.paused = true;
+		}
+		else {
+			state.paused = false;
+			window.fadeAudio(bgm, 0.35, 200);
+		}
+	}
+	
 	//Button
 	shopStartBtn?.addEventListener('click', closeShopOverlayAndStart);
 	
-	//Make openshop into global
+	
+	
 	window.openShopOverlay = openShopOverlay;
-	if (Array.isArray(window.__pendingShopCalls)) { 
+	if (Array.isArray(window.__pendingShopCalls)) {
 		const q = window.__pendingShopCalls.splice(0);
 		for (const a of q) openShopOverlay.apply(null, a);
 	}
-	try{
-		if (typeof openShopOverlay==='undefined' && typeof window!=='undefined' && window.openShopOverlay) { 
-			var openShopOverlay = window.openShopOverlay;
-		}
-	}
-	catch(e){}
 	
 	//Open Shop on start / restart
 	let openedOnce = false;
