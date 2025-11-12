@@ -842,8 +842,8 @@
 			</div>
 		<div id="coinNum"  class="num sm right">0</div>
 		<div id="scoreNum" class="num sm right">0</div>
-		<button id="speedBtn" class="hud-btn" data-sfx="src/sfx/button_press_default.mp3">1x</button>
-		<button id="pauseBtn" class="hud-btn" data-sfx="src/sfx/button_battle_pause.mp3"></button>
+		<button id="speedBtn" class="hud-btn" data-sfx="src/sfx/buttons/sfx_btn_default.mp3">1x</button>
+		<button id="pauseBtn" class="hud-btn" data-sfx="src/sfx/buttons/sfx_btn_pause.mp3"></button>
 	</div>
 
 	<!-- =============== Battlefield =============== -->
@@ -999,7 +999,7 @@
 	const CRIT_RATE = 0.15;
 	const CRIT_MULT = 1.5;
 	const BULLET_RADIUS_SIZE = 8;
-	const BULLET_SPEED = 250;
+	const BULLET_SPEED = 350;
 	const GUN_MULTITARGET_PROBILITY = 0.6; //chance of focusing on nearest, ++ to allow more multi-targetting
 	const GUNS = {
 		"submachinegun":
@@ -1012,7 +1012,6 @@
 				timeBetweenBullets:0.20,
 				damage:30,
 				postUseCooldown: 5.0/2.5,
-				bulletSpeed:BULLET_SPEED,
 				ability: ""
 			},
 			2: {
@@ -1023,7 +1022,6 @@
 				timeBetweenBullets:0.18,
 				damage:40,
 				postUseCooldown: 2,
-				bulletSpeed:BULLET_SPEED,
 				ability: ""
 			},
 			3: {
@@ -1033,7 +1031,6 @@
 				bulletsPerUse:6,
 				timeBetweenBullets:0.18,
 				damage:60, postUseCooldown: 2,
-				bulletSpeed:BULLET_SPEED,
 				ability: "submachinegun_T3_GuaranteedCritAfter5"
 			},
 			4: {
@@ -1044,7 +1041,6 @@
 				timeBetweenBullets:0.16,
 				damage:80,
 				postUseCooldown: 2,
-				bulletSpeed:BULLET_SPEED,
 				ability: "submachinegun_T3_GuaranteedCritAfter5"
 			}
 		},
@@ -1054,44 +1050,40 @@
 				name:"pistol",
 				tags:"normal",
 				range:400,
-				bulletsPerUse:3,
+				bulletsPerUse:2,
 				timeBetweenBullets:0.20,
 				damage:30,
-				postUseCooldown: 1,
-				bulletSpeed:BULLET_SPEED,
+				postUseCooldown: 3,
 				ability: ""
 			},
 			2: {
 				name:"pistol",
 				tags:"normal",
 				range:400,
-				bulletsPerUse:3,
+				bulletsPerUse:2,
 				timeBetweenBullets:0.20,
 				damage:40,
-				postUseCooldown: 1,
-				bulletSpeed:BULLET_SPEED,
+				postUseCooldown: 3,
 				ability: ""
 			},
 			3: {
 				name:"pistol",
 				tags:"normal",
 				range:400,
-				bulletsPerUse:3,
+				bulletsPerUse:2,
 				timeBetweenBullets:0.20,
 				damage:60, 
-				postUseCooldown: 1,
-				bulletSpeed:BULLET_SPEED,
+				postUseCooldown: 3,
 				ability: ""
 			},
 			4: {
 				name:"pistol",
 				tags:"normal",
 				range:400,
-				bulletsPerUse:3,
+				bulletsPerUse:2,
 				timeBetweenBullets:0.20,
 				damage:80,
-				postUseCooldown: 1,
-				bulletSpeed:BULLET_SPEED,
+				postUseCooldown: 3,
 				ability: ""
 			}
 		},
@@ -1105,7 +1097,6 @@
 				timeBetweenBullets:0,
 				damage:130,
 				postUseCooldown: 9,
-				bulletSpeed:BULLET_SPEED,
 				ability: ""
 			},
 			2: {
@@ -1116,7 +1107,6 @@
 				timeBetweenBullets:0,
 				damage:140,
 				postUseCooldown: 9,
-				bulletSpeed:BULLET_SPEED,
 				ability: ""
 			},
 			3: {
@@ -1127,7 +1117,6 @@
 				timeBetweenBullets:0,
 				damage:160,
 				postUseCooldown: 9,
-				bulletSpeed:BULLET_SPEED,
 				ability: ""
 			},
 			4: {
@@ -1138,53 +1127,48 @@
 				timeBetweenBullets:0,
 				damage:180,
 				postUseCooldown: 9,
-				bulletSpeed:BULLET_SPEED,
 				ability: ""
 			}
 		},
-		"assultriffle":
+		"assaultriffle":
 		{
 			1:{ 
-				name:"assultriffle",
+				name:"assaultriffle",
 				tags:"normal",
 				range:460,
 				bulletsPerUse:4,
 				timeBetweenBullets:0.20,
 				damage:30,
 				postUseCooldown: 5.0/2.5,
-				bulletSpeed:BULLET_SPEED,
 				ability: ""
 			},
 			2: {
-				name:"assultriffle",
+				name:"assaultriffle",
 				tags:"normal",
 				range:460,
 				bulletsPerUse:4,
 				timeBetweenBullets:0.18,
 				damage:40,
 				postUseCooldown: 2,
-				bulletSpeed:BULLET_SPEED,
 				ability: ""
 			},
 			3: {
-				name:"assultriffle",
+				name:"assaultriffle",
 				tags:"normal",
 				range:460,
 				bulletsPerUse:6,
 				timeBetweenBullets:0.18,
 				damage:60, postUseCooldown: 2,
-				bulletSpeed:BULLET_SPEED,
 				ability: ""
 			},
 			4: {
-				name:"assultriffle",
+				name:"assaultriffle",
 				tags:"normal",
 				range:480,
 				bulletsPerUse:6,
 				timeBetweenBullets:0.16,
 				damage:80,
 				postUseCooldown: 2,
-				bulletSpeed:BULLET_SPEED,
 				ability: ""
 			}
 		},
@@ -1198,7 +1182,6 @@
 				timeBetweenBullets:0.20,
 				damage:30,
 				postUseCooldown: 5.0/2.5,
-				bulletSpeed:BULLET_SPEED,
 				ability: ""
 			},
 			2: {
@@ -1209,7 +1192,6 @@
 				timeBetweenBullets:0.18,
 				damage:40,
 				postUseCooldown: 2,
-				bulletSpeed:BULLET_SPEED,
 				ability: ""
 			},
 			3: {
@@ -1219,7 +1201,6 @@
 				bulletsPerUse:6,
 				timeBetweenBullets:0.18,
 				damage:60, postUseCooldown: 2,
-				bulletSpeed:BULLET_SPEED,
 				ability: ""
 			},
 			4: {
@@ -1230,7 +1211,6 @@
 				timeBetweenBullets:0.16,
 				damage:80,
 				postUseCooldown: 2,
-				bulletSpeed:BULLET_SPEED,
 				ability: ""
 			}
 		}
@@ -1382,7 +1362,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	const bgm = new Audio('src/sfx/bgm_battlefield_loop.mp3');
 	bgm.loop = true;
 	bgm.preload = 'auto';
-	bgm.volume = 0.3;
+	bgm.volume = 0.4;
 	window.bgm = bgm;
 	
 	window.addEventListener('pointerdown', function unlock(){
@@ -1400,7 +1380,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	}, { once: true });
 	
 	//play audio (stackable)
-	function makeSfx(path, { volume = 0.6, pool = 3 } = {}) {
+	function makeSfx(path, { volume = 0.8, pool = 3 } = {}) {
 		const poolArr = Array.from({ length: pool }, () => {
 			const a = new Audio(path);
 			a.preload = 'auto';
@@ -1415,41 +1395,34 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			a.play().catch(() => {}); // ignore autoplay guards
 		};
 	}
-	
-	//play audio (unstackable)
-	function makeSfxMonophonic(path, { volume = 0.6 } = {}) {
-		const a = new Audio(path);
-		a.preload = 'auto';
-		a.volume = volume;
+	//play audio (non-stackable same audio)
+	function makeSfxNoOverlapWithin(path, { volume = 0.6, pool = 4, minGapMs = 1000 } = {}) {
+		const poolArr = Array.from({ length: pool }, () => {
+			const a = new Audio(path);
+			a.preload = 'auto';
+			a.volume = volume;
+			return a;
+		});
+		let i = 0;
+		let lastPlay = 0;
 
-		let playing = false;
-
-		// Always clear 'playing' on pause/ended/error (overlay/tabs often cause 'pause')
-		a.addEventListener('ended', () => { playing = false; });
-		a.addEventListener('pause',  () => { playing = false; });
-		a.addEventListener('error',  () => { playing = false; });
-
-		// iOS/Safari unlock for this element
 		const unlockOnce = () => {
-			a.play().then(() => a.pause()).catch(() => {});
+			poolArr[0].play().then(() => poolArr[0].pause()).catch(() => {});
 			window.removeEventListener('pointerdown', unlockOnce);
 		};
 		window.addEventListener('pointerdown', unlockOnce, { once: true });
 
-		function playNow() {
-			try { a.currentTime = 0; } catch (_) {}
-			playing = true;
-			a.play().catch(() => { playing = false; });
-		}
-		
 		return function play() {
-			// If overlay/tab paused the element, clear stale state
-			if (playing && (a.paused || a.ended)) playing = false;
-			if (playing) return;
-			playNow();
+			const now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+			if (now - lastPlay < minGapMs) return;
+			lastPlay = now;
+
+			const a = poolArr[i];
+			i = (i + 1) % poolArr.length;
+			try { a.currentTime = 0; } catch (_) {}
+			a.play().catch(() => {});
 		};
 	}
-	
 	//Pause Audio
 	function fadeAudio(a, to, ms = 200) {
 		const from=a.volume, steps=Math.max(1,Math.floor(ms/16)); let i=0;
@@ -1458,21 +1431,22 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		if(i>=steps){ clearInterval(id); if(to===0) a.pause(); }},16);
 	}
 	
+	//sfx
+	const SFX_ERROR = makeSfx('src/sfx/sfx_error.mp3', { volume: 0.8, pool: 8 });
+	const SFX_MOB_DEATH = makeSfx('src/sfx/sfx_mob_death.mp3', { volume: 0.8, pool: 8 });
+	
 	//sfx upon click on div
 	document.querySelectorAll('[data-sfx]').forEach(el => {
-		const play = makeSfx(el.dataset.sfx, { volume: 0.6, pool: 4 });
+		const play = makeSfx(el.dataset.sfx, { volume: 0.8, pool: 4 });
 		el.addEventListener('pointerdown', play);
 	});
-	
-	//mob death sfx
-	const SFX_MOB_DEATH = makeSfx('src/sfx/mob_death.mp3', { volume: 0.5, pool: 8 });
 	
 	//fire gun sfx
 	const SFX_GUN_FIRE_CACHE = new Map();
 	function playGunFire(name){
 		const slug = String(name);
 		if (!SFX_GUN_FIRE_CACHE.has(slug)) {
-			SFX_GUN_FIRE_CACHE.set(slug, makeSfxMonophonic(`src/sfx/gun_${slug}_fire.mp3`, { volume: 0.5, pool: 6 }));
+			SFX_GUN_FIRE_CACHE.set(slug, makeSfxNoOverlapWithin(`src/sfx/gun_shot/fire_gun_${slug}.mp3`, { volume: 0.8, pool: 6, minGapMs: 500 }));
 		}
 		try { SFX_GUN_FIRE_CACHE.get(slug)(); } catch (e) {}
 	}
@@ -1810,7 +1784,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 					state.bullets.push(new Bullet(
 						p.x, p.y - p.size*0.6,
 						w.dirX, w.dirY,
-						w.stats.bulletSpeed, dmg, isCrit
+						BULLET_SPEED, dmg, isCrit
 					));
 					w.burstLeft--;
 					w.timer += w.stats.timeBetweenBullets;
@@ -2094,7 +2068,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			pauseOverlay.classList.remove('hidden');
 		}
 		else {
-			fadeAudio(bgm, 0.35,200);
+			fadeAudio(bgm, 0.4,200);
 			pauseOverlay.classList.add('hidden');
 		}
 	}
@@ -2114,6 +2088,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		state.traitOverlayOpen = true;
 		state.paused = true;
 		fadeAudio(bgm, 0, 200);
+		makeSfx('src/sfx/overlay_appear_trait.mp3', { volume: 0.8, pool: 2 })();
 		
 		// How many cards? 3 + maybe 1 extra
 		const count = TRAIT_BASE_CARD_COUNT + (Math.random() < TRAIT_EXTRA_CARD_CHANCE ? 1 : 0);
@@ -2182,6 +2157,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 				card.classList.add('selected');
 				state.traitSelected = { id: o.id, tier: o.tier };
 				traitStart.classList.toggle('is-disabled', false);
+				makeSfx('src/sfx/buttons/trait_overlay_btn_select.mp3', { volume: 0.8, pool: 2 })();
 			});
 			
 			traitCardsBox.appendChild(card);
@@ -2233,7 +2209,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			return;
 		}
 		state.paused = false;
-		fadeAudio(bgm, 0.35, 200);
+		fadeAudio(bgm, 0.4, 200);
 	}
 	function enqueueTraitChoice(n = 1) {
 		state.traitQueue = (state.traitQueue || 0) + n;
@@ -2471,6 +2447,8 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		window.GUNS = GUNS;
 		window.__gameState = state;
 		window.fadeAudio = fadeAudio;
+		window.makeSfx = makeSfx;
+		window.SFX_ERROR = SFX_ERROR;
 		window.startWave = startWave;
 		window.openTraitViewer = openTraitViewer;
 		window.renderInventory = renderInventory;
@@ -2522,7 +2500,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		submachinegun: [[0,0],[0,1],[0,2],[1,0]],
 		pistol: [[0,0],[0,1],[1,0]],
 		sniperriffle: [[0,0],[1,0],[2,0],[3,0],[3,1]],
-		assultriffle: [[0,0],[0,1],[1,1],[0,2],[0,3]],
+		assaultriffle: [[0,0],[0,1],[1,1],[0,2],[0,3]],
 		grenadelauncher: [[1,0],[1,1],[0,1],[0,2]],
 	};
 	
@@ -3184,6 +3162,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		ghostCurrX = ghostTargetX;
 		ghostCurrY = ghostTargetY;
 		startGhostAnim();
+		window.makeSfx(`src/sfx/shop/shop_item_pickup_${item.key}.mp3`, { volume: 0.8, pool: 2 })();
 	}
 	function onDragMove(e) {
 		if (activePointerId != null && e.pointerId !== activePointerId) return;
@@ -3257,10 +3236,10 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		else {
 			resolveDropInOffer(e, item);
 		}
-		
 		lastSnap = null;
 		renderPlaced();
 		renderOffer();
+		window.makeSfx(`src/sfx/shop/shop_item_place_${item.key}.mp3`, { volume: 0.8, pool: 2 })();
 	}
 	function applyTierColor(it) {
 		const grad = TIER_COLORS[Math.min(it.tier,4)] || TIER_COLORS[1];
@@ -3309,6 +3288,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		applyTierColor(target);
 		
 		shopState.items = shopState.items.filter(it => it !== source);
+		window.makeSfx('src/sfx/shop/shop_item_merge.mp3', { volume: 0.8, pool: 2 })();
 	}
 	// -------------- Glow Animation -------------- //
 	function applyMergeHighlights() {
@@ -3438,6 +3418,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			
 			if (!hasFree && !canPay) {
 				shop_offer_updateRerollUI(state);
+				SFX_ERROR();
 				return;
 			}
 			if (hasFree){
@@ -3451,6 +3432,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		shop_offer_addNewOffers(state);
 		renderOffer();
 		shop_offer_updateRerollUI(state);
+		window.makeSfx('src/sfx/buttons/shop_btn_reroll.mp3', { volume: 0.8, pool: 2 })();
 	}
 	function shop_offer_updateRerollUI(state){
 		const fmt = n => Number(n).toLocaleString('en-US');
@@ -3514,7 +3496,8 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		
 		shopState.pending = { n: nextWave, count: nextCount };
 		state.paused = true;
-		try { fadeAudio(bgm, 0, 200); } catch(_){}
+		fadeAudio(bgm, 0, 200);
+		window.makeSfx('src/sfx/overlay_appear_shop_overlay.mp3', { volume: 0.8, pool: 2 })();
 		
 		if (initial) {
 			shopState.items = [];
@@ -3575,8 +3558,9 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		}
 		else {
 			state.paused = false;
-			window.fadeAudio(bgm, 0.35, 200);
+			window.fadeAudio(bgm, 0.4, 200);
 		}
+		window.makeSfx('src/sfx/overlay_close_shop_overlay.mp3', { volume: 0.8, pool: 2 })();
 	}
 	function closeViewInventory() {
 		document.getElementById('shopOverlay').classList.add('hidden');
