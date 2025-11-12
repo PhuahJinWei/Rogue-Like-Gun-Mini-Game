@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,9 +50,34 @@
 		-webkit-user-drag: none;
 		-webkit-touch-callout: none;
 		-webkit-tap-highlight-color: transparent;
+		
+		/* --- default font --- */
+		font-size: 20px;
+		font-family: 'Rajdhani', sans-serif;
+		font-weight: 600;
+		font-variant-numeric: lining-nums tabular-nums;
+		letter-spacing: .05em;
+		color: #F9F6F1;
 	}
 	.game-shell {
 		width:var(--frame-w); max-width:100%;
+	}
+	.game-overlay.hidden { display:none; }
+	.game-overlay {
+		position: fixed;
+		inset: 0;
+		z-index: 10000;
+		display: grid;
+		place-items: center;
+		background: rgba(0,0,0,.7);
+	}
+	.default-div-btn {
+		width: 100%;
+		height: 100%;
+		cursor: pointer;
+		
+		background-size: 100% 100%;
+		background-position: center;
 	}
 
 	/* ============================ TOP HUD ============================ */
@@ -290,14 +314,12 @@
 	}
 	
 	
-	/* ============================ Overlay panel ============================ */
-	.overlay { position:absolute; inset:0; background:rgba(0,0,0,0.55); display:none; align-items:center; justify-content:center; z-index:2; }
-	.overlay.show { display:flex; }
-	.overlay .panel { background:#0b1220; border:1px solid #1f2937; border-radius:14px; padding:18px; text-align:center; width:80%; max-width:360px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
-	.overlay .actions { display:flex; gap:10px; justify-content:center; }
-	.overlay .actions button { background:#111827; border:1px solid #1f2937; color:#fff; padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:700; }
-	.overlay .actions button:hover { filter: brightness(1.1); transform: translateY(-1px); }
-	.overlay .actions button.primary { background:#14532d; border-color:#166534; }
+	/* ============================ Pause Overlay ============================ */
+	.pause-panel { background:#0b1220; border:1px solid #1f2937; border-radius:14px; padding:18px; text-align:center; width:80%; max-width:360px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+	.pause-actions { display:flex; gap:10px; justify-content:center; }
+	.pause-actions button { background:#111827; border:1px solid #1f2937; color:#fff; padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:700; }
+	.pause-actions button:hover { filter: brightness(1.1); transform: translateY(-1px); }
+	.pause-actions button.primary { background:#14532d; border-color:#166534; }
 	
 	
 	/* ============================ Trait Overlay ============================ */
@@ -310,15 +332,6 @@
 		--trait-card-icon-size: 133px;
 		--trait-card-border-color: #2A94DB;
 		--trait-card-radio-size: 38px;
-	}
-	.trait-overlay.hidden { display:none; }
-	.trait-overlay {
-		position: fixed;
-		inset: 0;
-		z-index: 10000;
-		display: grid;
-		place-items: center;
-		background: rgba(0,0,0,.8);
 	}
 	.trait-panel {
 		display: flex;
@@ -396,13 +409,13 @@
 	.trait-text {
 		height: 100%;
 		display: flex;
-		padding: 10px;
+		padding: 0px 15px 0px 20px;
 		flex-direction: column;
 		justify-content: center;
-		min-width: 0;
 	}
 	.trait-title {
-		font: 800 22px/1.2 "Rajdhani", system-ui, sans-serif;
+		font: 800 19px/1.0 "Rajdhani", system-ui, sans-serif;
+		letter-spacing: .01em;
 		color: #e5efff;
 		position: relative;
 		padding-bottom: 8px;
@@ -415,8 +428,10 @@
 		background: #45B4BF;
 	}
 	.trait-desc {
+		font: 600 15px/1.35 "Rajdhani", system-ui, sans-serif;
+		letter-spacing: .01em;
 		color: #b7c3d6;
-		font: 600 16px/1.35 "Rajdhani", system-ui, sans-serif;
+		padding-top: 4px;
 	}
 	.trait-desc .accent {
 		color: #63b3ff;
@@ -425,24 +440,12 @@
 	.trait-actions { 
 		display: flex;
 		height: 100%;
-		width: 100%;
-		justify-content: center;
-		gap: 10px;
-		padding: 18px 38px 18px 37px;
-	}
-	.trait-actions-2 { 
-		display: flex;
 		width: var(--trait-panel-w);
-		flex: 0 0 auto;
 		justify-content: center;
-		align-items: center;
-		padding: 6px 0;
 	}
-	.trait-btn {
-		width: 100%;
-		height: 100%;
-		cursor: pointer;
-	}
+	#traitActionRow1 { padding: 18px 38px 18px 37px; gap: 10px; }
+	#traitActionRow2 { padding: 6px 0; }
+	
 	#traitStartBtn {
 		width: 200px;
 		aspect-ratio: 200 / 62;
@@ -459,14 +462,64 @@
 		cursor: not-allowed;
 	}
 	
-	
-	.trait-list { display:grid; gap:8px; max-height: 50vh; overflow:auto; }
-	.trait-pill {
-		font-family: 'Rajdhani', sans-serif;
-		font-weight: 600;
-		background:#3a3a3e; border:1px solid #5a5a5e; border-radius:8px; padding:8px 10px;
-		display:flex; justify-content:space-between; align-items:center;
+	/* ======================== View Trait Overlay ======================== */
+	#traitPanelView {
+		aspect-ratio: 892 / 1160;
+		background-image: url('src/img/UI_trait_overlay_view_background.png');
+		background-size: cover;
+		background-position: center;
 	}
+	#traitViewRow1 {
+		width: 100%;
+		height: 59px;
+		padding: 0px 10px 0px 83px;
+		gap: 15px;
+		display: flex;
+	}
+	#traitViewRow2 {
+		height: 630px;
+		margin-top: 39px;
+		padding: 0px 20px 30px;
+	}
+	#traitViewTitle {
+		width: 100%;
+		height: 100%;
+	}
+	#closeTraitViewerBtn {
+		height: 100%;
+		width: auto;
+		aspect-ratio: 1 / 1;
+	}
+	.trait-list::-webkit-scrollbar { display: none; }
+	.trait-list {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		height: 100%;
+		overflow-y: auto;
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	.trait-pill {
+		display: inline-block;
+		height: auto;
+		padding:5px 10px;
+		justify-content:space-between;
+		align-items:center;
+		
+		border-style: solid;
+		border-width: 12px;
+		border-image-source: url('src/img/UI_trait_overlay_view_traitpill_background.png');
+		border-image-slice: 12 fill;
+		border-image-repeat: repeat;
+		
+		font: 600 17px/1.0 "Rajdhani", system-ui, sans-serif;
+		letter-spacing: .01em;
+		text-align:center;
+	}
+	.trait-pill span { color:#4799BC; }
+	
+	
 	.btn { background:#6b7280; border:0; color:#fff; padding:8px 14px; border-radius:8px; font-weight:700; cursor:pointer; }
 	.btn:hover { background:#818a99; }
 
@@ -569,9 +622,12 @@
 		--shop-panel-w: 560px;
 		--shop-layout-top-h: 620px;
 		--shop-layout-bot-h: 330px;
+		/* shop-layout-bot-h */ --shop-layout-bot-offer-h: 230px;
+		/* shop-layout-bot-h */ --shop-layout-bot-btn: 100px;
 		--shop-start-button-w: 413;
 		--shop-start-button-h: 90;
 		--shop-start-button-w-ratio: 55%;
+		--shop-gun-offer-count: 3;
 	}
 	.shop-overlay.hidden {display: none;}
 	.shop-overlay {
@@ -601,16 +657,13 @@
 		background-position: center;
 	}
 	.shop-title {
-		font-family:'Rajdhani', sans-serif;
 		font-weight: 800;
 		font-size: 38px;
 		line-height: 1.1;
 		letter-spacing: .08em;
 		text-align: center;
-		color: #F2F6E7;
 		text-shadow: 0 1px 0 #3E3E3C;
 		padding:11px;
-		touch-action: none;
 	}
 	.shop-grid-wrap {
 		display: grid;
@@ -620,33 +673,65 @@
 		position: relative;
 		touch-action: none;
 	}
-	.shop-layout-bottom {
-		display: block;
-		height: var(--shop-layout-bot-h);
+	.shop-layout-offer.viewMode { display: none; }
+	.shop-layout-offer {
+		height: 229px;
 		flex: 1 1 auto;
-		overflow-y: auto;
-		background-image: url('src/img/UI_shop_slot_offer_background.png');
+		overflow: hidden;
+		background-image: url('src/img/UI_shop_overlay_offer_background.png');
 		background-size: cover;
 		background-position: center;
+		touch-action: none;
 	}
 	.shop-offer {
 		display: grid;
 		position: relative;
-		padding: 25px;
-		grid-template-columns: repeat(4, minmax(90px, 1fr));
+		height: var(--shop-layout-bot-offer-h);
+		padding: 30px;
 		gap: 10px;
-		touch-action: none;
+		grid-template-columns: repeat(var(--shop-gun-offer-count), minmax(90px, 1fr));
+	}
+	.shop-layout-bottom {
+		height: 101px;
+		flex: 1 1 auto;
+		overflow: hidden;
+		background-image: url('src/img/UI_shop_overlay_bottom_background.png');
+		background-size: cover;
+		background-position: center;
 	}
 	.shop-actions {
-		display: flex;
 		width: var(--shop-panel-w);
-		flex: 0 0 auto;
+		display: flex;
 		justify-content: center;
 		align-items: center;
-		padding: 6px 0;
 	}
+	#shopActionRow1 { padding: 8px 0px 20px 0px; gap:4px; height: var(--shop-layout-bot-btn);  }
+	#shopActionRow2 { padding: 6px 0px; }
+	
+	#btnShop_weaponRemoval, 
+	#btnShop_rerollOffer {
+		width: 263px;
+		aspect-ratio: 530 / 141;
+	}
+	#btnShop_weaponRemoval {
+		background-image: url('src/img/UI_shop_offer_removal_button.png');
+		padding: 12px 0px;
+		text-align: center;
+	}
+	#btnShop_rerollOffer {
+		background-image: url('src/img/UI_shop_offer_button_reroll_enabled.png');
+		padding: 12px 0px;
+		text-align: center;
+	}
+	#btnShop_rerollOffer.disabled {
+		background-image: url('src/img/UI_shop_offer_button_reroll_disabled.png');
+		color: #F31307;
+	}
+	#btnShop_weaponRemoval.viewMode, #btnShop_rerollOffer.viewMode { display: none; }
+	
+	.shop-start-button.viewMode { display: none; }
 	.shop-start-button {
-		width: var(--shop-start-button-w-ratio);
+		width: 55%;
 		aspect-ratio: var(--shop-start-button-w) / var(--shop-start-button-h);
 		max-width: var(--shop-start-button-w)px;
 		background-image: url('src/img/UI_shop_start_button.png');
@@ -654,6 +739,18 @@
 		background-position: center;
 		cursor: pointer;
 	}
+	#btnShop_close_view.viewMode { display: none; }
+	#btnShop_close_view {
+		background-image: url('src/img/UI_shop_view_close_button.png');
+		display: grid;
+		place-items: center;
+		text-align: center;
+		width: 40%;
+		aspect-ratio: 373 / 115;
+		cursor: pointer;
+	}
+	
+	
 	/* ------- Shop Gun ------- */
 	.gun-chip {
 		position: relative;
@@ -665,7 +762,6 @@
 	.gun-chip:active {
 		cursor: grabbing;
 	}
-	/* placed item rendered as a single positioned container with internal cells */
 	.gun-placed {
 		position: absolute;
 		width: calc(48px * 4);
@@ -682,7 +778,6 @@
 		image-rendering: pixelated;
 		image-rendering: crisp-edges;
 	}
-
 	.drag-ghost {
 		position: fixed;
 		z-index: 10001;
@@ -759,10 +854,9 @@
 		<div id="bossWarn" class="warn-banner">BOSS APPROACHING</div>
 
 		<!-- ----- Pause / Restart Overlay ----- -->
-		<div class="overlay" id="overlay">
-		<div class="panel">
-			<h2 id="overlayTitle">Paused</h2>
-			<div class="actions">
+		<div id="pause-overlay" class="game-overlay hidden">
+		<div class="pause-panel">
+			<div class="pause-actions">
 				<button id="viewTraitsBtn" class="btn">View All Traits</button>
 				<button id="resumeBtn" class="primary">▶︎</button>
 				<button id="restartBtn">Restart</button>
@@ -771,41 +865,56 @@
 		</div>
 			
 		<!--  ----- Trait overlay ----- -->
-		<div id="traitOverlay" class="trait-overlay hidden">
+		<div id="traitOverlay" class="game-overlay hidden">
 		<div class="trait-panel">
 			<div class="trait-layout-top">
 				<div id="traitCards" class="trait-cards"></div>
 			</div>
 			<div class="trait-layout-bottom">
-				<div class="trait-actions">
-					<div id="" class="trait-btn"></div>
-					<div id="" class="trait-btn"></div>
+				<div id="traitActionRow1" class="trait-actions">
+					<div id="btn_viewInventory" class="default-div-btn"></div>
+					<div id="btn_viewTraits" class="default-div-btn"></div>
 				</div>
 			</div>
-			<div class="shop-actions">
-				<div id="traitStartBtn" class="shop-start-button is-disabled"></div>
+			<div id="traitActionRow2" class="trait-actions">
+				<div id="traitStartBtn" class="default-div-btn is-disabled"></div>
 			</div>
 		</div>
 		</div>
-		<div id="traitViewer" class="trait-overlay hidden">
-		<div class="trait-panel">
-			<div class="trait-title">Traits Obtained</div>
-			<div id="traitList" class="trait-list"></div>
-			<div class="trait-actions"><button id="closeTraitViewerBtn" class="btn">Close</button></div>
+		
+		<!--  ----- View Trait overlay ----- -->
+		<div id="traitOverlayViewer" class="game-overlay hidden">
+		<div id="traitPanelView" class="trait-panel">
+			<div id="traitViewRow1">
+				<div id="traitViewTitle" class="shop-title">Traits</div>
+				<div id="closeTraitViewerBtn" class="default-div-btn"></div>
+			</div>
+			<div id="traitViewRow2">
+				<div id="traitList" class="trait-list"></div>
+			</div>
 		</div>
 		</div>
 			
 		<!-- Shop overlay -->
-		<div id="shopOverlay" class="shop-overlay hidden">
+		<div id="shopOverlay" class="game-overlay hidden">
 		<div class="shop-panel">
 			<div class="shop-layout-top">
-				<div class="shop-title">Shop</div>
+				<div id="shopTitle" class="shop-title">Shop</div>
 				<div class="shop-grid-wrap"><div id="shopGrid" class="shop-grid"></div></div>
 			</div>
-			<div class="shop-layout-bottom">
+			<div id="shopLayoutOffer" class="shop-layout-offer">
 				<div id="shopOffer" class="shop-offer"></div>
 			</div>
-			<div class="shop-actions"><div id="shopStartBtn" class="shop-start-button"></div></div>
+			<div class="shop-layout-bottom">
+				<div id="shopActionRow1" class="shop-actions">
+					<div id="btnShop_weaponRemoval" class="default-div-btn">Weapon Removal</div>
+					<div id="btnShop_rerollOffer" class="default-div-btn"></div>
+					<div id="btnShop_close_view" class="default-div-btn">Return</div>
+				</div>
+			</div>
+			<div id="shopActionRow2" class="shop-actions">
+				<div id="shopStartBtn" class="shop-start-button"></div>
+			</div>
 		</div>
 		</div>
 
@@ -1126,7 +1235,6 @@
 			}
 		}
 	};
-	window.GUNS = GUNS; //for shop IIFE
 	
 	//Traits
 	const TRAIT_DMG_UP = [5,7,10];
@@ -1216,17 +1324,6 @@
 	window.addEventListener('orientationchange', fitToViewport);
 	fitToViewport();
 	
-	// Prevent zoom/scroll gestures
-	const preventMultiTouch = (e) => { if (e.touches && e.touches.length > 1) e.preventDefault(); };
-	document.addEventListener('touchstart', preventMultiTouch, { passive: false });
-	document.addEventListener('touchmove',  preventMultiTouch, { passive: false });
-	document.addEventListener('gesturestart', (e)=> e.preventDefault());
-	document.addEventListener('gesturechange', (e)=> e.preventDefault());
-	document.addEventListener('gestureend',   (e)=> e.preventDefault());
-	document.addEventListener('wheel', (e)=> { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
-	document.addEventListener('dblclick', (e)=> e.preventDefault(), { passive: false });
-	
-	
 	// ===== Soldier Facing Angle GIF ===== //
 	const soldierSpriteEl = document.getElementById('soldierSprite');
 	const SOLDIER_ANGLES = [
@@ -1255,7 +1352,6 @@
     };
   }
   
-try { window.makeWeaponInstance = makeWeaponInstance; } catch(_) {}
 function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
   function findClosestEnemy(range=Infinity){
     const p = state.player; const r2 = range===Infinity ? Infinity : range*range;
@@ -1361,7 +1457,6 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		const id=setInterval(()=>{ i++; a.volume = from + (to-from)*(i/steps);
 		if(i>=steps){ clearInterval(id); if(to===0) a.pause(); }},16);
 	}
-	window.fadeAudio = fadeAudio;
 	
 	//sfx upon click on div
 	document.querySelectorAll('[data-sfx]').forEach(el => {
@@ -1395,14 +1490,11 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		specialsProgress: 0, specialsTimer: 0
 	};
 
-// Bridge game state for external systems
-try { window.__gameState = state; } catch(_) {}
-
 	
 	
 	// ============== Delare Element ID ============== //
 	const ctx = canvas.getContext('2d');
-	const overlay = document.getElementById('overlay');
+	const pauseOverlay = document.getElementById('pause-overlay');
 	const resumeBtn = document.getElementById('resumeBtn');
 	const restartBtn = document.getElementById('restartBtn');
 	const pauseBtn = document.getElementById('pauseBtn');
@@ -1415,9 +1507,10 @@ try { window.__gameState = state; } catch(_) {}
 	const scoreNumEl = document.getElementById('scoreNum');
 	const traitOverlay = document.getElementById('traitOverlay');
 	const traitCardsBox = document.getElementById('traitCards');
-	const traitViewer = document.getElementById('traitViewer');
+	const traitOverlayViewer = document.getElementById('traitOverlayViewer');
 	const traitListBox = document.getElementById('traitList');
 	const closeTraitViewerBtn = document.getElementById('closeTraitViewerBtn');
+	const traitStart  = document.getElementById('traitStartBtn');
 
 
 	// =============== Utilities Functions =============== //
@@ -1811,7 +1904,6 @@ try { window.__gameState = state; } catch(_) {}
 		ctx.beginPath(); ctx.moveTo(12,y); ctx.lineTo(W-12,y);
 		//ctx.strokeStyle = 'rgba(148,163,184,0.9)'; ctx.lineWidth = 0;
 		//ctx.stroke(); //hide barrage
-		ctx.fillStyle = '#475569'; for (let x=12; x<=W-12; x+=50) ctx.fillRect(x-2, y-12, 4, 12);
 		ctx.restore();
 	}
 	function applyBarrageDamage(dmg) {
@@ -1836,9 +1928,7 @@ try { window.__gameState = state; } catch(_) {}
 		state.specialsQueued.mini = (n % 5 === 0);
 		state.specialsQueued.boss = (n % 10 === 0);
 	}
-	
-try { window.startWave = startWave; } catch(_) {}
-function spawnOneNormalMob() {
+	function spawnOneNormalMob() {
 		const s = MOBS["A"].size;
 		const x = Math.max(0, Math.min(W - s, Math.random() * (W - s)));
 		const y = -s - (Math.random() * 140 + 20);
@@ -1983,8 +2073,10 @@ function spawnOneNormalMob() {
 	//Game Over
 	function gameOver() {
 		if (state.gameOver) return;
-		state.gameOver = true; state.paused = true;
-		setHUDEnabled(false); setOverlay(true, "Game Over");
+		state.gameOver = true;
+		state.paused = true;
+		setHUDEnabled(false);
+		setOverlay(true, "Game Over");
 	}
 
 	// ============== UI ============== //
@@ -1992,14 +2084,19 @@ function spawnOneNormalMob() {
 	
 	//Pause / Game Over Overlay
 	function setOverlay(show, title="Paused") {
-		const overlay = document.getElementById('overlay');
-		const overlayTitle = document.getElementById('overlayTitle');
-		overlay.classList.toggle('show', show);
-		overlayTitle.textContent = title;
-		const resumeBtn = document.getElementById('resumeBtn');
 		const resumeVisible = !(state.gameOver && title === "Game Over");
+		
+		const resumeBtn = document.getElementById('resumeBtn');
 		resumeBtn.style.display = resumeVisible ? 'inline-block' : 'none';
-		if(show === true) fadeAudio(bgm, 0, 200); else fadeAudio(bgm, 0.35,200);
+		
+		if(show) {
+			fadeAudio(bgm, 0, 200);
+			pauseOverlay.classList.remove('hidden');
+		}
+		else {
+			fadeAudio(bgm, 0.35,200);
+			pauseOverlay.classList.add('hidden');
+		}
 	}
 	function pauseToggle() {
 		if (state.gameOver) return;
@@ -2037,7 +2134,6 @@ function spawnOneNormalMob() {
 		
 		state.traitSelected = null;
 		const cardsWrap   = document.getElementById('traitCards');
-		const traitStart  = document.getElementById('traitStartBtn');
 		
 		// Render cards
 		traitCardsBox.innerHTML = "";
@@ -2085,7 +2181,7 @@ function spawnOneNormalMob() {
 				cardsWrap.querySelectorAll('.trait-card.selected').forEach(el => el.classList.remove('selected'));
 				card.classList.add('selected');
 				state.traitSelected = { id: o.id, tier: o.tier };
-				if (traitStart) traitStart.classList.toggle('is-disabled', false);
+				traitStart.classList.toggle('is-disabled', false);
 			});
 			
 			traitCardsBox.appendChild(card);
@@ -2106,6 +2202,7 @@ function spawnOneNormalMob() {
 	function closeTraitOverlay() {
 		state.traitOverlayOpen = false;
 		traitOverlay.classList.add('hidden');
+		traitStart.classList.toggle('is-disabled', true);
 		
 		state.traitQueue = Math.max(0, (state.traitQueue || 0) - 1);
 		if (state.traitQueue > 0) {
@@ -2184,12 +2281,12 @@ function spawnOneNormalMob() {
 			
 			const row = document.createElement('div');
 			row.className = 'trait-pill';
-			row.innerHTML = '<div>' + descTxt + '<span style="color:#4799BC;">' + totalText + '</span></div>';
+			row.innerHTML = '<div>' + descTxt + '<span>' + totalText + '</span></div>';
 			traitListBox.appendChild(row);
 		}
 	}
-	function openTraitViewer(){ updateTraitViewer(); traitViewer.classList.remove('hidden'); }
-	function closeTraitViewer(){ traitViewer.classList.add('hidden'); }
+	function openTraitViewer(){ updateTraitViewer(); traitOverlayViewer.classList.remove('hidden'); }
+	function closeTraitViewer(){ traitOverlayViewer.classList.add('hidden'); }
 	
   
 	//Buttons
@@ -2250,7 +2347,6 @@ function spawnOneNormalMob() {
 			invGrid.appendChild(d);
 		}
 	}
-	window.renderInventory = renderInventory;
 	
 	function updateInventoryCooldownUI(){
 		const grid = document.getElementById('inventoryGrid');
@@ -2309,7 +2405,7 @@ function spawnOneNormalMob() {
 		speedBtn.innerHTML = state.speedMult+"x";
 		
 		//reset scoreboard
-		coinNumEl.textContent="0";
+		coinNumEl.textContent=state.coins;
 		scoreNumEl.textContent="0";
 		
 		//reset EXP
@@ -2324,9 +2420,11 @@ function spawnOneNormalMob() {
 		//restart game
 		const startWaveNum = Math.max(1, Math.floor(CURRENT_WAVE));
 		const startCount = waveCountFor(startWaveNum);
-		state.pendingWave = { n: startWaveNum, count: startCount }; window.openShopOverlay(state.pendingWave.n, state.pendingWave.count, true);
+		state.pendingWave = { n: startWaveNum, count: startCount };
+		window.openShopOverlay(state.pendingWave.n, state.pendingWave.count, true);
 		ensureBgmPlaying(true);
-		setHUDEnabled(true); setOverlay(false);
+		setHUDEnabled(true);
+		setOverlay(false);
 	}
 	
 	
@@ -2367,6 +2465,17 @@ function spawnOneNormalMob() {
 	});
 
 	restart();
+	
+	//Bridge
+	try {
+		window.GUNS = GUNS;
+		window.__gameState = state;
+		window.fadeAudio = fadeAudio;
+		window.startWave = startWave;
+		window.openTraitViewer = openTraitViewer;
+		window.renderInventory = renderInventory;
+		window.makeWeaponInstance = makeWeaponInstance;
+	} catch(_) {}
 })();
 
 // ======= Shop (9x9) =======
@@ -2375,6 +2484,7 @@ function spawnOneNormalMob() {
 	const shopGridEl  = document.getElementById('shopGrid');
 	const shopOfferEl = document.getElementById('shopOffer');
 	const shopStartBtn = document.getElementById('shopStartBtn');
+	const btnRerollOffer = document.getElementById('btnShop_rerollOffer');
 	
 	if (!shopOverlay || !shopGridEl || !shopOfferEl) return;
 	
@@ -2386,6 +2496,14 @@ function spawnOneNormalMob() {
 	const cellStep = CELL + CELL_GAP; //distance between consecutive cols/rows
 
 	const numShopItem = 3;
+	const root = document.documentElement;
+	root.style.setProperty('--shop-gun-offer-count',  numShopItem);
+	
+	let shop_rerollPrice = 1000;
+	const shop_rerollIncrement = 1000;
+	const shop_rerollFreeNum = 3;
+	let shop_currRerollFree = shop_rerollFreeNum;
+	
 	let mergeHighlightSet = new Set();
 	
 	const TIER_COLORS = {
@@ -2431,8 +2549,8 @@ function spawnOneNormalMob() {
 		dragging: null,
 		pending: null
 	};
-
-	// Build grid background cells once
+	
+	//build shop grid
 	shopGridEl.innerHTML = '';
 	for (let r = 0; r < GRID_ROWS; r++) {
 		for (let c = 0; c < GRID_COLS; c++) {
@@ -2450,10 +2568,10 @@ function spawnOneNormalMob() {
 			shopGridEl.appendChild(slot);
 		}
 	}
-	shopGridEl.style.position = 'relative';
 	shopGridEl.style.width  = (GRID_COLS * (CELL + CELL_GAP) - CELL_GAP) + 'px';
 	shopGridEl.style.height = (GRID_ROWS * (CELL + CELL_GAP) - CELL_GAP) + 'px';
-
+	
+	
 	
 	function shapeCells(item, anchorR, anchorC){
 		const shape = SHAPES[item.key] || [];
@@ -2580,7 +2698,10 @@ function spawnOneNormalMob() {
 			wrap.appendChild(sprite);
 			
 			appendOutlineBorderFull(wrap, SHAPES[it.key]);
-			wrap.addEventListener('pointerdown', e => onDragStart(e, it, 'grid', wrap));
+			wrap.addEventListener('pointerdown', e => {
+				if(document.getElementById('shopGrid').classList.contains('viewMode')) return; //disables moving in viewmode
+				onDragStart(e, it, 'grid', wrap);
+			});
 			shopGridEl.appendChild(wrap);
 		}
 		applyMergeHighlights();
@@ -3307,7 +3428,50 @@ function spawnOneNormalMob() {
 		}
 		return 1;
 	}
-	function makeShopItem() {
+	
+	
+	// -------------------------- Open / Close Shop -------------------------- //
+	function shop_offer_rerollItem(state, isButton = false){
+		if (isButton) {
+			const hasFree = shop_currRerollFree > 0;
+			const canPay  = state.coins >= shop_rerollPrice;
+			
+			if (!hasFree && !canPay) {
+				shop_offer_updateRerollUI(state);
+				return;
+			}
+			if (hasFree){
+				shop_currRerollFree -= 1;
+			}
+			else {
+				state.coins -= shop_rerollPrice;
+				shop_rerollPrice += shop_rerollIncrement;
+			}
+		}
+		shop_offer_addNewOffers(state);
+		renderOffer();
+		shop_offer_updateRerollUI(state);
+	}
+	function shop_offer_updateRerollUI(state){
+		const fmt = n => Number(n).toLocaleString('en-US');
+
+		if (shop_currRerollFree > 0){
+			btnRerollOffer.textContent = `Free ${shop_currRerollFree} / ${shop_rerollFreeNum}`;
+			btnRerollOffer.classList.remove('disabled');
+		}
+		else {
+			btnRerollOffer.textContent = `${fmt(state.coins)} / ${fmt(shop_rerollPrice)}`;
+			const disabled = state.coins < shop_rerollPrice;
+			btnRerollOffer.classList.toggle('disabled', disabled);
+		}
+	}
+	function shop_offer_addNewOffers(state){
+		shopState.items = shopState.items.filter(it => it.r != null && it.c != null);
+		for (let i = 0; i < numShopItem; i++) {
+			shopState.items.push(shop_offer_makeOfferItem());
+		}
+	}
+	function shop_offer_makeOfferItem() {
 		const gunKeys = Object.keys(window.GUNS);
 		const key = gunKeys[(Math.random()*gunKeys.length)|0];
 		const tier = pickTierForShop();
@@ -3325,7 +3489,7 @@ function spawnOneNormalMob() {
 	
 	
 	// -------------------------- Open / Close Shop -------------------------- //
-	function openShopOverlay(nextWave, nextCount, initial=false) {
+	function openShopOverlay(nextWave, nextCount, initial=false, view=false) {
 		const state = window.__gameState;
 		const currentWave = window.__gameState.wave;
 		if (!state) {
@@ -3349,14 +3513,11 @@ function spawnOneNormalMob() {
 		}
 		
 		shopState.pending = { n: nextWave, count: nextCount };
-		// Freeze game while shopping
 		state.paused = true;
 		try { fadeAudio(bgm, 0, 200); } catch(_){}
-
+		
 		if (initial) {
 			shopState.items = [];
-
-			// guaranteed starter gun in grid at (0,0) = tier 1 SMG
 			const starter = {
 				id: 'itm_starter',
 				key: 'submachinegun',
@@ -3366,21 +3527,20 @@ function spawnOneNormalMob() {
 				c: 0
 			};
 			shopState.items.push(starter);
-
-			// plus starting offers
-			for (let i = 0; i < numShopItem; i++) {
-				shopState.items.push(makeShopItem());
-			}
 		}
-		else {
-			const inOffer = shopState.items.filter(it => it.r == null && it.c == null).length;
-			for (let i = inOffer; i < numShopItem; i++) {
-				shopState.items.push(makeShopItem());
-			}
-		}
+		
 		renderPlaced();
-		renderOffer();
 		shopOverlay.classList.remove('hidden');
+		
+		//View Mode / Shop Mode
+		if(!view) shop_offer_rerollItem(state,false);
+		document.getElementById('shopTitle').innerHTML = 'Shop';
+		document.getElementById('shopGrid').classList.toggle('viewMode',view); //If "Viewing Inventory" or "Shopping"
+		document.getElementById('shopLayoutOffer').classList.toggle('viewMode',view);
+		document.getElementById('shopStartBtn').classList.toggle('viewMode',view);
+		document.getElementById('btnShop_weaponRemoval').classList.toggle('viewMode',view);
+		document.getElementById('btnShop_rerollOffer').classList.toggle('viewMode',view);
+		document.getElementById('btnShop_close_view').classList.toggle('viewMode',!view);
 	}
 	function closeShopOverlayAndStart() {
 		const state = window.__gameState;
@@ -3418,13 +3578,20 @@ function spawnOneNormalMob() {
 			window.fadeAudio(bgm, 0.35, 200);
 		}
 	}
+	function closeViewInventory() {
+		document.getElementById('shopOverlay').classList.add('hidden');
+	}
 	
-	//Button
+	
+	//Buttons
 	shopStartBtn?.addEventListener('click', closeShopOverlayAndStart);
+	document.getElementById('btnShop_close_view')?.addEventListener('click', closeViewInventory);
+	document.getElementById('btn_viewTraits')?.addEventListener('click', window.openTraitViewer);
+	document.getElementById('btn_viewInventory')?.addEventListener('click', ()=>{ openShopOverlay(0,0,false,true); });
+	btnRerollOffer?.addEventListener('click', ()=>{ shop_offer_rerollItem(window.__gameState,true); });
 	
 	
 	
-	window.openShopOverlay = openShopOverlay;
 	if (Array.isArray(window.__pendingShopCalls)) {
 		const q = window.__pendingShopCalls.splice(0);
 		for (const a of q) openShopOverlay.apply(null, a);
@@ -3437,6 +3604,12 @@ function spawnOneNormalMob() {
 			openedOnce=true;
 		}
 	});
+	
+	
+	//Bridge
+	try {
+		window.openShopOverlay = openShopOverlay;
+	} catch(_) {}
 })();
 
 </script>
