@@ -403,7 +403,6 @@
 		--trait-card-h: 134px;
 		--trait-card-gap: 8px;
 		--trait-card-icon-size: 133px;
-		--trait-card-border-color: #2A94DB;
 		--trait-card-radio-size: 38px;
 	}
 	
@@ -456,9 +455,10 @@
 		background-position: center;
 		pointer-event: none;
 	}
-	.trait-card.selected .trait-icon {
-		border: 2px solid var(--trait-card-border-color);
-	}
+	.trait-card[data-tier="1"].selected .trait-icon { border: 3px solid #2A94DB; }
+	.trait-card[data-tier="2"].selected .trait-icon { border: 3px solid #A250D6; }
+	.trait-card[data-tier="3"].selected .trait-icon { border: 3px solid #D79944; }
+	
 	.trait-icon {
 		width: 134px;
 		aspect-ratio: 1 / 1;
@@ -466,16 +466,16 @@
 		place-items: center;
 		
 		border: 3px solid #5B605A;
-		padding: 9px;
-		background-origin: content-box;
-		background-clip: content-box;
 		border-radius: 13px;
-		background-image: url('src/img/UI/UI_overlay_select_trait_icon_background_tier_1.png');
 		background-size: 100% 100%;
 		background-position: center;
 		overflow: hidden;
 		pointer-event: none;
 	}
+	.trait-card[data-tier="1"] .trait-icon { background-image: url('src/img/UI/UI_overlay_select_trait_icon_background_tier_1.png'); }
+	.trait-card[data-tier="2"] .trait-icon { background-image: url('src/img/UI/UI_overlay_select_trait_icon_background_tier_2.png'); }
+	.trait-card[data-tier="3"] .trait-icon { background-image: url('src/img/UI/UI_overlay_select_trait_icon_background_tier_3.png'); }
+	
 	.trait-icon-img {
 		width: 80px;
 		aspect-ratio: 1 / 1;
@@ -911,26 +911,84 @@
 		grid-template-columns: repeat(var(--shop-gun-offer-count), minmax(90px, 1fr));
 	}
 	
+	/* ------- Action Buttons ------- */
 	#btnShop_weaponRemoval, 
 	#btnShop_rerollOffer {
 		width: 263px;
 		aspect-ratio: 530 / 141;
+		display: inline-flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		user-select: none;
+		text-align: center;
 	}
 	#btnShop_weaponRemoval {
 		background-image: url('src/img/UI_shop_offer_removal_button.png');
-		padding: 12px 0px;
-		text-align: center;
+		padding: 6px 12px;
 	}
 	#btnShop_rerollOffer {
 		background-image: url('src/img/UI_shop_offer_button_reroll_enabled.png');
-		padding: 12px 0px;
-		text-align: center;
+		/* padding: 12px 0px; */
 	}
-	#btnShop_rerollOffer.disabled {
-		background-image: url('src/img/UI_shop_offer_button_reroll_disabled.png');
-		color: #F31307;
+	#btnShop_weaponRemoval .btn-title,
+	#btnShop_rerollOffer .btn-title	{
+		font-family: "Segoe UI", Arial, sans-serif;
+		font-size: 20px;
+		font-weight: 650;
+		line-height: 1.1;
+		letter-spacing: 0.04em;
+		color: #FFFBF5;
+		text-shadow:
+			0 1px 0 #25231f,
+			-1px 0   #25231f,
+			1px 0   #25231f,
+			0 -1px  #25231f;
 	}
-	#btnShop_weaponRemoval.viewMode, #btnShop_rerollOffer.viewMode { display: none; }
+	#btnShop_weaponRemoval .btn-subtitle,
+	#btnShop_rerollOffer .btn-subtitle {
+		display: inline-flex;
+		margin-top: 4px;
+		font-family: "Segoe UI", Arial, sans-serif;
+		font-size: 14px;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		color: #C4BEB2;
+		text-shadow:
+			0 1px 0 #25231f,
+			-1px 0 #25231f,
+			1px 0 #25231f,
+			0 -1px #25231f;
+	}
+	#btnShop_weaponRemoval .btn-subtitle .subtitle-value,
+	#btnShop_rerollOffer .btn-subtitle .subtitle-value { margin-left: 4px; }
+	
+	#btnShop_rerollOffer.disabled { background-image: url('src/img/UI_shop_offer_button_reroll_disabled.png'); }
+	#btnShop_rerollOffer.disabled #btn_subtitle_reroll { color: #F31307; }
+	
+	/* ------- Reroll Coin Icon ------- */
+	#btnShop_rerollOffer .subtitle-label {
+		display: inline-flex;
+		align-items: center;
+		margin-right: 4px;
+		font-size: 13px;
+	}
+	#btnShop_rerollOffer .subtitle-label.is-coin {
+		width: 18px;
+		height: 18px;
+		font-size: 0;
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: contain;
+		background-image: url("src/img/icon_coin.png");
+	}
+	#btnShop_rerollOffer.disabled .subtitle-label.is-coin {
+		background-image: url("src/img/icon_coin_disabled.png");
+	}
+	
+	/* ------- View Inventory ------- */
+	#btnShop_weaponRemoval.viewMode, 
+	#btnShop_rerollOffer.viewMode { display: none; }
 	
 	#shopStartBtn.viewMode { display: none; }
 	#shopStartBtn {
@@ -952,7 +1010,6 @@
 		aspect-ratio: 373 / 115;
 		cursor: pointer;
 	}
-	
 	
 	/* ------- Shop Gun ------- */
 	.gun-chip {
@@ -1149,8 +1206,20 @@
 					<div id="shopOffer" class="shop-offer"></div>
 				</div>
 				<div class="overlay-panel-body-action">
-					<div class="default-div-btn" id="btnShop_weaponRemoval">Weapon Removal</div>
-					<div class="unique-div-btn" id="btnShop_rerollOffer"></div>
+					<div class="default-div-btn" id="btnShop_weaponRemoval">
+						<div class="btn-title">Weapon Removal</div>
+						<div class="btn-subtitle">
+							<div class="subtitle-label">Remaining attempt(s):</div>
+							<div class="subtitle-value" id="btn_subtitle_removal">10</div>
+						</div>
+					</div>
+					<div class="unique-div-btn" id="btnShop_rerollOffer">
+						<div class="btn-title">Refresh</div>
+						<div class="btn-subtitle">
+							<div class="subtitle-label">Remaining attempt(s):</div>
+							<div class="subtitle-value" id="btn_subtitle_reroll">10</div>
+						</div>
+					</div>
 					<div class="default-div-btn" id="btnShop_close_view">Return</div>
 				</div>
 			</div>
@@ -2430,7 +2499,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 				card.classList.add('selected');
 				state.traitSelected = { id: o.id, tier: o.tier };
 				traitStart.classList.toggle('is-disabled', false);
-				makeSfx('src/sfx/buttons/trait_overlay_btn_select.mp3', { volume: 0.8, pool: 2 })();
+				makeSfx('src/sfx/buttons/trait_overlay_btn_select.mp3', { volume: 0.6, pool: 2 })();
 			});
 			
 			traitCardsBox.appendChild(card);
@@ -2831,10 +2900,15 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	const root = document.documentElement;
 	root.style.setProperty('--shop-gun-offer-count',  numShopItem);
 	
-	let shop_rerollPrice = 1000;
-	const shop_rerollIncrement = 1000;
-	const shop_rerollFreeNum = 3;
-	let shop_currRerollFree = shop_rerollFreeNum;
+	const REROLL_CONFIG = Object.freeze({
+		basePrice: 1000,
+		increment: 1000,
+		freeCount: 10,
+	});
+	const rerollState = {
+		price: REROLL_CONFIG.basePrice,
+		freeLeft: REROLL_CONFIG.freeCount,
+	};
 	
 	let mergeHighlightSet = new Set();
 	
@@ -3773,39 +3847,57 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	
 	
 	// -------------------------- Open / Close Shop -------------------------- //
-	function shop_offer_rerollItem(state, isButton = false){
+	function hasFreeReroll() {
+		return rerollState.freeLeft > 0;
+	}
+	function canPayForReroll(state) {
+		return state.coins >= rerollState.price;
+	}
+	function shop_offer_rerollItem(state, isButton = false) {
 		if (isButton) {
-			const hasFree = shop_currRerollFree > 0;
-			const canPay  = state.coins >= shop_rerollPrice;
+			const hasFree = hasFreeReroll();
+			const canPay  = canPayForReroll(state);
 			
 			if (!hasFree && !canPay) {
 				shop_offer_updateRerollUI(state);
 				SFX_ERROR();
 				return;
 			}
-			if (hasFree){
-				shop_currRerollFree -= 1;
+			
+			//charge for reroll
+			if (hasFreeReroll()) {
+				rerollState.freeLeft -= 1;
 			}
 			else {
-				state.coins -= shop_rerollPrice;
-				shop_rerollPrice += shop_rerollIncrement;
+				state.coins -= rerollState.price;
+				rerollState.price += REROLL_CONFIG.increment;
 			}
 		}
 		shop_offer_addNewOffers(state);
 		renderOffer();
 		shop_offer_updateRerollUI(state);
+		
 		window.makeSfx('src/sfx/buttons/shop_btn_reroll.mp3', { volume: 0.8, pool: 2 })();
 	}
-	function shop_offer_updateRerollUI(state){
+	function shop_offer_updateRerollUI(state) {
 		const fmt = n => Number(n).toLocaleString('en-US');
+		const labelEl = document.querySelector('#btnShop_rerollOffer .subtitle-label');
+		const valueEl = document.getElementById('btn_subtitle_reroll');
+		
+		if (hasFreeReroll()) {
+			labelEl.classList.remove('is-coin');
+			labelEl.textContent = 'Remaining attempt(s):';
 
-		if (shop_currRerollFree > 0){
-			btnRerollOffer.textContent = `Free ${shop_currRerollFree} / ${shop_rerollFreeNum}`;
+			valueEl.textContent = rerollState.freeLeft;
 			btnRerollOffer.classList.remove('disabled');
 		}
 		else {
-			btnRerollOffer.textContent = `${fmt(state.coins)} / ${fmt(shop_rerollPrice)}`;
-			const disabled = state.coins < shop_rerollPrice;
+			labelEl.textContent = '';
+			labelEl.classList.add('is-coin');
+
+			valueEl.textContent = `${fmt(state.coins)} / ${fmt(rerollState.price)}`;
+
+			const disabled = !canPayForReroll(state);
 			btnRerollOffer.classList.toggle('disabled', disabled);
 		}
 	}
