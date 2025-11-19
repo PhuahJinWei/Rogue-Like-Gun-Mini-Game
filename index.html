@@ -16,20 +16,20 @@
 		overscroll-behavior:none;
 	}
 	body {
-	margin:0;
-		font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", "Helvetica Neue", Arial;
-		background: linear-gradient(180deg, #0b0f1a 0%, #0e1526 100%);
-		color:#fff;
-		display:flex; align-items:center; justify-content:center;
+		margin:0;
 		padding:0;
+		background: linear-gradient(180deg, #0b0f1a 0%, #0e1526 100%);
+		display:flex;
+		align-items:center;
+		justify-content:center;
 		touch-action: manipulation;
 	}
+	:root { --frame-w: 600px; --frame-h: 1080px; --canvas-h: 750px; }
 	.fit-wrap {
 		transform-origin:center center;
 		width:var(--frame-w);
 		height:var(--frame-h);
 	}
-	:root { --frame-w: 600px; --frame-h: 1080px; --canvas-h: 750px; }
 	.game-frame {
 		display:inline-block;
 		width: var(--frame-w);
@@ -87,11 +87,18 @@
 		filter: brightness(0.7);
 		transform: translateY(3px);
 	}
+	.red-div-btn {
+		aspect-ratio: 373 / 115;
+		height: 65px;
+		padding-top: 15px;
+		background-image: url('src/img/UI_btn_red.png');
+	}
+	
 	
 	.btn_view_dps {
-		aspect-ratio: 5 / 4;
+		aspect-ratio: 10 / 9;
 		height: 56px;
-		background-image: url('src/img/UI/UI_overlay_btn_view_dps.png');
+		background-image: url('src/img/UI/button/UI_overlay_btn_view_dps.png');
 	}
 	.btn_viewInventory,
 	.btn_viewTraits {
@@ -209,7 +216,7 @@
 			#d9781c 100%
 		);
 		transition: width .2s ease;
-		border-radius: inherit;
+		border-radius: 4px;
 		z-index:1;
 	}
 	#coinNum {
@@ -321,8 +328,7 @@
 	}
 	.hp-bar {
 		position:relative;
-		width:100%;
-		height:100%;
+		width:100%; height:100%;
 		background:transparent;
 		overflow:hidden;
 		border:none;
@@ -334,11 +340,10 @@
 		height:100%; width:100%;
 		background: linear-gradient(
 			to bottom,
-			#FD746F 15%,
-			#EE3435 40%,
-			#F03638 60%,
-			#C81A3B 80%,
-			#DE2342 100%
+			#FE6D70 15%,
+			#EC2627 40%,
+			#C50830 65%,
+			#CA1035 100%
 		);
 		transition: width .2s ease;
 		border-radius: inherit;
@@ -386,13 +391,43 @@
 	.pause-panel-row4 {
 		margin: 0px 15px;
 	}
-	#resumeBtn { background-image: url('src/img/UI_btn_red.png'); }
-	#restartBtn { background-image: url('src/img/UI_btn_red.png'); }
-	#restartBtn, #resumeBtn {
+	
+	/* --- trait icon grid --- */
+	.pause-traits-grid::-webkit-scrollbar { display: none; }
+	.pause-traits-grid {
+		display: grid;
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		column-gap: 5px;
+		row-gap: 5px;
+		justify-items: center;
+		align-items: start;
+		align-content: flex-start;
+		height: 100%;
+		width: 100%;
+		overflow-y: auto;
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+	.pause-trait-slot {
+		width: 100%;
+		aspect-ratio: 1 / 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.pause-traits-empty {
+		font-size: 12px;
+		color: #ccc;
+		text-align: center;
+		grid-column: 1 / -1;
+	}
+	
+	#restartBtn {
 		aspect-ratio: 373 / 115;
 		height: 65px;
 		padding-top: 15px;
-		background-size: cover;
+		background-image: url('src/img/UI_btn_red.png');
+		background-size: 100% 100%;
 		background-position: center;
 	}
 	
@@ -400,10 +435,7 @@
 	/* ============================ Trait Overlay ============================ */
 	:root {
 		--trait-layout-top-h: 659px;
-		--trait-card-h: 134px;
-		--trait-card-gap: 8px;
 		--trait-card-icon-size: 133px;
-		--trait-card-radio-size: 38px;
 	}
 	
 	.trait-panel-body {
@@ -426,14 +458,13 @@
 	
 	
 	/* ------- trait cards ------- */
-	#traitCards.trait-vertical {
+	.trait-card-list.trait-vertical {
 		display: flex;
+		gap: 8px;
 		flex-direction: column;
 		height: 100%;
-		gap: var(--trait-card-gap);
 	}
 	.trait-card {
-		height: var(--trait-layout-top-h);
 		display: grid;
 		grid-template-columns: 46px var(--trait-card-icon-size) 1fr;
 		align-items: center;
@@ -442,25 +473,24 @@
 	.trait-radio {
 		display: grid;
 		height: 100%;
-		place-items: center; 
+		padding: 0px 4px;
+		place-items: center;
 	}
-	.trait-radio::before {
-		content:"";
-		width: var(--trait-card-radio-size);
-		height: var(--trait-card-radio-size);
-	}
-	.trait-card.selected .trait-radio::before {
-		background-image: url('src/img/UI_trait_card_radio_selected.png');
-		background-size: cover;
+	.trait-radio-img {
+		width: 100%;
+		aspect-ratio: 1 / 1;
+		background-image: url('src/img/UI_trait_card_radio_unselect.png');
+		background-size: 100% 100%;
 		background-position: center;
-		pointer-event: none;
 	}
+	.trait-card.selected .trait-radio-img { background-image: url('src/img/UI_trait_card_radio_selected.png'); }
+	
 	.trait-card[data-tier="1"].selected .trait-icon { border: 3px solid #2A94DB; }
 	.trait-card[data-tier="2"].selected .trait-icon { border: 3px solid #A250D6; }
 	.trait-card[data-tier="3"].selected .trait-icon { border: 3px solid #D79944; }
 	
 	.trait-icon {
-		width: 134px;
+		height: 100%;
 		aspect-ratio: 1 / 1;
 		display: grid;
 		place-items: center;
@@ -469,23 +499,34 @@
 		border-radius: 13px;
 		background-size: 100% 100%;
 		background-position: center;
-		overflow: hidden;
 		pointer-event: none;
 	}
-	.trait-card[data-tier="1"] .trait-icon { background-image: url('src/img/UI/UI_overlay_select_trait_icon_background_tier_1.png'); }
-	.trait-card[data-tier="2"] .trait-icon { background-image: url('src/img/UI/UI_overlay_select_trait_icon_background_tier_2.png'); }
-	.trait-card[data-tier="3"] .trait-icon { background-image: url('src/img/UI/UI_overlay_select_trait_icon_background_tier_3.png'); }
+	.trait-icon[data-tier="1"] { background-image: url('src/img/UI/UI_overlay_select_trait_icon_background_tier_1.png'); }
+	.trait-icon[data-tier="2"] { background-image: url('src/img/UI/UI_overlay_select_trait_icon_background_tier_2.png'); }
+	.trait-icon[data-tier="3"] { background-image: url('src/img/UI/UI_overlay_select_trait_icon_background_tier_3.png'); }
 	
-	.trait-icon-img {
-		width: 80px;
+	.trait-icon-frame {
+		width: 60%;
 		aspect-ratio: 1 / 1;
-		box-shadow: 4px 4px 0 #1E292B;
-		background-image: url('src/img/UI/UI_overlay_select_trait_icon_frame.png');
+		display: grid;
+		place-items: center;
+		box-shadow: 3px 3px 0 #1E292B;
 		background-size: 100% 100%;
 		background-position: center;
-		overflow: hidden;
 		pointer-event: none;
 	}
+	.trait-icon[data-tier="1"] .trait-icon-frame { background-image: url('src/img/UI/UI_overlay_select_trait_icon_frame_tier_1.png'); }
+	.trait-icon[data-tier="2"] .trait-icon-frame { background-image: url('src/img/UI/UI_overlay_select_trait_icon_frame_tier_2.png'); }
+	.trait-icon[data-tier="3"] .trait-icon-frame { background-image: url('src/img/UI/UI_overlay_select_trait_icon_frame_tier_3.png'); }
+	
+	.trait-icon-img {
+		width: 90%;
+		aspect-ratio: 1 / 1;
+		background-size: 100% auto;
+		background-position: center;
+		pointer-event: none;
+	}
+	
 	.trait-text {
 		height: 100%;
 		display: flex;
@@ -523,14 +564,12 @@
 		aspect-ratio: 200 / 62;
 		max-width: 200px;
 		background-image: url('src/img/UI_trait_select_button_enabled.png');
-		background-size: cover;
+		background-size: 100% 100%;
 		background-position: center;
 		cursor: pointer;
 	}
 	#traitStartBtn.is-disabled {
 		background-image: url('src/img/UI_trait_select_button_disabled.png');
-		background-size: cover;
-		background-position: center;
 		cursor: not-allowed;
 	}
 	
@@ -756,6 +795,122 @@
 		color: #d1d5db;
 	}
 	
+	
+	/* ============ Weapon Removal Overlay //here ============ */
+	.removal-panel-header {
+		height: 200px;
+		width: 100%;
+	}
+	.removal-panel-body {
+		width: 100%;
+		display: grid;
+		grid-template-rows: auto auto;
+		row-gap: 3px;
+	}
+	.removal-panel-row1 {
+		height: 250px;
+		width: 100%;
+		display: grid;
+		grid-template-rows: auto 1fr;
+	}
+	.removal-panel-row2 {
+		height: 350px;
+		width: 100%;
+		display: grid;
+		grid-template-rows: 260px 1fr;
+		row-gap: 8px;
+	}
+	
+	.weapon-removal-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 16px;
+		font-weight: 600;
+		padding: 4px 6px;
+	}
+	.weapon-removal-uses {
+		font-size: 14px;
+		opacity: 0.8;
+	}
+	.weapon-removal-removed-area {
+		border-radius: 6px;
+		margin: 15px 12px;
+		display: flex;
+		flex-direction: column;
+		row-gap: 4px;
+	}
+	
+	
+	.weapon-removal-offer-area {
+		border-radius: 6px;
+		margin: 17px 12px 0px;
+		display: flex;
+		flex-direction: column;
+		row-gap: 4px;
+	}
+	.weapon-removal-removed-list {
+		display: flex;
+		flex-wrap: wrap;
+		column-gap: 6px;
+		row-gap: 6px;
+		align-items: center;
+		height: 100%;
+		width: 100%;
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+
+	/* lower half: mini grid similar to shop-offer */
+	.weapon-removal-offer-grid {
+		display: grid;
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		column-gap: 8px;
+		row-gap: 8px;
+		align-items: start;
+		align-content: flex-start;
+		height: 100%;
+		width: 100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+		padding: 4px 2px;
+	}
+	.weapon-removal-removed-list::-webkit-scrollbar,
+	.weapon-removal-offer-grid::-webkit-scrollbar {
+		width: 0;
+		height: 0;
+	}
+	.weapon-removal-removed-list,
+	.weapon-removal-offer-grid {
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+	.weapon-removal-offer-grid .gun-chip {
+		position: relative;
+	}
+
+	.weapon-removal-offer-grid .gun-chip.weapon-removal-selected::after {
+		content: "";
+		position: absolute;
+		inset: -2px;
+		border: 2px solid #3AF769;  /* green border */
+		box-shadow: 0 0 8px rgba(58, 247, 105, 0.7);
+		pointer-events: none;
+	}
+	.weapon-removal-removed-item {
+		position: relative;
+		width: 42px;
+		height: 42px;
+	}
+
+	.weapon-removal-removed-item .mini-cell {
+		position: absolute;
+	}
+	.weapon-removal-removed-item .gun-sprite-mini {
+		position: absolute;
+	}
+
+	
 
 	/* ============================ Inventory ============================ */
 	.inventory-wrap{
@@ -850,7 +1005,20 @@
 	@keyframes warnPulse { 0% {opacity:0;} 30% {opacity:1;} 70% {opacity:1;} 100% {opacity:0;} }
 
 
-	/* ============================ Shop Overlay //here ============================ */
+	/* ============================ Shop Overlay ============================ */
+	:root {
+		--shop-panel-w: 560px;
+		--shop-layout-top-h: 620px;
+		--shop-layout-bot-h: 330px;
+		/* shop-layout-bot-h */ --shop-layout-bot-offer-h: 230px;
+		/* shop-layout-bot-h */ --shop-layout-bot-btn: 100px;
+		--shop-start-button-w: 413;
+		--shop-start-button-h: 90;
+		--shop-start-button-w-ratio: 55%;
+		--shop-gun-offer-count: 3;
+		--shop-gun-offer-scale: 1;
+	}
+
 	.shop-panel-body {
 		width: 100%;
 		display: grid;
@@ -874,9 +1042,9 @@
 	}
 	.shop-panel-row2.viewMode { display: none; }
 	.shop-panel-row2 {
-		height: 217px;
+		height: 225px;
 		width: 95%;
-		margin: 8px 10px 8px;
+		margin: 8px 10px 0px;
 		overflow: hidden;
 		touch-action: none;
 	}
@@ -902,114 +1070,17 @@
 		touch-action: none;
 	}
 	.shop-offer {
-		--shop-gun-offer-count: 3;
-		
 		display: grid;
 		position: relative;
-		height: 230px;
-		gap: 10px;
+		height: 100%;
+		width: 100%;
+		column-gap: 10px;
+		row-gap: 40px;
 		grid-template-columns: repeat(var(--shop-gun-offer-count), minmax(90px, 1fr));
+		align-items: start;
+		align-content: flex-start;
 	}
 	
-	/* ------- Action Buttons ------- */
-	#btnShop_weaponRemoval, 
-	#btnShop_rerollOffer {
-		width: 263px;
-		aspect-ratio: 530 / 141;
-		display: inline-flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		user-select: none;
-		text-align: center;
-	}
-	#btnShop_weaponRemoval {
-		background-image: url('src/img/UI_shop_offer_removal_button.png');
-		padding: 6px 12px;
-	}
-	#btnShop_rerollOffer {
-		background-image: url('src/img/UI_shop_offer_button_reroll_enabled.png');
-		/* padding: 12px 0px; */
-	}
-	#btnShop_weaponRemoval .btn-title,
-	#btnShop_rerollOffer .btn-title	{
-		font-family: "Segoe UI", Arial, sans-serif;
-		font-size: 20px;
-		font-weight: 650;
-		line-height: 1.1;
-		letter-spacing: 0.04em;
-		color: #FFFBF5;
-		text-shadow:
-			0 1px 0 #25231f,
-			-1px 0   #25231f,
-			1px 0   #25231f,
-			0 -1px  #25231f;
-	}
-	#btnShop_weaponRemoval .btn-subtitle,
-	#btnShop_rerollOffer .btn-subtitle {
-		display: inline-flex;
-		margin-top: 4px;
-		font-family: "Segoe UI", Arial, sans-serif;
-		font-size: 14px;
-		font-weight: 600;
-		letter-spacing: 0.02em;
-		color: #C4BEB2;
-		text-shadow:
-			0 1px 0 #25231f,
-			-1px 0 #25231f,
-			1px 0 #25231f,
-			0 -1px #25231f;
-	}
-	#btnShop_weaponRemoval .btn-subtitle .subtitle-value,
-	#btnShop_rerollOffer .btn-subtitle .subtitle-value { margin-left: 4px; }
-	
-	#btnShop_rerollOffer.disabled { background-image: url('src/img/UI_shop_offer_button_reroll_disabled.png'); }
-	#btnShop_rerollOffer.disabled #btn_subtitle_reroll { color: #F31307; }
-	
-	/* ------- Reroll Coin Icon ------- */
-	#btnShop_rerollOffer .subtitle-label {
-		display: inline-flex;
-		align-items: center;
-		margin-right: 4px;
-		font-size: 13px;
-	}
-	#btnShop_rerollOffer .subtitle-label.is-coin {
-		width: 18px;
-		height: 18px;
-		font-size: 0;
-		background-repeat: no-repeat;
-		background-position: center;
-		background-size: contain;
-		background-image: url("src/img/icon_coin.png");
-	}
-	#btnShop_rerollOffer.disabled .subtitle-label.is-coin {
-		background-image: url("src/img/icon_coin_disabled.png");
-	}
-	
-	/* ------- View Inventory ------- */
-	#btnShop_weaponRemoval.viewMode, 
-	#btnShop_rerollOffer.viewMode { display: none; }
-	
-	#shopStartBtn.viewMode { display: none; }
-	#shopStartBtn {
-		width: 55%;
-		aspect-ratio: 413 / 90;
-		max-width: 413px;
-		background-image: url('src/img/UI_shop_start_button.png');
-		background-size: cover;
-		background-position: center;
-		cursor: pointer;
-	}
-	#btnShop_close_view.viewMode { display: none; }
-	#btnShop_close_view {
-		background-image: url('src/img/UI_shop_view_close_button.png');
-		display: grid;
-		padding-top: 20px;
-		text-align: center;
-		width: 40%;
-		aspect-ratio: 373 / 115;
-		cursor: pointer;
-	}
 	
 	/* ------- Shop Gun ------- */
 	.gun-chip {
@@ -1018,7 +1089,10 @@
 		height: 60px;
 		user-select: none;
 		cursor: grab;
+		transform: scale(var(--shop-gun-offer-scale));
+		transform-origin: top center;
 	}
+
 	.gun-chip:active {
 		cursor: grabbing;
 	}
@@ -1081,6 +1155,106 @@
 	.merge-glow .mini-cell {
 		animation: mergeShinePulse 1.7s ease-in-out infinite;
 	}
+	
+	/* ------- Action Buttons ------- */
+	.btn-shop-weapon-removal, 
+	#btnShop_rerollOffer {
+		width: 263px;
+		aspect-ratio: 530 / 141;
+		display: inline-flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		user-select: none;
+		text-align: center;
+	}
+	.btn-shop-weapon-removal {
+		background-image: url('src/img/UI_shop_offer_removal_button.png');
+		padding: 6px 12px;
+	}
+	#btnShop_rerollOffer {
+		background-image: url('src/img/UI_shop_offer_button_reroll_enabled.png');
+		/* padding: 12px 0px; */
+	}
+	.btn-shop-weapon-removal .btn-title,
+	#btnShop_rerollOffer .btn-title	{
+		font-family: "Segoe UI", Arial, sans-serif;
+		font-size: 20px;
+		font-weight: 650;
+		line-height: 1.1;
+		letter-spacing: 0.04em;
+		color: #FFFBF5;
+		text-shadow:
+			0 1px 0 #25231f,
+			-1px 0   #25231f,
+			1px 0   #25231f,
+			0 -1px  #25231f;
+	}
+	.btn-shop-weapon-removal .btn-subtitle,
+	#btnShop_rerollOffer .btn-subtitle {
+		display: inline-flex;
+		margin-top: 4px;
+		font-family: "Segoe UI", Arial, sans-serif;
+		font-size: 14px;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		color: #C4BEB2;
+		text-shadow:
+			0 1px 0 #25231f,
+			-1px 0 #25231f,
+			1px 0 #25231f,
+			0 -1px #25231f;
+	}
+	.btn-shop-weapon-removal .btn-subtitle .subtitle-value,
+	#btnShop_rerollOffer .btn-subtitle .subtitle-value { margin-left: 4px; }
+	
+	#btnShop_rerollOffer.disabled { background-image: url('src/img/UI_shop_offer_button_reroll_disabled.png'); }
+	#btnShop_rerollOffer.disabled #btn_subtitle_reroll { color: #F31307; }
+	
+	/* ------- Reroll Coin Icon ------- */
+	#btnShop_rerollOffer .subtitle-label {
+		display: inline-flex;
+		align-items: center;
+		margin-right: 4px;
+		font-size: 13px;
+	}
+	#btnShop_rerollOffer .subtitle-label.is-coin {
+		width: 18px;
+		height: 18px;
+		font-size: 0;
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: contain;
+		background-image: url("src/img/icon_coin.png");
+	}
+	#btnShop_rerollOffer.disabled .subtitle-label.is-coin {
+		background-image: url("src/img/icon_coin_disabled.png");
+	}
+	
+	/* ------- View Inventory ------- */
+	.btn-shop-weapon-removal.viewMode, 
+	#btnShop_rerollOffer.viewMode { display: none; }
+	
+	#shopStartBtn.viewMode { display: none; }
+	#shopStartBtn {
+		width: 55%;
+		aspect-ratio: 413 / 90;
+		max-width: 413px;
+		background-image: url('src/img/UI_shop_start_button.png');
+		background-size: cover;
+		background-position: center;
+		cursor: pointer;
+	}
+	#btnShop_close_view.viewMode { display: none; }
+	#btnShop_close_view {
+		background-image: url('src/img/UI_shop_view_close_button.png');
+		display: grid;
+		padding-top: 20px;
+		text-align: center;
+		width: 40%;
+		aspect-ratio: 373 / 115;
+		cursor: pointer;
+	}
 </style>
 
 <!-- ---- Imports ---- -->
@@ -1123,7 +1297,8 @@
 			<div class="pause-panel-body overlay-background-grey">
 				<div class="pause-panel-main">
 					<div class="pause-panel-row1">Traits</div>
-					<div class="pause-panel-row2 overlay-background-black"></div>
+					<div class="pause-panel-row2 overlay-background-black">
+						<div class="pause-traits-grid" id="pauseTraitsGrid"></div></div>
 					<div class="pause-panel-row3">Removed Weapons</div>
 					<div class="pause-panel-row4 overlay-background-stripe"></div>
 					<div class="overlay-panel-body-action">
@@ -1134,7 +1309,7 @@
 				</div>
 			</div>
 			<div class="overlay-actions">
-				<div id="resumeBtn" class="default-div-btn">Return</div>
+				<div id="resumeBtn" class="default-div-btn red-div-btn">Return</div>
 				<div id="restartBtn" class="default-div-btn">Restart</div>
 			</div>
 		</div>
@@ -1206,11 +1381,11 @@
 					<div id="shopOffer" class="shop-offer"></div>
 				</div>
 				<div class="overlay-panel-body-action">
-					<div class="default-div-btn" id="btnShop_weaponRemoval">
+					<div class="default-div-btn btn-shop-weapon-removal" id="btnShop_weaponRemoval">
 						<div class="btn-title">Weapon Removal</div>
 						<div class="btn-subtitle">
 							<div class="subtitle-label">Remaining attempt(s):</div>
-							<div class="subtitle-value" id="btn_subtitle_removal">10</div>
+							<div class="subtitle-value btn_subtitle_removal">5</div>
 						</div>
 					</div>
 					<div class="unique-div-btn" id="btnShop_rerollOffer">
@@ -1229,6 +1404,58 @@
 		</div>
 		</div>
 		
+		
+		
+		<!--  ----- Weapon Removal overlay ----- -->
+		<div id="weaponRemovalOverlay" class="game-overlay hidden">
+		<div class="overlay-panel">
+			
+			<div class="removal-panel-header">
+				<!-- gap -->
+			</div>
+			
+			<div class="removal-panel-body">
+				<div class="removal-panel-row1 overlay-background-grey">
+					<div class="weapon-removal-header">
+						<div class="weapon-removal-title">Remove Weapon Type</div>
+						<div class="weapon-removal-uses">
+							Uses left: <span id="weaponRemovalCount">5</span>
+						</div>
+					</div>
+					
+					<div class="weapon-removal-removed-area overlay-background-stripe">
+						<div id="weaponRemovalRemovedList" class="weapon-removal-removed-list">
+							<!-- Javascript -->
+						</div>
+					</div>
+				</div>
+				
+				<div class="removal-panel-row2 overlay-background-grey">
+					<div class="weapon-removal-offer-area overlay-background-stripe">
+						<div id="weaponRemovalOffer" class="weapon-removal-offer-grid">
+							<!-- Filled by JS -->
+						</div>
+					</div>
+
+					<div class="overlay-panel-body-action">
+						<div class="default-div-btn btn-shop-weapon-removal" id="weaponRemovalConfirmBtn">
+							<div class="btn-title">Weapon Removal</div>
+							<div class="btn-subtitle">
+								<div class="subtitle-label">Remaining attempt(s):</div>
+								<div class="subtitle-value btn_subtitle_removal">5</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<div class="overlay-actions">
+				<div id="weaponRemovalCancelBtn" class="default-div-btn red-div-btn ">Cancel</div>
+			</div>
+				
+		</div>
+		</div>
+		
 
 	</div>
 	</div>
@@ -1236,13 +1463,13 @@
 	<!-- =============== Bottom Section =============== -->
 	<!-- Barricade HP -->
 	<div class="hp-container">
-	<div class="hp-bar" id="hpBar">
-		<div class="fill" id="hpFill"></div>
-		<div class="text" id="hpText">100%</div>
+		<div class="hp-bar" id="hpBar">
+			<div class="fill" id="hpFill"></div>
+			<div class="text" id="hpText">100%</div>
+		</div>
+		<div class="hp-frame"></div>
 	</div>
-	<div class="hp-frame"></div>
-	</div>
-
+	
 	<!-- Inventory -->
 	<div class="inventory-wrap">
 		<div class="inventory-frame"></div>
@@ -1403,7 +1630,7 @@
 		{
 			1:{ 
 				name:"sniperriffle",
-				tags:"normal",
+				tags:"pierce",
 				range:650,
 				bulletsPerUse:1,
 				timeBetweenBullets:0,
@@ -1413,7 +1640,7 @@
 			},
 			2: {
 				name:"sniperriffle",
-				tags:"normal",
+				tags:"pierce",
 				range:650,
 				bulletsPerUse:1,
 				timeBetweenBullets:0,
@@ -1423,7 +1650,7 @@
 			},
 			3: {
 				name:"sniperriffle",
-				tags:"normal",
+				tags:"pierce",
 				range:650,
 				bulletsPerUse:1,
 				timeBetweenBullets:0,
@@ -1433,7 +1660,7 @@
 			},
 			4: {
 				name:"sniperriffle",
-				tags:"normal",
+				tags:"pierce",
 				range:650,
 				bulletsPerUse:1,
 				timeBetweenBullets:0,
@@ -1488,7 +1715,7 @@
 		{
 			1:{ 
 				name:"grenadelauncher",
-				tags:"normal",
+				tags:"aoe",
 				range:460,
 				bulletsPerUse:4,
 				timeBetweenBullets:0.20,
@@ -1498,7 +1725,7 @@
 			},
 			2: {
 				name:"grenadelauncher",
-				tags:"normal",
+				tags:"aoe",
 				range:460,
 				bulletsPerUse:4,
 				timeBetweenBullets:0.18,
@@ -1508,7 +1735,7 @@
 			},
 			3: {
 				name:"grenadelauncher",
-				tags:"normal",
+				tags:"aoe",
 				range:460,
 				bulletsPerUse:6,
 				timeBetweenBullets:0.18,
@@ -1517,7 +1744,7 @@
 			},
 			4: {
 				name:"grenadelauncher",
-				tags:"normal",
+				tags:"aoe",
 				range:480,
 				bulletsPerUse:6,
 				timeBetweenBullets:0.16,
@@ -1538,7 +1765,7 @@
 	const TRAIT_EXTRA_CARD_CHANCE = 0.40;
 	const TRAITS = [
 		{
-			id: 'normal_dmg_up',
+			id: 'dmg_up_normal',
 			scope: 'global',
 			statKey: 'normal_dmg_increase',
 			statBase: 0,
@@ -1551,7 +1778,20 @@
 			}
 		},
 		{
-			id: 'normal_dmg_reload',
+			id: 'dmg_up_aoe',
+			scope: 'global',
+			statKey: 'aoe_dmg_increase',
+			statBase: 0,
+			formatTotal: v => v + '%',
+			name: (tier) => 'AoE Attack Damage Increase ' + ROMAN[tier-1],
+			desc: (tier) => 'Increases AoE attack damage by ',
+			scaling: (tier) => TRAIT_DMG_UP[tier-1],
+			apply: (tier)=>{
+				state.aoe_dmg_increase += TRAIT_DMG_UP[tier-1];
+			}
+		},
+		{
+			id: 'cdr_up_normal',
 			scope: 'global',
 			statKey: 'normal_reload_decrease',
 			statBase: 0,
@@ -1564,7 +1804,20 @@
 			}
 		},
 		{
-			id: 'gold_up',
+			id: 'cdr_up_aoe',
+			scope: 'global',
+			statKey: 'aoe_reload_decrease',
+			statBase: 0,
+			formatTotal: v => v + '%',
+			name: (tier) => 'AoE Attack Reload Time Decrease ' + ROMAN[tier-1],
+			desc: (tier) => 'Decrease AoE Attack Reload Time by ',
+			scaling: (tier) => TRAIT_RELOAD_DOWN[tier-1],
+			apply: (tier)=>{
+				state.aoe_reload_decrease += TRAIT_RELOAD_DOWN[tier-1];
+			}
+		},
+		{
+			id: 'up_gold',
 			scope: 'global',
 			statKey: 'goldGainBonus',
 			statBase: 0,
@@ -1577,7 +1830,7 @@
 			}
 		},
 		{
-			id: 'exp_up',
+			id: 'up_exp',
 			scope: 'global',
 			statKey: 'expGainBonus',
 			statBase: 0,
@@ -1957,10 +2210,13 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 				const dx = this.x - cx, dy = this.y - cy;
 				
 				if (dx*dx + dy*dy <= this.r*this.r) {
+					
+					// apply dmg
 					const hpBefore = m.hp;
 					const dealt = Math.min(this.dmg, hpBefore);
-					
 					m.hit(dealt);
+					
+					// record dps
 					addGunDamage(this.gunKey, dealt);
 
 					// show the effective damage as the popup number
@@ -2416,16 +2672,17 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	}
 	function pauseToggle() {
 		if (state.gameOver) return;
+		
 		state.paused = !state.paused;
+		setOverlay(state.paused);
+		
 		if (state.paused) {
-			setOverlay(true,"Paused");
-		}
-		else {
-			setOverlay(false); 
+			updatePauseTraitGrid();
 		}
 	}
+
 	
-	//Traits
+	// ----------------- Overlay Select Traits ----------------- //
 	function openTraitOverlay() {
 		state.traitOverlayOpen = true;
 		state.paused = true;
@@ -2450,7 +2707,6 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		}
 		
 		state.traitSelected = null;
-		const cardsWrap   = document.getElementById('traitCards');
 		
 		// Render cards
 		traitCardsBox.innerHTML = "";
@@ -2468,13 +2724,23 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			//trait radio button
 			const radio = document.createElement('div');
 			radio.className = 'trait-radio';
+			const radio_img = document.createElement('div');
+			radio_img.className = 'trait-radio-img';
+			radio.appendChild(radio_img);
 			
 			//trait picture
 			const icon = document.createElement('div');
 			icon.className = 'trait-icon';
+			icon.dataset.tier = String(o.tier);
+			
+			const icon_frame = document.createElement('div');
+			icon_frame.className = 'trait-icon-frame';
+			icon.appendChild(icon_frame);
+			
 			const icon_img = document.createElement('div');
 			icon_img.className = 'trait-icon-img';
-			icon.appendChild(icon_img);
+			icon_img.style.backgroundImage = 'url("src/img/UI/trait icon/icon_' + String(o.id) + '.png")';
+			icon_frame.appendChild(icon_img);
 			
 			//text body
 			const body = document.createElement('div');
@@ -2495,7 +2761,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			
 			//Click on Card
 			card.addEventListener('click', () => {
-				cardsWrap.querySelectorAll('.trait-card.selected').forEach(el => el.classList.remove('selected'));
+				traitCardsBox.querySelectorAll('.trait-card.selected').forEach(el => el.classList.remove('selected'));
 				card.classList.add('selected');
 				state.traitSelected = { id: o.id, tier: o.tier };
 				traitStart.classList.toggle('is-disabled', false);
@@ -2511,11 +2777,6 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			traitStart._wired = true;
 			traitStart.addEventListener('click', onTraitStartConfirm);
 		}
-		
-		//set trait-layout-top Height based on num of traits produced
-		const traitCardHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--trait-card-h').trim());
-		const traitCardGap = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--trait-card-gap').trim());
-		document.querySelector('.trait-card-list').style.setProperty('--trait-layout-top-h', Number(offer.length) * Number(traitCardHeight) + (Number(offer.length) -1) * Number(traitCardGap));
 	}
 	function closeTraitOverlay() {
 		state.traitOverlayOpen = false;
@@ -2611,7 +2872,47 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		traitOverlayViewer.classList.add('hidden');
 	}
 	
-	// ---- DPS / Stats overlay ----
+	
+	// ----------------- Overlay Grid Trait Icon ----------------- //
+	function updatePauseTraitGrid() {
+		if (!pauseTraitsGrid) return;
+
+		pauseTraitsGrid.innerHTML = '';
+
+		const owned = state.traitsOwned || [];
+
+		if (!owned.length) {
+			const empty = document.createElement('div');
+			empty.className = 'pause-traits-empty';
+			empty.textContent = 'No traits yet.';
+			pauseTraitsGrid.appendChild(empty);
+			return;
+		}
+		for (const t of owned) {
+			const slot = document.createElement('div');
+			slot.className = 'pause-trait-slot';
+			slot.dataset.tier = t.tier + ',' + t.id;
+			
+			const icon = document.createElement('div');
+			icon.className = 'trait-icon';
+			icon.dataset.tier = String(t.tier);
+
+			const icon_frame = document.createElement('div');
+			icon_frame.className = 'trait-icon-frame';
+			icon.appendChild(icon_frame);
+
+			const icon_img = document.createElement('div');
+			icon_img.className = 'trait-icon-img';
+			icon_img.style.backgroundImage = 'url("src/img/UI/trait icon/icon_' + String(t.id) + '.png")';
+			icon_frame.appendChild(icon_img);
+			
+			slot.appendChild(icon);
+			pauseTraitsGrid.appendChild(slot);
+		}
+	}
+	
+	
+	// ----------------- Overlay DPS ----------------- //
     function formatWeaponName(key) {
         // readable labels per gun type
         switch (key) {
@@ -2656,7 +2957,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
             const row = document.createElement('div');
             row.className = 'dps-card';
             row.innerHTML = `
-                <div class="dps-card-icon overlay-background-stripe"><img src="src/img/gun_${key}.png"></div>
+                <div class="dps-card-icon overlay-background-stripe"><img src="src/img/item/icon/icon_gun_${key}.png"></div>
 				<div class="dps-card-detail">
 					<div class="dps-card-header">
 						<span class="dps-name">${formatWeaponName(key)}</span>
@@ -2684,24 +2985,41 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	resumeBtn.addEventListener('click', ()=>{ if (state.gameOver) return; state.paused=false; setOverlay(false); });
 	restartBtn.addEventListener('click', ()=>{ restart(); });
 	pauseBtn.addEventListener('click', pauseToggle);
-	speedBtn.addEventListener('click', ()=>{ if (speedBtn.disabled) return; state.speedMult = state.speedMult % 3 + 1; speedBtn.innerHTML = state.speedMult+"x"; try { localStorage.setItem(SPEED_STORAGE_KEY, String(state.speedMult)); } catch (_) {} });
+	speedBtn.addEventListener('click', openTraitOverlay);
 	document.querySelectorAll('.btn_viewTraits').forEach(btn => {btn.addEventListener('click', openTraitViewer);});
 	document.querySelectorAll('.btn_viewInventory').forEach(btn => {btn.addEventListener('click', ()=>{ window.openShopOverlay(0,0,false,true);});});
 	closeTraitViewerBtn.addEventListener('click', closeTraitViewer);
 	document.querySelectorAll('.btn_view_dps').forEach(btn => {btn.addEventListener('click', openDpsOverlay);});
     btnDPS_close_view.addEventListener('click', closeDpsOverlay);
-
+	
+	
+	//game speed
+	function core_game_speed() {
+		if (speedBtn.disabled) return; 
+		
+		state.speedMult = state.speedMult % 3 + 1;
+		speedBtn.innerHTML = state.speedMult + "x";
+		
+		try {
+			localStorage.setItem(SPEED_STORAGE_KEY, String(state.speedMult));
+		} catch (_) {}
+	}
 	
 	
 	//Apply Traits
 	function applyTrait(id, tier) {
-		const def = TRAITS.find(t=>t.id===id);
+		const def = TRAITS.find(t => t.id === id);
 		if (!def) return;
-		if (def.scope === 'global')  def.apply(tier); 
+		if (def.scope === 'global') def.apply(tier);
 		else for (const w of (state.weapons || [])) def.apply(tier, w);
+
+		if (!state.traitsOwned) state.traitsOwned = [];
 		state.traitsOwned.push({ id, name: def.name, tier });
+
 		updateTraitViewer();
+		updatePauseTraitGrid();
 	}
+
 	
 	//Load Inventory Grid
 	function renderInventory() {
@@ -2727,8 +3045,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 				const gun = document.createElement('img');
 				gun.className = 'slot-layer slot-gun';
 				gun.alt = item.name;
-				const slug = String(item.name);
-				gun.src = `src/img/gun_${slug}.png`;
+				gun.src = 'src/img/item/icon/icon_gun_' + String(item.name) + '.png';
 				gun.draggable = false;
 				gun.addEventListener('dragstart', e => e.preventDefault());
 				d.appendChild(gun);
@@ -2777,7 +3094,6 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		state.enemies.length=0; state.bullets.length=0;
 		state.coins=0; state.score=0; state.kills=0;
 		state.player.level=1; state.player.exp=0; state.player.expToNext=50; state.player.mode='idle'; state.player.burstLeft=0; state.player.timer=0;
-		state.traitsOwned = [];
 		state.damageByGun = {};
 		state.combatTime = 0;
 		state.dmgNums = [];
@@ -2813,6 +3129,11 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		state.barricadeHP = BARRICADE_HP_MAX;
 		document.getElementById('hpFill').style.width='100%';
 		document.getElementById('hpText').textContent='100%';
+		
+		//reset traits
+		state.traitsOwned = [];
+		updateTraitViewer();
+		updatePauseTraitGrid();
 		
 		//restart game
 		const startWaveNum = Math.max(1, Math.floor(CURRENT_WAVE));
@@ -2885,6 +3206,16 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	const shopStartBtn = document.getElementById('shopStartBtn');
 	const btnRerollOffer = document.getElementById('btnShop_rerollOffer');
 	
+	//weapon removal
+	const btnShopWeaponRemovalMain = document.getElementById('btnShop_weaponRemoval');
+	const weaponRemovalOverlay = document.getElementById('weaponRemovalOverlay');
+	const weaponRemovalOfferEl = document.getElementById('weaponRemovalOffer');
+	const weaponRemovalRemovedListEl = document.getElementById('weaponRemovalRemovedList');
+	const weaponRemovalConfirmBtn = document.getElementById('weaponRemovalConfirmBtn');
+	const weaponRemovalCancelBtn = document.getElementById('weaponRemovalCancelBtn');
+	const btn_subtitle_removal = document.querySelectorAll('.btn_subtitle_removal');
+	
+	
 	if (!shopOverlay || !shopGridEl || !shopOfferEl) return;
 	
 	// ----------------------- Configs ----------------------- //
@@ -2895,10 +3226,14 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	const cellStep = CELL + CELL_GAP;
 	const GHOST_SNAP_OFFSET_X = -10;
 	const GHOST_SNAP_OFFSET_Y = -10;
-
-	const numShopItem = 3;
+	
+	// shop offer reroll
+	const num_shop_offer_base_item = 3;
+	const num_shop_offer_max_item = 10;
+	
 	const root = document.documentElement;
-	root.style.setProperty('--shop-gun-offer-count',  numShopItem);
+	root.style.setProperty('--shop-gun-offer-count',  num_shop_offer_base_item);
+	root.style.setProperty('--shop-gun-offer-scale', '1');
 	
 	const REROLL_CONFIG = Object.freeze({
 		basePrice: 1000,
@@ -2909,6 +3244,12 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		price: REROLL_CONFIG.basePrice,
 		freeLeft: REROLL_CONFIG.freeCount,
 	};
+	
+	// shop weapon removal
+	let weaponRemovalUses = 5;
+	const removedWeaponKeys = new Set(); 
+	let weaponRemovalSelectedItem = null; 
+
 	
 	let mergeHighlightSet = new Set();
 	
@@ -3097,7 +3438,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			//gun image
 			const sprite = document.createElement('img');
 			sprite.className = 'gun-sprite';
-			sprite.src = 'src/img/gun_shop_' + it.key + '.png';
+			sprite.src = 'src/img/item/shop/gun_shop_' + it.key + '.png';
 			sprite.style.width  = shapeWidthPx  + 'px';
 			sprite.style.height = shapeHeightPx + 'px';
 			sprite.style.objectFit = 'contain';
@@ -3116,6 +3457,9 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		const shopOfferEl  = document.getElementById('shopOffer');
 		if (!shopOfferEl) return;
 		shopOfferEl.innerHTML = '';
+		
+		const offerItems = shopState.items.filter(it => it.r == null && it.c == null);
+		updateShopOfferLayout();
 
 		for (const it of shopState.items) {
 			// skip items that are placed on the grid already
@@ -3154,7 +3498,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			//gun image
 			const spriteMini = document.createElement('img');
 			spriteMini.className = 'gun-sprite-mini';
-			spriteMini.src = 'src/img/gun_shop_' + it.key + '.png';
+			spriteMini.src = 'src/img/item/shop/gun_shop_' + it.key + '.png';
 			spriteMini.style.position = 'absolute';
 			spriteMini.style.left   = '15px';
 			spriteMini.style.top    = '20px';
@@ -3169,6 +3513,26 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			shopOfferEl.appendChild(chip);
 		}
 		applyMergeHighlights();
+	}
+	function updateShopOfferLayout() {
+		const offerItems = shopState.items.filter(it => it.r == null && it.c == null);
+		const count = offerItems.length;
+		
+		const cols = Math.min(Math.max(count || 1, 1), 5);
+		root.style.setProperty('--shop-gun-offer-count', String(cols));
+
+		// scale:
+		// 1–3 guns: full size
+		// 4–5 guns: slightly smaller
+		// 6–10 guns: smaller so 2 rows look good
+		let scale = 1;
+		if (count > 3 && count <= 5) {
+			scale = 0.8;
+		} else if (count > 5) {
+			scale = 0.7;
+		}
+
+		root.style.setProperty('--shop-gun-offer-scale', String(scale));
 	}
 	function resolveDropOnGrid(item, newR, newC) {
 		const overlaps = overlappingItemsAt(item, newR, newC);
@@ -3191,6 +3555,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		item.c = newC;
 	}
 	function resolveDropInOffer(e, item) {
+		const offerCount = shopState.items.filter(it => it.r == null && it.c == null && it !== item).length;
 		const elUnder = document.elementFromPoint(e.clientX, e.clientY);
 		const chipEl = elUnder ? elUnder.closest('.gun-chip') : null;
 
@@ -3200,6 +3565,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			if (targetItem) {
 				const isSameObject = (targetItem === item);
 				const canMerge = !isSameObject && canMergeItems(item, targetItem);
+				
 				if (canMerge) {
 					const cameFromGridAndWasLast = (dragFrom === 'grid' && countPlaced() <= 1);
 					if (!cameFromGridAndWasLast) {
@@ -3207,6 +3573,12 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 						return;
 					}
 				}
+				if (dragFrom === 'grid' && offerCount >= num_shop_offer_max_item) {
+					item.r = startPos.r;
+					item.c = startPos.c;
+					return;
+				}
+
 				if (dragFrom === 'grid' && countPlaced() <= 1) {
 					item.r = startPos.r;
 					item.c = startPos.c;
@@ -3218,7 +3590,11 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 				return;
 			}
 		}
-		if (dragFrom === 'grid' && countPlaced() <= 1) {
+		if (dragFrom === 'grid' && offerCount >= num_shop_offer_max_item) {
+			item.r = startPos.r;
+			item.c = startPos.c;
+		}
+		else if (dragFrom === 'grid' && countPlaced() <= 1) {
 			item.r = startPos.r;
 			item.c = startPos.c;
 		}
@@ -3771,7 +4147,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		//gun image
 		const spriteMini = document.createElement('img');
 		spriteMini.className = 'gun-sprite-mini';
-		spriteMini.src = 'src/img/gun_shop_' + item.key + '.png';
+		spriteMini.src = 'src/img/item/shop/gun_shop_' + item.key + '.png';
 		spriteMini.style.position = 'absolute';
 		spriteMini.style.width  = shapeWidthPx  + 'px';
 		spriteMini.style.height = shapeHeightPx + 'px';
@@ -3846,7 +4222,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	}
 	
 	
-	// -------------------------- Open / Close Shop -------------------------- //
+	// -------------------------- Shop Reroll -------------------------- //
 	function hasFreeReroll() {
 		return rerollState.freeLeft > 0;
 	}
@@ -3903,13 +4279,14 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	}
 	function shop_offer_addNewOffers(state){
 		shopState.items = shopState.items.filter(it => it.r != null && it.c != null);
-		for (let i = 0; i < numShopItem; i++) {
+		for (let i = 0; i < num_shop_offer_base_item; i++) {
 			shopState.items.push(shop_offer_makeOfferItem());
 		}
 	}
 	function shop_offer_makeOfferItem() {
-		const gunKeys = Object.keys(window.GUNS);
-		const key = gunKeys[(Math.random()*gunKeys.length)|0];
+		const allKeys = Object.keys(window.GUNS);
+		const availableKeys = allKeys.filter(k => !removedWeaponKeys.has(k));
+		const key = availableKeys[(Math.random() * availableKeys.length) | 0];
 		const tier = pickTierForShop();
 		const colorPair = TIER_COLORS[tier] || TIER_COLORS[1];
 
@@ -3922,6 +4299,192 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			c: null,
 		};
 	}
+	
+	
+	// ----------------- Shop Weapon Removal ----------------- //
+	function update_btn_subtitle_removal() {
+		btn_subtitle_removal.forEach(el => {
+			el.textContent = String(weaponRemovalUses);
+		});
+	}
+	function openWeaponRemovalOverlay() {
+		// no uses or no guns in offer → do nothing (or play error SFX)
+		const offerItems = shopState.items.filter(it => it.r == null && it.c == null);
+		if (!offerItems.length || weaponRemovalUses <= 0) {
+			// e.g. SFX_ERROR && maybe a small message
+			return;
+		}
+
+		weaponRemovalSelectedItem = null;
+		update_btn_subtitle_removal();
+		renderWeaponRemovalOffer();
+		renderWeaponRemovalRemovedList();
+
+		weaponRemovalOverlay.classList.remove('hidden');
+	}
+	function closeWeaponRemovalOverlay() {
+		weaponRemovalOverlay.classList.add('hidden');
+		weaponRemovalOverlay.classList.remove('visible');
+		weaponRemovalSelectedItem = null;
+	}
+	if (btnShopWeaponRemovalMain) {
+		btnShopWeaponRemovalMain.addEventListener('click', openWeaponRemovalOverlay);
+	}
+	if (weaponRemovalCancelBtn) {
+		weaponRemovalCancelBtn.addEventListener('click', closeWeaponRemovalOverlay);
+	}
+	function renderWeaponRemovalOffer() {
+		if (!weaponRemovalOfferEl) return;
+		weaponRemovalOfferEl.innerHTML = '';
+
+		const offerItems = shopState.items.filter(it => it.r == null && it.c == null);
+
+		for (const it of offerItems) {
+			const chip = document.createElement('div');
+			chip.className = 'gun-chip';
+			chip.dataset.id = it.id;
+
+			// --- mini background cells (like shop-offer) ---
+			const { cellCols, cellRows } = getShapeBounds(it.key);
+			const BASE_VISIBLE_CELLS = 3;
+			const maxDim = Math.max(cellCols, cellRows);
+			const scaleFactor = maxDim > BASE_VISIBLE_CELLS ? BASE_VISIBLE_CELLS / maxDim : 1;
+			const miniCell = MINI_CELL * scaleFactor;
+
+			const miniWidthPx  = cellCols * miniCell;
+			const miniHeightPx = cellRows * miniCell;
+
+			for (const [dr, dc] of SHAPES[it.key]) {
+				const d = document.createElement('div');
+				d.className = 'mini-cell';
+				d.style.position = 'absolute';
+				d.style.left   = (15 + dc * miniCell) + 'px';
+				d.style.top    = (20 + dr * miniCell) + 'px';
+				d.style.width  = miniCell + 'px';
+				d.style.height = miniCell + 'px';
+				d.style.backgroundImage = "url('src/img/UI_shop_slot_background_tier_" + it.tier + ".png')";
+				d.style.backgroundSize = '100% 100%';
+				d.style.backgroundRepeat = 'no-repeat';
+				d.style.backgroundPosition = 'center';
+				chip.appendChild(d);
+			}
+
+			const spriteMini = document.createElement('img');
+			spriteMini.className = 'gun-sprite-mini';
+			spriteMini.src = 'src/img/item/shop/gun_shop_' + it.key + '.png';
+			spriteMini.style.position = 'absolute';
+			spriteMini.style.left   = '15px';
+			spriteMini.style.top    = '20px';
+			spriteMini.style.width  = miniWidthPx  + 'px';
+			spriteMini.style.height = miniHeightPx + 'px';
+			spriteMini.style.objectFit = 'contain';
+			spriteMini.style.pointerEvents = 'none';
+			chip.appendChild(spriteMini);
+
+			// selection behaviour
+			chip.addEventListener('click', () => {
+				weaponRemovalSelectedItem = it;
+				// clear others
+				weaponRemovalOfferEl.querySelectorAll('.gun-chip').forEach(el => {
+					el.classList.remove('weapon-removal-selected');
+				});
+				chip.classList.add('weapon-removal-selected');
+			});
+
+			weaponRemovalOfferEl.appendChild(chip);
+		}
+	}
+	function renderWeaponRemovalRemovedList() {
+		if (!weaponRemovalRemovedListEl) return;
+		weaponRemovalRemovedListEl.innerHTML = '';
+
+		if (!removedWeaponKeys.size) {
+			const span = document.createElement('span');
+			span.style.fontSize = '12px';
+			span.style.opacity = '0.7';
+			span.textContent = 'No weapons removed yet.';
+			weaponRemovalRemovedListEl.appendChild(span);
+			return;
+		}
+
+		for (const key of removedWeaponKeys) {
+			const itemDiv = document.createElement('div');
+			itemDiv.className = 'weapon-removal-removed-item';
+
+			const tier = 1; // visual only; or store per-removed tier if you want
+			const { cellCols, cellRows } = getShapeBounds(key);
+			const BASE_VISIBLE_CELLS = 2.5;
+			const maxDim = Math.max(cellCols, cellRows);
+			const scaleFactor = maxDim > BASE_VISIBLE_CELLS ? BASE_VISIBLE_CELLS / maxDim : 1;
+			const miniCell = (MINI_CELL * 0.7) * scaleFactor;
+
+			const miniWidthPx  = cellCols * miniCell;
+			const miniHeightPx = cellRows * miniCell;
+
+			for (const [dr, dc] of SHAPES[key]) {
+				const d = document.createElement('div');
+				d.className = 'mini-cell';
+				d.style.left   = (10 + dc * miniCell) + 'px';
+				d.style.top    = (10 + dr * miniCell) + 'px';
+				d.style.width  = miniCell + 'px';
+				d.style.height = miniCell + 'px';
+				d.style.backgroundImage = "url('src/img/UI_shop_slot_background_tier_" + tier + ".png')";
+				d.style.backgroundSize = '100% 100%';
+				d.style.backgroundRepeat = 'no-repeat';
+				d.style.backgroundPosition = 'center';
+				itemDiv.appendChild(d);
+			}
+
+			const spriteMini = document.createElement('img');
+			spriteMini.className = 'gun-sprite-mini';
+			spriteMini.src = 'src/img/item/shop/gun_shop_' + key + '.png';
+			spriteMini.style.left   = '10px';
+			spriteMini.style.top    = '10px';
+			spriteMini.style.width  = miniWidthPx  + 'px';
+			spriteMini.style.height = miniHeightPx + 'px';
+			spriteMini.style.position = 'absolute';
+			spriteMini.style.objectFit = 'contain';
+			itemDiv.appendChild(spriteMini);
+
+			weaponRemovalRemovedListEl.appendChild(itemDiv);
+		}
+	}
+	weaponRemovalConfirmBtn.addEventListener('click', () => {
+		if (weaponRemovalUses <= 0) {
+			return;// no uses left
+		}
+		if (!weaponRemovalSelectedItem) {
+			return;// nothing selected
+		}
+
+		const key = weaponRemovalSelectedItem.key;
+
+		// add to removed set
+		removedWeaponKeys.add(key);
+
+		// consume a use
+		weaponRemovalUses -= 1;
+		update_btn_subtitle_removal();
+
+		// remove all offer chips of this type from current shop-offer,
+		// but keep already-placed weapons in the 9x9 grid
+		shopState.items = shopState.items.filter(it => {
+			if (it.key !== key) return true;
+			// keep weapons that are placed (on grid)
+			if (it.r != null && it.c != null) return true;
+			// drop offer instances of this type
+			return false;
+		});
+
+		// re-render shop offer + this overlay’s offer mirror
+		renderOffer();
+		renderWeaponRemovalOffer();
+		renderWeaponRemovalRemovedList();
+		
+		closeWeaponRemovalOverlay();
+	});
+
+
 	
 	
 	// -------------------------- Open / Close Shop -------------------------- //
