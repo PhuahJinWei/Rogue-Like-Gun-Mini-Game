@@ -8,22 +8,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 	* { box-sizing: border-box; }
-	html, 
-	body {
+	html {
 		height:100%;
 		width:100%;
 		overflow:hidden;
 		overscroll-behavior:none;
 	}
 	body {
+		height:100%;
+		width:100%;
 		margin:0;
 		padding:0;
-		background: linear-gradient(180deg, #0b0f1a 0%, #0e1526 100%);
 		display:flex;
 		align-items:center;
 		justify-content:center;
 		touch-action: manipulation;
+		background-image: url('src/img/UI/UI_overlay_background_black.png');
+		background-repeat: repeat;
 	}
+	.hidden { display: none !important; }
+	
 	:root { --frame-w: 600px; --frame-h: 1080px; --canvas-h: 750px; }
 	.fit-wrap {
 		transform-origin:center center;
@@ -36,11 +40,6 @@
 		height: var(--frame-h);
 		padding: 0;
 		overflow: hidden;
-		background-image: url('src/img/background_grey.png');
-		background-repeat: no-repeat;
-		background-position: center center;
-		background-size: contain;
-		background-color: #32342F;
 		
 		/* --- prevents dragging --- */
 		user-select: none;
@@ -62,7 +61,7 @@
 	.game-shell {
 		width:var(--frame-w); max-width:100%;
 	}
-	.game-overlay.hidden { display:none; }
+	.game-overlay { display:none; }
 	.game-overlay {
 		position: fixed;
 		inset: 0;
@@ -87,25 +86,58 @@
 		filter: brightness(0.7);
 		transform: translateY(3px);
 	}
-	.red-div-btn {
-		aspect-ratio: 373 / 115;
-		height: 65px;
-		padding-top: 15px;
-		background-image: url('src/img/UI_btn_red.png');
-	}
 	
+	/* -------- button types -------- */
+	.btn-long-default {
+		aspect-ratio: 290 / 72;
+		height: 55px;
+		padding-top: 12px;
+		background-image: url('src/img/UI/button/ui_btn_long_default.png');
+	}
+	.btn-normal-default {
+		aspect-ratio: 300 / 90;
+		height: 65px;
+		padding-top: 17px;
+		background-image: url('src/img/UI/button/ui_btn_normal_default.png');
+	}
+	.btn-normal-blue {
+		aspect-ratio: 300 / 90;
+		height: 65px;
+		padding-top: 17px;
+		background-image: url('src/img/UI/button/ui_btn_normal_blue.png');
+	}
+	.btn-normal-blue.disabled {
+		cursor: not-allowed;
+		background-image: url('src/img/UI/button/ui_btn_normal_disabled.png');
+		color: #C6C6C6;
+	}
+	.btn-normal-red {
+		aspect-ratio: 300 / 90;
+		height: 65px;
+		padding-top: 17px;
+		background-image: url('src/img/UI/button/ui_btn_normal_red.png');
+	}
+	.btn_alert_red {
+		aspect-ratio: 300 / 65;
+		height: 70px;
+		padding-top: 17px;
+		background-image: url('src/img/UI/button/ui_btn_alert_red.png');
+		
+		font-family: "Segoe UI", Arial, sans-serif;
+		font-size: 22px;
+		font-weight: 700;
+	}
+	.btn-square-default {
+		aspect-ratio: 83 / 90;
+		height: 55px;
+		padding-top: 10px;
+		background-image: url('src/img/UI/button/ui_btn_square_default.png');
+	}
 	
 	.btn_view_dps {
 		aspect-ratio: 10 / 9;
-		height: 56px;
+		height: 55px;
 		background-image: url('src/img/UI/button/UI_overlay_btn_view_dps.png');
-	}
-	.btn_viewInventory,
-	.btn_viewTraits {
-		aspect-ratio: 465 / 115;
-		height: 56px;
-		padding-top: 12px;
-		background-image: url('src/img/UI_btn_default.png');
 	}
 	
 	/* ============================ Overlay Backgrounds  ============================ */
@@ -119,7 +151,7 @@
 	.overlay-background-black {
 		border: 18px solid transparent;
 		box-sizing: border-box;
-		border-image-source: url("src/img/UI/UI_overlay_background_black.png");
+		border-image-source: url("src/img/UI/UI_overlay_background_darkgrey.png");
 		border-image-slice: 18 fill;
 		border-image-repeat: stretch;
 		overflow: hidden;
@@ -243,37 +275,20 @@
 		letter-spacing: .12em;
 		color: #F7F4EF;
 	}
-	/* ------------- Button ------------- */
-	:root {
-		--speed-left: 474px; --speed-top: 33px; --speed-size: 49px; --speed-txt-size: 25px;
-		--pause-left: 534px; --pause-top: 33px; --pause-size: 49px;
-	}
-	.hud-btn {
-		position:absolute;
-		background: transparent;
-		border: none;
-		color:#fff;
-		cursor:pointer;
-	}
+	
 	#speedBtn {
-		left: var(--speed-left);
-		top: var(--speed-top);
-		width: var(--speed-size);
-		height: var(--speed-size);
-		font-size: var(--speed-txt-size);
-		font-family: 'Rajdhani', sans-serif;
-		font-weight: 700;
-		letter-spacing: .04em;
-		color: #FBF8F1;
-		-webkit-text-stroke: 1px #000;
-		text-shadow: #000;
-		line-height: 1;
+		position:absolute;
+		left: 474px;
+		top: 32px;
+		font-size: 25px;
+		font-weight: 500;
 	}
 	#pauseBtn {
-		left: var(--pause-left);
-		top: var(--pause-top);
-		width: var(--pause-size);
-		height: var(--pause-size);
+		position:absolute;
+		left: 534px;
+		top: 33px;
+		height: 52px;
+		aspect-ratio: 1 / 1;
 	}
 
 
@@ -313,9 +328,7 @@
 		height: 46px;
 		width: 100%;
 		padding: 10px 14px;
-		background-image: url('src/img/background_grey.png');
-		background-size: cover;
-		background-position: center;
+		background-color: #242621;
 	}
 	.hp-frame {
 		position: absolute;
@@ -415,21 +428,79 @@
 		align-items: center;
 		justify-content: center;
 	}
-	.pause-traits-empty {
-		font-size: 12px;
-		color: #ccc;
-		text-align: center;
-		grid-column: 1 / -1;
-	}
 	
-	#restartBtn {
-		aspect-ratio: 373 / 115;
-		height: 65px;
-		padding-top: 15px;
-		background-image: url('src/img/UI_btn_red.png');
+	
+	/* ============================ Game Over Overlay ============================ */
+	.gameover-panel-body {
+		width: 100%;
+		aspect-ratio: 560 / 727;
+		display: grid;
+		grid-template-rows: auto auto auto auto 1fr;
+		background-image: url('src/img/UI/UI_overlay_background_gameover.png');
 		background-size: 100% 100%;
 		background-position: center;
 	}
+	.gameover-panel-row1 {
+		height: 89px;
+		width: 100%;
+	}
+	.gameover-panel-row2 {
+		height: 242px;
+		width: 100%;
+		padding: 10px 20px 10px 35px;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+	.gameover-panel-row3 {
+		height: 160px;
+		width: 100%;
+		padding: 55px 20px 20px;
+	}
+	.gameover-panel-row4 {
+		height: 155px;
+		width: 100%;
+		padding: 34px 35px 0px;
+	}
+	
+	.gameover-scoreboard-row {
+		height: 40px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 25px;
+		letter-spacing: .03em;
+	}
+	.gameover-scoreboard-title {
+		width: auto;
+		height: 100%;
+		padding-right: 10px;
+		display: flex;
+		align-items: center;
+		background-color: #54534F;
+	}
+	.gameover-scoreboard-score {
+		width: auto;
+		height: 100%;
+		padding-left: 10px;
+		display: flex;
+		align-items: center;
+		background-color: #54534F;
+	}
+	
+	.gameover-total-point {
+		height: 100%;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 50px;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		color: #ffffff;
+		line-height: 1;
+	}
+	
 	
 	
 	/* ============================ Trait Overlay ============================ */
@@ -449,7 +520,7 @@
 	.trait-card-list {
 		width: 100%;
 		padding: 8px 0px 5px;
-		background-image: url('src/img/UI_trait_overlay_top.png');
+		background-image: url('src/img/UI/UI_overlay_background_select_trait.png');
 		background-repeat: no-repeat;
 		background-position: top center;
 		background-size: 100% auto;
@@ -559,20 +630,6 @@
 		font-weight: 800;
 	}
 	
-	#traitStartBtn {
-		width: 200px;
-		aspect-ratio: 200 / 62;
-		max-width: 200px;
-		background-image: url('src/img/UI_trait_select_button_enabled.png');
-		background-size: 100% 100%;
-		background-position: center;
-		cursor: pointer;
-	}
-	#traitStartBtn.is-disabled {
-		background-image: url('src/img/UI_trait_select_button_disabled.png');
-		cursor: not-allowed;
-	}
-	
 	/* ======================== View Trait Overlay ======================== */
 	.view-trait-panel-body {
 		width: 100%;
@@ -618,6 +675,7 @@
 		grid-template-rows: auto auto 1fr;
 		overflow: hidden;
 	}
+	.overlay-panel > * { min-width: 0; }
 	.overlay-panel-header-long,
 	.overlay-panel-header-short {
 		position: relative;
@@ -789,14 +847,9 @@
 			#CA1035 100%
 		);
 	}
-	.dps-empty {
-		font-size: 16px;
-		text-align: center;
-		color: #d1d5db;
-	}
 	
 	
-	/* ============ Weapon Removal Overlay //here ============ */
+	/* ============ Weapon Removal Overlay ============ */
 	.removal-panel-header {
 		height: 200px;
 		width: 100%;
@@ -811,31 +864,25 @@
 		height: 250px;
 		width: 100%;
 		display: grid;
-		grid-template-rows: auto 1fr;
+		grid-template-rows: 50px 1fr;
 	}
 	.removal-panel-row2 {
-		height: 350px;
+		height: 360px;
 		width: 100%;
 		display: grid;
 		grid-template-rows: 260px 1fr;
 		row-gap: 8px;
 	}
 	
-	.weapon-removal-header {
-		display: flex;
-		justify-content: space-between;
+	.removal-panel-row1-header {
+		display: grid;
 		align-items: center;
-		font-size: 16px;
-		font-weight: 600;
-		padding: 4px 6px;
-	}
-	.weapon-removal-uses {
-		font-size: 14px;
-		opacity: 0.8;
+		text-align: center;
+		font-weight: 800;
 	}
 	.weapon-removal-removed-area {
 		border-radius: 6px;
-		margin: 15px 12px;
+		margin: 0px 12px 15px;
 		display: flex;
 		flex-direction: column;
 		row-gap: 4px;
@@ -846,61 +893,33 @@
 		border-radius: 6px;
 		margin: 17px 12px 0px;
 		display: flex;
-		flex-direction: column;
-		row-gap: 4px;
+		justify-content: center;
+		overflow: hidden;
+		touch-action: none;
 	}
-	.weapon-removal-removed-list {
-		display: flex;
-		flex-wrap: wrap;
-		column-gap: 6px;
-		row-gap: 6px;
-		align-items: center;
-		height: 100%;
-		width: 100%;
-		overflow-x: hidden;
-		overflow-y: auto;
-	}
-
-	/* lower half: mini grid similar to shop-offer */
-	.weapon-removal-offer-grid {
-		display: grid;
-		grid-template-columns: repeat(5, minmax(0, 1fr));
-		column-gap: 8px;
-		row-gap: 8px;
-		align-items: start;
-		align-content: flex-start;
-		height: 100%;
-		width: 100%;
-		overflow-y: auto;
-		overflow-x: hidden;
-		padding: 4px 2px;
-	}
-	.weapon-removal-removed-list::-webkit-scrollbar,
-	.weapon-removal-offer-grid::-webkit-scrollbar {
-		width: 0;
-		height: 0;
-	}
-	.weapon-removal-removed-list,
-	.weapon-removal-offer-grid {
-		scrollbar-width: none;
-		-ms-overflow-style: none;
-	}
-	.weapon-removal-offer-grid .gun-chip {
-		position: relative;
-	}
-
-	.weapon-removal-offer-grid .gun-chip.weapon-removal-selected::after {
+	.gun-chip.weapon-removal-selected::after {
 		content: "";
 		position: absolute;
-		inset: -2px;
-		border: 2px solid #3AF769;  /* green border */
-		box-shadow: 0 0 8px rgba(58, 247, 105, 0.7);
+		height: 100%; width: 100%;
+		border: 2px solid #3AF769;
 		pointer-events: none;
+	}
+	
+	.weapon-removal-removed-list {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 8px;
+		flex-wrap: nowrap;
+		height: 100%;
+		width: 100%;
+		overflow: hidden;
 	}
 	.weapon-removal-removed-item {
 		position: relative;
-		width: 42px;
-		height: 42px;
+		width: 105px;
+		height: 105px;
+		transform-origin: center center;
 	}
 
 	.weapon-removal-removed-item .mini-cell {
@@ -1045,6 +1064,8 @@
 		height: 225px;
 		width: 95%;
 		margin: 8px 10px 0px;
+		display: flex;
+		justify-content: center;
 		overflow: hidden;
 		touch-action: none;
 	}
@@ -1058,12 +1079,16 @@
 		left: 50%;
 		transform: translateX(-50%);
 		height: 15px;
-		display: flex;
+		display: inline-flex;
 		align-items: center;
 		justify-content: center;
 		font-size: 18px;
 		font-weight: 600;
 		pointer-events: none;
+	}
+	.shop-row1-title::before {
+		content: "Inventory Expansion Points: ";
+		margin-right: 4px;
 	}
 	.shop-grid {
 		position: relative;
@@ -1072,27 +1097,25 @@
 	.shop-offer {
 		display: grid;
 		position: relative;
-		height: 100%;
+		height: auto;
 		width: 100%;
 		column-gap: 10px;
-		row-gap: 40px;
-		grid-template-columns: repeat(var(--shop-gun-offer-count), minmax(90px, 1fr));
+		row-gap: 10px;
+		padding: 20px;
+		grid-template-columns: repeat(var(--shop-gun-offer-count), 1fr);
 		align-items: start;
 		align-content: flex-start;
+		transform: scale(var(--shop-gun-offer-scale, 1));
+		transform-origin: top left;
 	}
 	
 	
 	/* ------- Shop Gun ------- */
 	.gun-chip {
 		position: relative;
-		width: 90px;
-		height: 60px;
 		user-select: none;
 		cursor: grab;
-		transform: scale(var(--shop-gun-offer-scale));
-		transform-origin: top center;
 	}
-
 	.gun-chip:active {
 		cursor: grabbing;
 	}
@@ -1158,7 +1181,7 @@
 	
 	/* ------- Action Buttons ------- */
 	.btn-shop-weapon-removal, 
-	#btnShop_rerollOffer {
+	#btn_shop_reroll {
 		width: 263px;
 		aspect-ratio: 530 / 141;
 		display: inline-flex;
@@ -1172,89 +1195,54 @@
 		background-image: url('src/img/UI_shop_offer_removal_button.png');
 		padding: 6px 12px;
 	}
-	#btnShop_rerollOffer {
+	#btn_shop_reroll {
 		background-image: url('src/img/UI_shop_offer_button_reroll_enabled.png');
 		/* padding: 12px 0px; */
 	}
 	.btn-shop-weapon-removal .btn-title,
-	#btnShop_rerollOffer .btn-title	{
+	#btn_shop_reroll .btn-title	{
 		font-family: "Segoe UI", Arial, sans-serif;
-		font-size: 20px;
-		font-weight: 650;
+		font-size: 19px;
+		font-weight: 600;
 		line-height: 1.1;
 		letter-spacing: 0.04em;
 		color: #FFFBF5;
-		text-shadow:
-			0 1px 0 #25231f,
-			-1px 0   #25231f,
-			1px 0   #25231f,
-			0 -1px  #25231f;
 	}
 	.btn-shop-weapon-removal .btn-subtitle,
-	#btnShop_rerollOffer .btn-subtitle {
+	#btn_shop_reroll .btn-subtitle {
 		display: inline-flex;
-		margin-top: 4px;
+		margin-top: 5px;
 		font-family: "Segoe UI", Arial, sans-serif;
 		font-size: 14px;
-		font-weight: 600;
+		font-weight: 500;
 		letter-spacing: 0.02em;
 		color: #C4BEB2;
-		text-shadow:
-			0 1px 0 #25231f,
-			-1px 0 #25231f,
-			1px 0 #25231f,
-			0 -1px #25231f;
 	}
 	.btn-shop-weapon-removal .btn-subtitle .subtitle-value,
-	#btnShop_rerollOffer .btn-subtitle .subtitle-value { margin-left: 4px; }
+	#btn_shop_reroll .btn-subtitle .subtitle-value { margin-left: 4px; }
 	
-	#btnShop_rerollOffer.disabled { background-image: url('src/img/UI_shop_offer_button_reroll_disabled.png'); }
-	#btnShop_rerollOffer.disabled #btn_subtitle_reroll { color: #F31307; }
+	#btn_shop_reroll.disabled { background-image: url('src/img/UI_shop_offer_button_reroll_disabled.png'); }
+	#btn_shop_reroll.disabled #subtitle_btn_shop_reroll { color: #F31307; }
 	
 	/* ------- Reroll Coin Icon ------- */
-	#btnShop_rerollOffer .subtitle-label {
-		display: inline-flex;
-		align-items: center;
-		margin-right: 4px;
-		font-size: 13px;
-	}
-	#btnShop_rerollOffer .subtitle-label.is-coin {
-		width: 18px;
+	#btn_shop_reroll .subtitle-label.is-coin {
 		height: 18px;
+		aspect-ratio: 1 / 1;
 		font-size: 0;
 		background-repeat: no-repeat;
 		background-position: center;
 		background-size: contain;
 		background-image: url("src/img/icon_coin.png");
 	}
-	#btnShop_rerollOffer.disabled .subtitle-label.is-coin {
+	#btn_shop_reroll.disabled .subtitle-label.is-coin {
 		background-image: url("src/img/icon_coin_disabled.png");
 	}
 	
 	/* ------- View Inventory ------- */
 	.btn-shop-weapon-removal.viewMode, 
-	#btnShop_rerollOffer.viewMode { display: none; }
-	
-	#shopStartBtn.viewMode { display: none; }
-	#shopStartBtn {
-		width: 55%;
-		aspect-ratio: 413 / 90;
-		max-width: 413px;
-		background-image: url('src/img/UI_shop_start_button.png');
-		background-size: cover;
-		background-position: center;
-		cursor: pointer;
-	}
+	#btn_shop_reroll.viewMode,
+	#btn_shop_close.viewMode,
 	#btnShop_close_view.viewMode { display: none; }
-	#btnShop_close_view {
-		background-image: url('src/img/UI_shop_view_close_button.png');
-		display: grid;
-		padding-top: 20px;
-		text-align: center;
-		width: 40%;
-		aspect-ratio: 373 / 115;
-		cursor: pointer;
-	}
 </style>
 
 <!-- ---- Imports ---- -->
@@ -1276,8 +1264,8 @@
 			</div>
 		<div id="coinNum"  class="num sm right">0</div>
 		<div id="scoreNum" class="num sm right">0</div>
-		<button id="speedBtn" class="hud-btn" data-sfx="src/sfx/buttons/sfx_btn_default.mp3">1x</button>
-		<button id="pauseBtn" class="hud-btn" data-sfx="src/sfx/buttons/sfx_btn_pause.mp3"></button>
+		<div id="speedBtn" class="default-div-btn btn-square-default">1x</div>
+		<div id="pauseBtn" class="unique-div-btn"></div>
 	</div>
 
 	<!-- =============== Battlefield =============== -->
@@ -1288,7 +1276,7 @@
 		<div id="bossWarn" class="warn-banner">BOSS APPROACHING</div>
 		
 		
-		<!-- ----- Pause / Restart Overlay ----- -->
+		<!-- ----- Pause Overlay ----- -->
 		<div id="pauseOverlay" class="game-overlay hidden">
 		<div class="overlay-panel">
 			<div class="overlay-panel-header-long">
@@ -1296,24 +1284,48 @@
 			</div>
 			<div class="pause-panel-body overlay-background-grey">
 				<div class="pause-panel-main">
-					<div class="pause-panel-row1">Traits</div>
+					<div class="pause-panel-row1">Option in effect</div>
 					<div class="pause-panel-row2 overlay-background-black">
-						<div class="pause-traits-grid" id="pauseTraitsGrid"></div></div>
+						<div class="pause-traits-grid" id="pauseTraitsGrid"></div>
+					</div>
 					<div class="pause-panel-row3">Removed Weapons</div>
-					<div class="pause-panel-row4 overlay-background-stripe"></div>
+					<div class="pause-panel-row4 overlay-background-stripe">
+						<div id="overlay_pause_removal_list" class="weapon-removal-removed-list"></div>
+					</div>
 					<div class="overlay-panel-body-action">
 						<div class="default-div-btn btn_view_dps"></div>
-						<div class="default-div-btn btn_viewInventory">Inventory</div>
-						<div class="default-div-btn btn_viewTraits">Traits Obtained</div>
+						<div class="default-div-btn btn-long-default btn_viewInventory">Inventory</div>
+						<div class="default-div-btn btn-long-default btn_viewTraits">Traits Obtained</div>
 					</div>
 				</div>
 			</div>
 			<div class="overlay-actions">
-				<div id="resumeBtn" class="default-div-btn red-div-btn">Return</div>
-				<div id="restartBtn" class="default-div-btn">Restart</div>
+				<div id="btn_resume" class="default-div-btn btn-normal-default">Continue</div>
+				<div id="btn_quickend" class="default-div-btn btn-normal-red">Quick End</div>
 			</div>
 		</div>
 		</div>
+		
+		
+		
+		<!-- ----- Game Over Overlay ----- -->
+		<div id="gameoverOverlay" class="game-overlay hidden">
+		<div class="overlay-panel">
+			<div class="gameover-panel-body">
+				<div class="gameover-panel-row1"></div>
+				<div class="gameover-panel-row2" id="gameover_scoreboard_list"></div>
+				<div class="gameover-panel-row3">
+					<div class="gameover-total-point" id="gameover_total_point"></div>
+				</div>
+				<div class="gameover-panel-row4"></div>
+				<div class="overlay-panel-body-action">
+					<div class="default-div-btn btn_view_dps"></div>
+					<div class="default-div-btn btn-normal-blue" id="btn_restart">Restart</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		
 		
 			
 		<!--  ----- Trait overlay ----- -->
@@ -1326,12 +1338,12 @@
 				<div id="traitCards" class="trait-card-list"></div>
 				
 				<div class="overlay-panel-body-action">
-					<div class="default-div-btn btn_viewInventory">Inventory</div>
-					<div class="default-div-btn btn_viewTraits">Traits Obtained</div>
+					<div class="default-div-btn btn-long-default btn_viewInventory">Inventory</div>
+					<div class="default-div-btn btn-long-default btn_viewTraits">Traits Obtained</div>
 				</div>
 			</div>
 			<div class="overlay-actions">
-				<div id="traitStartBtn" class="default-div-btn is-disabled"></div>
+				<div id="traitStartBtn" class="default-div-btn btn-normal-blue disabled">Select</div>
 			</div>
 		</div>
 		</div>
@@ -1374,7 +1386,7 @@
 			</div>
 			<div class="shop-panel-body overlay-background-grey">
 				<div class="shop-panel-row1 overlay-background-black">
-					<div class="shop-row1-title">Inventory Expansion Points:</div>
+					<div class="shop-row1-title hidden"><div id="shop_expand_count">69</div></div>
 					<div class="shop-grid" id="shopGrid"></div>
 				</div>
 				<div class="shop-panel-row2 overlay-background-stripe" id="shopLayoutOffer">
@@ -1388,18 +1400,18 @@
 							<div class="subtitle-value btn_subtitle_removal">5</div>
 						</div>
 					</div>
-					<div class="unique-div-btn" id="btnShop_rerollOffer">
+					<div class="unique-div-btn" id="btn_shop_reroll">
 						<div class="btn-title">Refresh</div>
 						<div class="btn-subtitle">
 							<div class="subtitle-label">Remaining attempt(s):</div>
-							<div class="subtitle-value" id="btn_subtitle_reroll">10</div>
+							<div class="subtitle-value" id="subtitle_btn_shop_reroll">10</div>
 						</div>
 					</div>
-					<div class="default-div-btn" id="btnShop_close_view">Return</div>
+					<div class="default-div-btn btn-normal-default" id="btnShop_close_view">Return</div>
 				</div>
 			</div>
 			<div class="overlay-actions" id="shopActionRow2">
-				<div id="shopStartBtn" class="unique-div-btn"></div>
+				<div class="unique-div-btn btn_alert_red" id="btn_shop_close">Start Battle</div>
 			</div>
 		</div>
 		</div>
@@ -1416,23 +1428,15 @@
 			
 			<div class="removal-panel-body">
 				<div class="removal-panel-row1 overlay-background-grey">
-					<div class="weapon-removal-header">
-						<div class="weapon-removal-title">Remove Weapon Type</div>
-						<div class="weapon-removal-uses">
-							Uses left: <span id="weaponRemovalCount">5</span>
-						</div>
-					</div>
-					
+					<div class="removal-panel-row1-header">Remove Weapon Type</div>
 					<div class="weapon-removal-removed-area overlay-background-stripe">
-						<div id="weaponRemovalRemovedList" class="weapon-removal-removed-list">
-							<!-- Javascript -->
-						</div>
+						<div id="weaponRemovalRemovedList" class="weapon-removal-removed-list"></div>
 					</div>
 				</div>
 				
 				<div class="removal-panel-row2 overlay-background-grey">
 					<div class="weapon-removal-offer-area overlay-background-stripe">
-						<div id="weaponRemovalOffer" class="weapon-removal-offer-grid">
+						<div id="weaponRemovalOffer" class="shop-offer">
 							<!-- Filled by JS -->
 						</div>
 					</div>
@@ -1450,7 +1454,7 @@
 				</div>
 			</div>
 			<div class="overlay-actions">
-				<div id="weaponRemovalCancelBtn" class="default-div-btn red-div-btn ">Cancel</div>
+				<div id="weaponRemovalCancelBtn" class="default-div-btn btn-normal-red">Cancel</div>
 			</div>
 				
 		</div>
@@ -1528,8 +1532,8 @@
 	
 	//Mobs
 	const MOBS = {
-		"A": {name:"Mob A", hp: 80, exp: 10, speed: 18, dps: 20, size: 45, coin: 130, score: 100 },
-		"B": {name:"Mob B", hp: 80, exp: 10+290, speed: 20, dps: 20, size: 45, coin: 130, score: 100 }
+		"A": {name:"Mob A", hp: 80, exp: 10, speed: 20, dps: 20, size: 45, coin: 130, score: 140 },
+		"B": {name:"Mob B", hp: 80, exp: 10, speed: 20, dps: 20, size: 45, coin: 130, score: 140 }
 	};
 	const MINI_BOSS_A = { name: "Mini-boss Type A", hp: 1000, exp: 100, speed: 15, dps: 30, size: 70, coin: 500, score: 500, tier: "mini" };
 	const BOSS_A = { name: "Boss Type A", hp: 2000, exp: 1000, speed: 10, dps: 50, size: 100, coin: 1000, score: 1000, tier: "boss" };
@@ -1540,220 +1544,70 @@
 	const BULLET_RADIUS_SIZE = 8;
 	const BULLET_SPEED = 350;
 	const GUN_MULTITARGET_PROBILITY = 0.6; //chance of focusing on nearest, ++ to allow more multi-targetting
-	const GUNS = {
-		"submachinegun":
-		{
-			1:{ 
-				name:"submachinegun",
-				tags:"normal",
-				range:460,
-				bulletsPerUse:4,
-				timeBetweenBullets:0.20,
-				damage:30,
-				postUseCooldown: 5.0/2.5,
-				ability: ""
-			},
-			2: {
-				name:"submachinegun",
-				tags:"normal",
-				range:460,
-				bulletsPerUse:4,
-				timeBetweenBullets:0.18,
-				damage:40,
-				postUseCooldown: 2,
-				ability: ""
-			},
-			3: {
-				name:"submachinegun",
-				tags:"normal",
-				range:460,
-				bulletsPerUse:6,
-				timeBetweenBullets:0.18,
-				damage:60, postUseCooldown: 2,
-				ability: "submachinegun_T3_GuaranteedCritAfter5"
-			},
-			4: {
-				name:"submachinegun",
-				tags:"normal",
-				range:480,
-				bulletsPerUse:6,
-				timeBetweenBullets:0.16,
-				damage:80,
-				postUseCooldown: 2,
-				ability: "submachinegun_T3_GuaranteedCritAfter5"
+	
+	const GUN_CONFIG = {
+		submachinegun: {
+			name: "Submachine Gun",
+			type: "normal",
+			range: 460,
+			shape: [[0,0],[0,1],[0,2],[1,0]],
+			tiers: {
+				1: { bulletsPerUse: 4, timeBetweenBullets: 0.20, damage: 30, postUseCooldown: 1, ability: "" },
+				2: { bulletsPerUse: 4, timeBetweenBullets: 0.18, damage: 40, postUseCooldown: 2, ability: "" },
+				3: { bulletsPerUse: 6, timeBetweenBullets: 0.18, damage: 60, postUseCooldown: 2, ability: "submachinegun_T3_GuaranteedCritAfter5" },
+				4: { bulletsPerUse: 6, timeBetweenBullets: 0.16, damage: 80, postUseCooldown: 2, ability: "submachinegun_T3_GuaranteedCritAfter5" }
 			}
 		},
-		"pistol":
-		{
-			1:{ 
-				name:"pistol",
-				tags:"normal",
-				range:400,
-				bulletsPerUse:2,
-				timeBetweenBullets:0.20,
-				damage:30,
-				postUseCooldown: 3,
-				ability: ""
-			},
-			2: {
-				name:"pistol",
-				tags:"normal",
-				range:400,
-				bulletsPerUse:2,
-				timeBetweenBullets:0.20,
-				damage:40,
-				postUseCooldown: 3,
-				ability: ""
-			},
-			3: {
-				name:"pistol",
-				tags:"normal",
-				range:400,
-				bulletsPerUse:2,
-				timeBetweenBullets:0.20,
-				damage:60, 
-				postUseCooldown: 3,
-				ability: ""
-			},
-			4: {
-				name:"pistol",
-				tags:"normal",
-				range:400,
-				bulletsPerUse:2,
-				timeBetweenBullets:0.20,
-				damage:80,
-				postUseCooldown: 3,
-				ability: ""
+		pistol: {
+			name: "Pistol",
+			type: "normal",
+			range: 400,
+			shape: [[0,0],[0,1],[1,0]],
+			tiers: {
+				1: { bulletsPerUse: 2, timeBetweenBullets: 0.20, damage: 30, postUseCooldown: 3, ability: "" },
+				2: { bulletsPerUse: 2, timeBetweenBullets: 0.20, damage: 40, postUseCooldown: 3, ability: "" },
+				3: { bulletsPerUse: 2, timeBetweenBullets: 0.20, damage: 60, postUseCooldown: 3, ability: "" },
+				4: { bulletsPerUse: 2, timeBetweenBullets: 0.20, damage: 80, postUseCooldown: 3, ability: "" },
 			}
 		},
-		"sniperriffle":
-		{
-			1:{ 
-				name:"sniperriffle",
-				tags:"pierce",
-				range:650,
-				bulletsPerUse:1,
-				timeBetweenBullets:0,
-				damage:130,
-				postUseCooldown: 9,
-				ability: ""
-			},
-			2: {
-				name:"sniperriffle",
-				tags:"pierce",
-				range:650,
-				bulletsPerUse:1,
-				timeBetweenBullets:0,
-				damage:140,
-				postUseCooldown: 9,
-				ability: ""
-			},
-			3: {
-				name:"sniperriffle",
-				tags:"pierce",
-				range:650,
-				bulletsPerUse:1,
-				timeBetweenBullets:0,
-				damage:160,
-				postUseCooldown: 9,
-				ability: ""
-			},
-			4: {
-				name:"sniperriffle",
-				tags:"pierce",
-				range:650,
-				bulletsPerUse:1,
-				timeBetweenBullets:0,
-				damage:180,
-				postUseCooldown: 9,
-				ability: ""
+		sniperriffle: {
+			name: "Sniper Riffle",
+			type: "pierce",
+			range: 650,
+			shape: [[0,0],[1,0],[2,0],[3,0],[3,1]],
+			tiers: {
+				1: { bulletsPerUse: 1, timeBetweenBullets: 0, damage: 130, postUseCooldown: 3, ability: "" },
+				2: { bulletsPerUse: 1, timeBetweenBullets: 0, damage: 140, postUseCooldown: 9, ability: "" },
+				3: { bulletsPerUse: 1, timeBetweenBullets: 0, damage: 160, postUseCooldown: 9, ability: "" },
+				4: { bulletsPerUse: 1, timeBetweenBullets: 0, damage: 180, postUseCooldown: 9, ability: "" },
 			}
 		},
-		"assaultriffle":
-		{
-			1:{ 
-				name:"assaultriffle",
-				tags:"normal",
-				range:460,
-				bulletsPerUse:4,
-				timeBetweenBullets:0.20,
-				damage:30,
-				postUseCooldown: 5.0/2.5,
-				ability: ""
-			},
-			2: {
-				name:"assaultriffle",
-				tags:"normal",
-				range:460,
-				bulletsPerUse:4,
-				timeBetweenBullets:0.18,
-				damage:40,
-				postUseCooldown: 2,
-				ability: ""
-			},
-			3: {
-				name:"assaultriffle",
-				tags:"normal",
-				range:460,
-				bulletsPerUse:6,
-				timeBetweenBullets:0.18,
-				damage:60, postUseCooldown: 2,
-				ability: ""
-			},
-			4: {
-				name:"assaultriffle",
-				tags:"normal",
-				range:480,
-				bulletsPerUse:6,
-				timeBetweenBullets:0.16,
-				damage:80,
-				postUseCooldown: 2,
-				ability: ""
+		assaultriffle: {
+			name: "Assault Riffle",
+			type: "normal",
+			range: 460,
+			shape: [[0,0],[0,1],[1,1],[0,2],[0,3]],
+			tiers: {
+				1: { bulletsPerUse: 4, timeBetweenBullets: 0.20, damage: 30, postUseCooldown: 1, ability: "" },
+				2: { bulletsPerUse: 4, timeBetweenBullets: 0.18, damage: 40, postUseCooldown: 2, ability: "" },
+				3: { bulletsPerUse: 6, timeBetweenBullets: 0.18, damage: 60, postUseCooldown: 2, ability: "" },
+				4: { bulletsPerUse: 6, timeBetweenBullets: 0.16, damage: 80, postUseCooldown: 2, ability: "" },
 			}
 		},
-		"grenadelauncher":
-		{
-			1:{ 
-				name:"grenadelauncher",
-				tags:"aoe",
-				range:460,
-				bulletsPerUse:4,
-				timeBetweenBullets:0.20,
-				damage:30,
-				postUseCooldown: 5.0/2.5,
-				ability: ""
-			},
-			2: {
-				name:"grenadelauncher",
-				tags:"aoe",
-				range:460,
-				bulletsPerUse:4,
-				timeBetweenBullets:0.18,
-				damage:40,
-				postUseCooldown: 2,
-				ability: ""
-			},
-			3: {
-				name:"grenadelauncher",
-				tags:"aoe",
-				range:460,
-				bulletsPerUse:6,
-				timeBetweenBullets:0.18,
-				damage:60, postUseCooldown: 2,
-				ability: ""
-			},
-			4: {
-				name:"grenadelauncher",
-				tags:"aoe",
-				range:480,
-				bulletsPerUse:6,
-				timeBetweenBullets:0.16,
-				damage:80,
-				postUseCooldown: 2,
-				ability: ""
+		grenadelauncher: {
+			name: "Granade Launcher",
+			type: "aoe",
+			range: 460,
+			shape: [[1,0],[1,1],[0,1],[0,2]],
+			tiers: {
+				1: { bulletsPerUse: 4, timeBetweenBullets: 0.20, damage: 30, postUseCooldown: 1, ability: "" },
+				2: { bulletsPerUse: 4, timeBetweenBullets: 0.18, damage: 40, postUseCooldown: 2, ability: "" },
+				3: { bulletsPerUse: 6, timeBetweenBullets: 0.18, damage: 60, postUseCooldown: 2, ability: "" },
+				4: { bulletsPerUse: 6, timeBetweenBullets: 0.16, damage: 80, postUseCooldown: 2, ability: "" },
 			}
 		}
 	};
+
 	
 	//Traits
 	const TRAIT_DMG_UP = [5,7,10];
@@ -1766,80 +1620,68 @@
 	const TRAITS = [
 		{
 			id: 'dmg_up_normal',
-			scope: 'global',
-			statKey: 'normal_dmg_increase',
-			statBase: 0,
-			formatTotal: v => v + '%',
+			buff_type: 'dmg_up',
+			gun_type: 'normal',
 			name: (tier) => 'Normal Attack Damage Increase ' + ROMAN[tier-1],
 			desc: (tier) => 'Increases normal attack damage by ',
 			scaling: (tier) => TRAIT_DMG_UP[tier-1],
 			apply: (tier)=>{
-				state.normal_dmg_increase += TRAIT_DMG_UP[tier-1];
+				GAME_STATE.buffs["normal"].dmg_up += TRAIT_DMG_UP[tier-1];
 			}
 		},
 		{
 			id: 'dmg_up_aoe',
-			scope: 'global',
-			statKey: 'aoe_dmg_increase',
-			statBase: 0,
-			formatTotal: v => v + '%',
+			buff_type: 'dmg_up',
+			gun_type: 'aoe',
 			name: (tier) => 'AoE Attack Damage Increase ' + ROMAN[tier-1],
 			desc: (tier) => 'Increases AoE attack damage by ',
 			scaling: (tier) => TRAIT_DMG_UP[tier-1],
 			apply: (tier)=>{
-				state.aoe_dmg_increase += TRAIT_DMG_UP[tier-1];
+				GAME_STATE.buffs["aoe"].dmg_up += TRAIT_DMG_UP[tier-1];
 			}
 		},
 		{
 			id: 'cdr_up_normal',
-			scope: 'global',
-			statKey: 'normal_reload_decrease',
-			statBase: 0,
-			formatTotal: v => v + '%',
+			buff_type: 'cdr_up',
+			gun_type: 'normal',
 			name: (tier) => 'Normal Attack Reload Time Decrease ' + ROMAN[tier-1],
 			desc: (tier) => 'Decrease Normal Attack Reload Time by ',
 			scaling: (tier) => TRAIT_RELOAD_DOWN[tier-1],
 			apply: (tier)=>{
-				state.normal_reload_decrease += TRAIT_RELOAD_DOWN[tier-1];
+				GAME_STATE.buffs["normal"].cdr_up += TRAIT_RELOAD_DOWN[tier-1];
 			}
 		},
 		{
 			id: 'cdr_up_aoe',
-			scope: 'global',
-			statKey: 'aoe_reload_decrease',
-			statBase: 0,
-			formatTotal: v => v + '%',
+			buff_type: 'cdr_up',
+			gun_type: 'aoe',
 			name: (tier) => 'AoE Attack Reload Time Decrease ' + ROMAN[tier-1],
 			desc: (tier) => 'Decrease AoE Attack Reload Time by ',
 			scaling: (tier) => TRAIT_RELOAD_DOWN[tier-1],
 			apply: (tier)=>{
-				state.aoe_reload_decrease += TRAIT_RELOAD_DOWN[tier-1];
+				GAME_STATE.buffs["aoe"].cdr_up += TRAIT_RELOAD_DOWN[tier-1];
 			}
 		},
 		{
-			id: 'up_gold',
-			scope: 'global',
-			statKey: 'goldGainBonus',
-			statBase: 0,
-			formatTotal: v => v + '%',
+			id: 'gold_up',
+			buff_type: 'unique',
+			gun_type: '',
 			name: (tier) => 'Gold Gain Increase ' + ROMAN[tier-1],
 			desc: (tier) => 'Increases Goin gained from killing monsters by ',
 			scaling: (tier) => TRAIT_POINT_UP[tier-1],
 			apply: (tier)=>{
-				state.goldGainBonus += TRAIT_POINT_UP[tier-1];
+				GAME_STATE.buffs.gold_up += TRAIT_POINT_UP[tier-1];
 			}
 		},
 		{
-			id: 'up_exp',
-			scope: 'global',
-			statKey: 'expGainBonus',
-			statBase: 0,
-			formatTotal: v => v + '%',
+			id: 'exp_up',
+			buff_type: 'unique',
+			gun_type: '',
 			name: (tier) => 'EXP Gain Increase ' + ROMAN[tier-1],
 			desc: (tier) => 'Increases EXP gained from killing monsters by ',
 			scaling: (tier) => TRAIT_POINT_UP[tier-1],
 			apply: (tier)=>{
-				state.expGainBonus += TRAIT_POINT_UP[tier-1];
+				GAME_STATE.buffs.exp_up += TRAIT_POINT_UP[tier-1];
 			}
 		}
 	];
@@ -1881,46 +1723,101 @@
 	const _soldierImgs = SOLDIER_ANGLES.map(src => { const i=new Image(); i.src=src; return i; });
 	let _soldierIdx = 2;
 	if (soldierSpriteEl) soldierSpriteEl.src = SOLDIER_ANGLES[_soldierIdx];
+	
+	
+	// ======================== GAME_STATE ======================== //here
+	const INITIAL_GAME_STATE = {
+		paused: false, 
+		coins: 0, score: 0, kills: 0,
+		speedMult: 1, 
+		player: { x: W/2, y: H - 40, size: 16, level: 1, exp: 0, expToNext: 50 },
+		barricadeHP: BARRICADE_HP_MAX,
+		buffs: {}, enemies: [], bullets: [], traitsOwned: [], damageByGun: {},
+		inventory: new Array(16).fill(null),
+		wave: 1,　toSpawn: 0, 
+		groupIndex: 0, groupSizes: [], groupMobIndex: 0, groupIntervalTimer: 0, mobIntervalTimer: 0, mobIntervalWave: 0,
+		specialsQueued: { mini: false, boss: false }, specialsSpawned: false,　specialsProgress: 0, specialsTimer: 0,
+		shop: { reroll_count: 10, reroll_price: 1000, removal_count: 5, removal_set: new Set() },
+		damageByGun: {}, combatTime: 0
+	};
+	
+	function INITIATE_GAME_STATE_BUFFS(state) {
+		state.buffs = {
+			gold_up: 0,
+			exp_up: 0,
+		};
+		
+		const types = new Set(Object.values(GUN_CONFIG).map(gun => gun.type));
+		for (const type of types) {
+			state.buffs[type] = {
+				dmg_up: 0,
+				cdr_up: 0,
+			};
+		}
+	}
+	
+	function makeWeaponInstance(key, tier) {
+		const gun_stats = GUN_CONFIG[key];
+		
+		if (!gun_stats) throw new Error("Unknown weapon/tier: " + key + " T" + tier);
 
+		return {
+			key, 
+			tier,
+			stats: { 
+				...gun_stats.tiers[tier],
+				range: gun_stats.range,
+				type: gun_stats.type,
+			},			
+			mode: 'idle',
+			timer: 0,
+			burstLeft: 0,
+			shotsSinceAbility: 0
+		};
+	}
+	
+	let GAME_STATE = structuredClone(INITIAL_GAME_STATE);
+	INITIATE_GAME_STATE_BUFFS(GAME_STATE);
+	
+	
+	// ============== Delare Element ID ============== //
+	const ctx = canvas.getContext('2d');
+	const pauseOverlay = document.getElementById('pauseOverlay');
+	const gameoverOverlay = document.getElementById('gameoverOverlay');
+	const traitOverlay = document.getElementById('traitOverlay');
+	const dpsOverlay = document.getElementById('dpsOverlay');
+	
+	const btn_resume = document.getElementById('btn_resume');
+	const btn_quickend = document.getElementById('btn_quickend');
+	const btn_restart = document.getElementById('btn_restart')
+	const pauseBtn = document.getElementById('pauseBtn');
+	const speedBtn = document.getElementById('speedBtn');
+	const bossWarn = document.getElementById('bossWarn');
+	const waveNumEl = document.getElementById('waveNum');
+	const levelNumEl = document.getElementById('levelNum');
+	const expFill = document.getElementById('expFill');
+	const coinNumEl = document.getElementById('coinNum');
+	const scoreNumEl = document.getElementById('scoreNum');
+	const traitCardsBox = document.getElementById('traitCards');
+	const traitOverlayViewer = document.getElementById('traitOverlayViewer');
+	const traitListBox = document.getElementById('traitList');
+	const closeTraitViewerBtn = document.getElementById('closeTraitViewerBtn');
+	const traitStart  = document.getElementById('traitStartBtn');
+	const dpsList = document.getElementById('dpsList');
+	const btnDPS_close_view = document.getElementById('btnDPS_close_view');
+	const overlay_pause_removal_list = document.getElementById('overlay_pause_removal_list');
+	
+	
   
-  // === Weapon instances (equipped guns) ===
-  function makeWeaponInstance(key, tier){
-    const def = (GUNS[key] && GUNS[key][tier]) ? GUNS[key][tier] : null;
-    if (!def) throw new Error("Unknown weapon/tier: "+key+" T"+tier);
-    return {
-      key, tier,
-      stats: { ...def },
-      mode: 'idle',
-      timer: 0,
-      burstLeft: 0,
-      shotsSinceAbility: 0
-    };
-  }
-  
-function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
   function findClosestEnemy(range=Infinity){
-    const p = state.player; const r2 = range===Infinity ? Infinity : range*range;
+    const p = GAME_STATE.player; const r2 = range===Infinity ? Infinity : range*range;
     let best=null, bestD2=Infinity;
-    for (const m of state.enemies){
+    for (const m of GAME_STATE.enemies){
       if (m.dead) continue;
       const dx = p.x - m.cx, dy = p.y - m.cy, d2 = dx*dx + dy*dy;
       if (d2 < bestD2 && d2 <= r2){ bestD2=d2; best=m; }
     }
     return best;
-  }
-  function pickTargetForWeapon(w){
-    const nearest = findClosestEnemy(w.stats.range);
-    if (!nearest) return null;
-    if (Math.random() < GUN_MULTITARGET_PROBILITY) return nearest;
-    const p = state.player, r2 = w.stats.range*w.stats.range;
-    const pool = [];
-    for (const m of state.enemies){
-      if (m.dead) continue;
-      const dx=p.x-m.cx, dy=p.y-m.cy, d2=dx*dx+dy*dy;
-      if (d2<=r2) pool.push(m);
-    }
-    if (pool.length===0) return null;
-    return pool[(Math.random()*pool.length)|0];
   }
   
 	// ================= Sound Effects ================= //
@@ -1928,7 +1825,6 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	bgm.loop = true;
 	bgm.preload = 'auto';
 	bgm.volume = 0.4;
-	window.bgm = bgm;
 	
 	window.addEventListener('pointerdown', function unlock(){
 		bgm.play().catch(()=>{});
@@ -1945,7 +1841,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	}, { once: true });
 	
 	//play audio (stackable)
-	function makeSfx(path, { volume = 0.8, pool = 3 } = {}) {
+	function makeSfx(path, { volume = 0.6, pool = 4 } = {}) {
 		const poolArr = Array.from({ length: pool }, () => {
 			const a = new Audio(path);
 			a.preload = 'auto';
@@ -1997,21 +1893,32 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	}
 	
 	
-	// ---------- Common SFX ----------
-	const SFX_BTN_DEFAULT = makeSfx('src/sfx/buttons/sfx_btn_default.mp3', {volume:0.8,pool: 4});
-	const SFX_ERROR = makeSfx('src/sfx/sfx_error.mp3', {volume:0.8,pool:8});
-	const SFX_MOB_DEATH = makeSfx('src/sfx/sfx_mob_death.mp3', {volume:0.8, pool:8});
+	
+	// ---------- SFX Config ----------
+	const SFX_ERROR = makeSfx('src/sfx/sfx_error.mp3',{});
+	
+	const SFX_BTN_DEFAULT = makeSfx('src/sfx/buttons/sfx_btn_default.mp3', {});
+	const SFX_BTN_PAUSE = makeSfx('src/sfx/buttons/sfx_btn_pause.mp3',{});
+	const SFX_BTN_TRAIT_CARD = makeSfx('src/sfx/buttons/trait_overlay_btn_select.mp3',{});
+	const SFX_BTN_SHOP_REROLL = makeSfx('src/sfx/buttons/shop_btn_reroll.mp3',{});
+	const SFX_BTN_SHOP_CLOSE = makeSfx('src/sfx/overlay_close_shop_overlay.mp3',{});
+	
+	const SFX_OVERLAY_APPEAR_SHOP = makeSfx('src/sfx/overlay_appear_shop_overlay.mp3',{});
+	const SFX_OVERLAY_APPEAR_TRAIT = makeSfx('src/sfx/overlay_appear_trait.mp3',{});
+	const SFX_MOB_DEATH = makeSfx('src/sfx/sfx_mob_death.mp3',{});
+	const SFX_GAMEOVER = makeSfx('src/sfx/sfx_gameover.mp3',{});
+	
+	const SFX_PLAY_BGM = () => fadeAudio(bgm, 0.4, 200);
+	const SFX_PAUSE_BGM = () => fadeAudio(bgm, 0, 200);
 	
 	// ---------- Attach SFX to buttons ----------
-	document.querySelectorAll('[data-sfx]').forEach(el => {
-		el.addEventListener('pointerdown', makeSfx(el.dataset.sfx, {volume:0.8,pool:4}));
-	});
 	document.querySelectorAll('.default-div-btn').forEach(el => {
 		if (el.dataset && el.dataset.sfx) return;
-		el.addEventListener('pointerdown', SFX_BTN_DEFAULT);
+		el.addEventListener('click', SFX_BTN_DEFAULT);
 	});
 	
-	//fire gun sfx
+	
+	// ---------- Gun fire SFX ----------
 	const SFX_GUN_FIRE_CACHE = new Map();
 	function playGunFire(name){
 		const slug = String(name);
@@ -2020,45 +1927,6 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		}
 		try { SFX_GUN_FIRE_CACHE.get(slug)(); } catch (e) {}
 	}
-	
-	
-	// ============== Game State ============== //
-	const state = {
-		paused: false, gameOver: false, wave: 1,
-		toSpawn: 0, enemies: [], bullets: [],
-		coins: 0, score: 0, kills: 0,
-		player: { x: W/2, y: H - 40, size: 16, level: 1, exp: 0, expToNext: 50 },
-		speedMult: 1, inventory: new Array(16).fill(null),
-		groupIndex: 0, groupSizes: [], groupMobIndex: 0, groupIntervalTimer: 0, mobIntervalTimer: 0, mobIntervalWave: 0,
-		specialsQueued: { mini: false, boss: false }, specialsSpawned: false,
-		specialsProgress: 0, specialsTimer: 0,
-		damageByGun: {}, combatTime: 0
-	};
-
-	
-	
-	// ============== Delare Element ID ============== //
-	const ctx = canvas.getContext('2d');
-	const pauseOverlay = document.getElementById('pauseOverlay');
-	const resumeBtn = document.getElementById('resumeBtn');
-	const restartBtn = document.getElementById('restartBtn');
-	const pauseBtn = document.getElementById('pauseBtn');
-	const speedBtn = document.getElementById('speedBtn');
-	const bossWarn = document.getElementById('bossWarn');
-	const waveNumEl = document.getElementById('waveNum');
-	const levelNumEl = document.getElementById('levelNum');
-	const expFill = document.getElementById('expFill');
-	const coinNumEl = document.getElementById('coinNum');
-	const scoreNumEl = document.getElementById('scoreNum');
-	const traitOverlay = document.getElementById('traitOverlay');
-	const traitCardsBox = document.getElementById('traitCards');
-	const traitOverlayViewer = document.getElementById('traitOverlayViewer');
-	const traitListBox = document.getElementById('traitList');
-	const closeTraitViewerBtn = document.getElementById('closeTraitViewerBtn');
-	const traitStart  = document.getElementById('traitStartBtn');
-	const dpsOverlay = document.getElementById('dpsOverlay');
-	const dpsList = document.getElementById('dpsList');
-	const btnDPS_close_view = document.getElementById('btnDPS_close_view');
 
 
 	// =============== Utilities Functions =============== //
@@ -2095,38 +1963,34 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		return sizes;
 	}
 	function computeFacingIndex() {
-		if (state.player.aimVX != null && state.player.aimVY != null) {
-			const vx = state.player.aimVX, vy = state.player.aimVY;
+		if (GAME_STATE.player.aimVX != null && GAME_STATE.player.aimVY != null) {
+			const vx = GAME_STATE.player.aimVX, vy = GAME_STATE.player.aimVY;
 			const deg = Math.atan2(vx, -vy) * 180 / Math.PI; // −180..+180
 			const clamped = Math.max(-90, Math.min(90, deg));
 			return Math.min(4, Math.max(0, Math.floor((clamped + 90) / 36)));
 		}
 		const t = findClosestEnemy();
 		if (!t) return 2;
-		const dx = t.cx - state.player.x, dy = t.cy - state.player.y;
+		const dx = t.cx - GAME_STATE.player.x, dy = t.cy - GAME_STATE.player.y;
 		const deg = Math.atan2(dx, -dy) * 180 / Math.PI;
 		const clamped = Math.max(-90, Math.min(90, deg));
 		return Math.min(4, Math.max(0, Math.floor((clamped + 90) / 36)));
 	}
 	function effectiveTimeBetweenBullets(w){
-		const cdr = state.normalAttackReloadDec || 0;
+		const cdr = GAME_STATE.normalAttackReloadDec || 0;
 		return w.stats.timeBetweenBullets * (1 - cdr);
 	}
 	function effectivePostUseCooldown(w){
-		let cdrPct = 0;
-		switch (w.stats.tags){
-			case 'normal': cdrPct = state.normal_reload_decrease || 0; break;
-			case 'aoe':    cdrPct = state.aoe_reload_decrease    || 0; break;
-			case 'pierce': cdrPct = state.pierce_reload_decrease || 0; break;
-		}
+		let cdrPct = GAME_STATE.buffs?.[w.stats.type]?.cdr_up || 0;
+		
 		return w.stats.postUseCooldown * (1 - cdrPct/100);
 	}
 	
 	
 	function addGunDamage(gunKey, dmg) {
         if (!gunKey || !dmg) return;
-        if (!state.damageByGun) state.damageByGun = {};
-        state.damageByGun[gunKey] = (state.damageByGun[gunKey] || 0) + dmg;
+        if (!GAME_STATE.damageByGun) GAME_STATE.damageByGun = {};
+        GAME_STATE.damageByGun[gunKey] = (GAME_STATE.damageByGun[gunKey] || 0) + dmg;
     }
 
 
@@ -2138,7 +2002,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			this.type = type; this.x = x; this.y = yStart;
 			this.w = type.size; this.h = type.size; 
 			const __baseHp = type.hp;
-			const __wave   = (state && state.wave) ? state.wave : 1;
+			const __wave   = (GAME_STATE && GAME_STATE.wave) ? GAME_STATE.wave : 1;
 			const __scaled = scaleHP(__baseHp, __wave);
 			this.hpMax = __scaled;
 			this.hp = __scaled;
@@ -2203,7 +2067,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			if (this.dead) return;
 			this.x += this.vx * dt; this.y += this.vy * dt;
 			if (this.x < -12 || this.x > W + 12 || this.y < -12 || this.y > H + 12) { this.dead = true; return; }
-			for (const m of state.enemies) {
+			for (const m of GAME_STATE.enemies) {
 				if (m.dead) continue;
 				const cx = Math.max(m.x, Math.min(this.x, m.x + m.w));
 				const cy = Math.max(m.y, Math.min(this.y, m.y + m.h));
@@ -2222,7 +2086,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 					// show the effective damage as the popup number
 					const showX = cx;
 					const showY = m.y - 6;
-					(state.dmgNums || (state.dmgNums = [])).push(new DmgNum(showX, showY, dealt, this.crit));
+					(GAME_STATE.dmgNums || (GAME_STATE.dmgNums = [])).push(new DmgNum(showX, showY, dealt, this.crit));
 					
 					this.dead = true;
 					break;
@@ -2284,7 +2148,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	// =============== Core Game Functions =============== //
 	// Player
 	function drawSoldier(ctx) {
-		const p = state.player;
+		const p = GAME_STATE.player;
 		ctx.save(); ctx.translate(p.x, p.y);
 		ctx.fillStyle = '#a78bfa'; ctx.strokeStyle = '#7c3aed'; ctx.lineWidth = 1;
 		ctx.beginPath(); ctx.moveTo(0,-p.size); ctx.lineTo(p.size*.9,p.size); ctx.lineTo(-p.size*.9,p.size); ctx.closePath();
@@ -2299,8 +2163,8 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		ctx.restore();
 	}
 	function updateSoldier(dt) {
-		if (!state.weapons || state.weapons.length === 0) return;
-		for (const w of state.weapons) {
+		if (!GAME_STATE.weapons || GAME_STATE.weapons.length === 0) return;
+		for (const w of GAME_STATE.weapons) {
 			w.timer -= dt;
 			
 			if (w.lockoutTotal > 0 && (w.mode === 'burst' || w.mode === 'cooldown')) {
@@ -2312,9 +2176,9 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 				if (nearest) {
 					let chosen = nearest;
 					if (Math.random() >= GUN_MULTITARGET_PROBILITY) {
-						const p = state.player, r2 = w.stats.range*w.stats.range;
+						const p = GAME_STATE.player, r2 = w.stats.range*w.stats.range;
 						const pool = [];
-						for (const m of state.enemies) {
+						for (const m of GAME_STATE.enemies) {
 							if (m.dead) continue;
 							const dx=p.x-m.cx, dy=p.y-m.cy, d2=dx*dx+dy*dy;
 							if (d2<=r2) pool.push(m);
@@ -2323,19 +2187,19 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 					}
 					
 					//update player-facing angle
-					const p = state.player;
+					const p = GAME_STATE.player;
 					const dx = chosen.cx - p.x, dy = chosen.cy - p.y;
 					const L = Math.hypot(dx, dy) || 1;
 					w.dirX = dx / L;
 					w.dirY = dy / L;
-					state.player.aimVX = w.dirX;
-					state.player.aimVY = w.dirY;
+					GAME_STATE.player.aimVX = w.dirX;
+					GAME_STATE.player.aimVY = w.dirY;
 					
 					// --- fire gun ----
 					w.mode = 'burst';
 					w.burstLeft = w.stats.bulletsPerUse;
 					w.timer = 0;
-					playGunFire(w.stats.name);
+					playGunFire(w.key);
 					//cooldown clock-wise
 					const burstTime = Math.max(0, (w.stats.bulletsPerUse - 1)) * effectiveTimeBetweenBullets(w);
 					w.lockoutTotal = burstTime + effectivePostUseCooldown(w);
@@ -2344,41 +2208,23 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			}
 			else if (w.mode === 'burst') 
 			{
-				//apply traits
-				let trait_dmg_up_multiplier = 0;
-				let trait_cdr_up_multiplier = 0;
-				switch(w.stats.tags){
-					case "normal" : 
-						trait_dmg_up_multiplier = (state.normal_dmg_increase / 100);
-						trait_cdr_up_multiplier = (state.normal_reload_decrease / 100);
-						break;
-					case "aoe" : 
-						trait_dmg_up_multiplier = (state.aoe_dmg_increase / 100);
-						trait_cdr_up_multiplier = (state.aoe_reload_decrease / 100);
-						break;
-					case "pierce" : 
-						trait_dmg_up_multiplier = (state.pierce_dmg_increase / 100);
-						trait_cdr_up_multiplier = (state.pierce_reload_decrease / 100);
-						break;
-				}
-				
-				//onMobHit, deals damage
 				while (w.burstLeft > 0 && w.timer <= 0) {
 					if (w.dirX == null || w.dirY == null) break;
 
 					//submachine gun tier 3 skill
 					let forceCrit = false;
-					if (w.stats.name === "submachinegun" && w.tier === 3 && w.stats.ability === "submachinegun_T3_GuaranteedCritAfter5") {
-						w.shotsSinceAbility = (w.shotsSinceAbility || 0) + 1;
-						if (w.shotsSinceAbility >= 5) { forceCrit = true; w.shotsSinceAbility = 0; }
-					}
+					//if (w.key === "submachinegun" && w.tier === 3 && w.stats.ability === "submachinegun_T3_GuaranteedCritAfter5") {
+					//	w.shotsSinceAbility = (w.shotsSinceAbility || 0) + 1;
+					//	if (w.shotsSinceAbility >= 5) { forceCrit = true; w.shotsSinceAbility = 0; }
+					//}
 					
 					//damage calculator
 					const isCrit = forceCrit || (Math.random() < CRIT_RATE);
-					let dmg = w.stats.damage * (isCrit ? CRIT_MULT : 1); dmg += dmg * trait_dmg_up_multiplier;
+					let dmg = w.stats.damage * (isCrit ? CRIT_MULT : 1); 
+					dmg += dmg * ((GAME_STATE.buffs?.[w.stats.type]?.dmg_up || 0) / 100);
 					
-					const p = state.player;
-					state.bullets.push(new Bullet(
+					const p = GAME_STATE.player;
+					GAME_STATE.bullets.push(new Bullet(
 						p.x, p.y - p.size * 0.6,
 						w.dirX, w.dirY,
 						BULLET_SPEED, dmg, isCrit,
@@ -2403,8 +2249,8 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		}
 	}
 	function findClosestInRange() {
-		const ranges = (state.weapons && state.weapons.length)
-		? state.weapons.map(w => w.stats.range)
+		const ranges = (GAME_STATE.weapons && GAME_STATE.weapons.length)
+		? GAME_STATE.weapons.map(w => w.stats.range)
 		: [Infinity];
 		const maxRange = Math.max(...ranges);
 		return findClosestEnemy(maxRange);
@@ -2412,28 +2258,29 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	
 	//Mob
 	function onMobKilled(m) {
-		//add coin, score, kill count, exp
-		state.coins += m.type.coin + Math.round((m.type.coin * (state.goldGainBonus / 100))); // gold gain trait
-		state.score += m.type.score || 0;
-		state.kills++;
-		state.player.exp += m.type.exp + Math.round((m.type.exp * (state.expGainBonus / 100))); // exp gain trait
+		//add exp, coin, score, kill count
+		GAME_STATE.player.exp += m.type.exp + Math.round((m.type.exp * ((GAME_STATE.buffs?.["unique"]?.exp_up || 0) / 100))); // exp gain trait
+		GAME_STATE.coins += m.type.coin + Math.round((m.type.coin * ((GAME_STATE.buffs?.["unique"]?.gold_up || 0) / 100))); // gold gain trait
+		GAME_STATE.score += m.type.score || 0;
+		GAME_STATE.kills++;
+		
 		
 		//level up
-		while (state.player.exp >= state.player.expToNext) {
-			state.player.exp -= state.player.expToNext;
-			state.player.level += 1;
-			state.player.expToNext = Math.ceil(state.player.expToNext * 1.3);
+		while (GAME_STATE.player.exp >= GAME_STATE.player.expToNext) {
+			GAME_STATE.player.exp -= GAME_STATE.player.expToNext;
+			GAME_STATE.player.level += 1;
+			GAME_STATE.player.expToNext = Math.ceil(GAME_STATE.player.expToNext * 1.3);
 			enqueueTraitChoice(1);
 		}
 		
 		//update scoreboard
 		const fmt = n => Number(n).toLocaleString('en-US'); //add comma to digits
-		coinNumEl.textContent  = String(fmt(state.coins));
-		scoreNumEl.textContent = String(fmt(state.score));
-		levelNumEl.textContent = String(state.player.level);
+		coinNumEl.textContent  = String(fmt(GAME_STATE.coins));
+		scoreNumEl.textContent = String(fmt(GAME_STATE.score));
+		levelNumEl.textContent = String(GAME_STATE.player.level);
 		
 		//update exp bar
-		const pct = Math.round((state.player.exp / state.player.expToNext) * 100);
+		const pct = Math.round((GAME_STATE.player.exp / GAME_STATE.player.expToNext) * 100);
 		expFill.style.width = pct + '%';
 	}
 	function computeMobIntervalForWave(wave) {
@@ -2443,13 +2290,13 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	
 	//Damage Number
 	function updateDamageNumbers(dt) {
-		if (!state.dmgNums) return;
-		for (const d of state.dmgNums) d.update(dt);
-		state.dmgNums = state.dmgNums.filter(d => d.age < d.life);
+		if (!GAME_STATE.dmgNums) return;
+		for (const d of GAME_STATE.dmgNums) d.update(dt);
+		GAME_STATE.dmgNums = GAME_STATE.dmgNums.filter(d => d.age < d.life);
 	}
 	function drawDamageNumbers(ctx) {
-		if (!state.dmgNums) return;
-		for (const d of state.dmgNums) d.draw(ctx);
+		if (!GAME_STATE.dmgNums) return;
+		for (const d of GAME_STATE.dmgNums) d.draw(ctx);
 	}
 	
 	//Pick Traits
@@ -2479,38 +2326,38 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		ctx.restore();
 	}
 	function applyBarrageDamage(dmg) {
-		if (state.gameOver) return;
 		const maxHP = BARRICADE_HP_MAX;
 		const bar = document.getElementById('hpFill');
 		const txt = document.getElementById('hpText');
-		state.barricadeHP = (state.barricadeHP ?? maxHP) - dmg;
-		state.barricadeHP = Math.max(0, Math.min(maxHP, state.barricadeHP));
-		const pct = Math.round((state.barricadeHP / maxHP) * 100);
+		GAME_STATE.barricadeHP = (GAME_STATE.barricadeHP ?? maxHP) - dmg;
+		GAME_STATE.barricadeHP = Math.max(0, Math.min(maxHP, GAME_STATE.barricadeHP));
+		const pct = Math.round((GAME_STATE.barricadeHP / maxHP) * 100);
 		bar.style.width = pct + '%'; txt.textContent = pct + '%';
-		if (state.barricadeHP <= 0) gameOver();
+		
+		if (GAME_STATE.barricadeHP <= 0) show_gameoverOverlay();
 	}
   
 	//Wave
 	function startWave(n, totalCount) {
-		state.wave = n; waveNumEl.textContent = String(n);
-		state.toSpawn = totalCount; state.groupIndex = 0; state.groupMobIndex = 0;
-		state.specialsSpawned = false; state.specialsProgress = 0; state.specialsTimer = 0;
-		state.groupIntervalTimer = 0; state.mobIntervalWave = computeMobIntervalForWave(n); state.mobIntervalTimer = 0;
-		state.groupSizes = splitIntoGroups(totalCount, GROUPS_PER_WAVE);
-		state.specialsQueued.mini = (n % 5 === 0);
-		state.specialsQueued.boss = (n % 10 === 0);
+		GAME_STATE.wave = n; waveNumEl.textContent = String(n);
+		GAME_STATE.toSpawn = totalCount; GAME_STATE.groupIndex = 0; GAME_STATE.groupMobIndex = 0;
+		GAME_STATE.specialsSpawned = false; GAME_STATE.specialsProgress = 0; GAME_STATE.specialsTimer = 0;
+		GAME_STATE.groupIntervalTimer = 0; GAME_STATE.mobIntervalWave = computeMobIntervalForWave(n); GAME_STATE.mobIntervalTimer = 0;
+		GAME_STATE.groupSizes = splitIntoGroups(totalCount, GROUPS_PER_WAVE);
+		GAME_STATE.specialsQueued.mini = (n % 5 === 0);
+		GAME_STATE.specialsQueued.boss = (n % 10 === 0);
 	}
 	function spawnOneNormalMob() {
 		const s = MOBS["A"].size;
 		const x = Math.max(0, Math.min(W - s, Math.random() * (W - s)));
 		const y = -s - (Math.random() * 140 + 20);
-		state.enemies.push(new Mob(MOBS["A"], x, y));
+		GAME_STATE.enemies.push(new Mob(MOBS["A"], x, y));
 	}
 	function spawnSpecial(type) {
 		const s = type.size;
 		const x = Math.max(0, Math.min(W - s, Math.random() * (W - s)));
 		const y = -s - (Math.random() * 130 + 30);
-		state.enemies.push(new Mob(type, x, y));
+		GAME_STATE.enemies.push(new Mob(type, x, y));
 	}
 	function showBossWarning(text = "BOSS APPROACHING") {
 		bossWarn.textContent = text;
@@ -2522,74 +2369,74 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		bossWarn._hideTO = setTimeout(()=>{ bossWarn.classList.remove('show'); bossWarn.style.animation='none'; }, Math.max(0, BOSS_WARN_TOTAL_DURATION)*1000 + 50);
 	}
 	function updateSpawning(dt) {
-		if (state.groupIndex >= GROUPS_PER_WAVE) return;
+		if (GAME_STATE.groupIndex >= GROUPS_PER_WAVE) return;
 
-		if (state.groupMobIndex === 0 && state.groupIndex > 0 && state.groupIntervalTimer > 0) {
-			state.groupIntervalTimer -= dt; return;
+		if (GAME_STATE.groupMobIndex === 0 && GAME_STATE.groupIndex > 0 && GAME_STATE.groupIntervalTimer > 0) {
+			GAME_STATE.groupIntervalTimer -= dt; return;
 		}
-		const isLastGroup = (state.groupIndex === GROUPS_PER_WAVE - 1);
-		const groupSize = state.groupSizes[state.groupIndex] || 0;
-		if (isLastGroup && (state.specialsQueued.mini || state.specialsQueued.boss) && !state.specialsSpawned) {
-			if (state.specialsProgress === 0) {
-				if (state.specialsQueued.boss) showBossWarning();
-				if (state.specialsQueued.mini) {
+		const isLastGroup = (GAME_STATE.groupIndex === GROUPS_PER_WAVE - 1);
+		const groupSize = GAME_STATE.groupSizes[GAME_STATE.groupIndex] || 0;
+		if (isLastGroup && (GAME_STATE.specialsQueued.mini || GAME_STATE.specialsQueued.boss) && !GAME_STATE.specialsSpawned) {
+			if (GAME_STATE.specialsProgress === 0) {
+				if (GAME_STATE.specialsQueued.boss) showBossWarning();
+				if (GAME_STATE.specialsQueued.mini) {
 					spawnSpecial(MINI_BOSS_A);
-					state.specialsProgress = 1;
-					if (state.specialsQueued.boss) { state.specialsTimer = BOSS_MINI_TO_BOSS_INTERVAL; return; }
-					else { state.specialsSpawned = true; }
+					GAME_STATE.specialsProgress = 1;
+					if (GAME_STATE.specialsQueued.boss) { GAME_STATE.specialsTimer = BOSS_MINI_TO_BOSS_INTERVAL; return; }
+					else { GAME_STATE.specialsSpawned = true; }
 				}
 				else {
-					if (state.specialsQueued.boss) spawnSpecial(BOSS_A);
-					state.specialsSpawned = true; state.specialsProgress = 2;
+					if (GAME_STATE.specialsQueued.boss) spawnSpecial(BOSS_A);
+					GAME_STATE.specialsSpawned = true; GAME_STATE.specialsProgress = 2;
 				}
 			}
-			else if (state.specialsProgress === 1 && state.specialsQueued.boss) {
-				state.specialsTimer -= dt;
-				if (state.specialsTimer <= 0) { spawnSpecial(BOSS_A); state.specialsSpawned = true; state.specialsProgress = 2; }
+			else if (GAME_STATE.specialsProgress === 1 && GAME_STATE.specialsQueued.boss) {
+				GAME_STATE.specialsTimer -= dt;
+				if (GAME_STATE.specialsTimer <= 0) { spawnSpecial(BOSS_A); GAME_STATE.specialsSpawned = true; GAME_STATE.specialsProgress = 2; }
 				else return;
 			}
 		}
-		if (state.groupMobIndex < groupSize) {
-			state.mobIntervalTimer -= dt;
-			if (state.mobIntervalTimer <= 0) {
+		if (GAME_STATE.groupMobIndex < groupSize) {
+			GAME_STATE.mobIntervalTimer -= dt;
+			if (GAME_STATE.mobIntervalTimer <= 0) {
 				spawnOneNormalMob();
-				state.groupMobIndex += 1; state.toSpawn -= 1; state.mobIntervalTimer = state.mobIntervalWave;
+				GAME_STATE.groupMobIndex += 1; GAME_STATE.toSpawn -= 1; GAME_STATE.mobIntervalTimer = GAME_STATE.mobIntervalWave;
 			}
 		}
 		else {
-			if (state.groupIndex < GROUPS_PER_WAVE - 1) {
-				state.groupIndex += 1; state.groupMobIndex = 0; state.groupIntervalTimer = GROUP_INTERVAL_BASE; state.mobIntervalTimer = 0;
-			} else { state.groupIndex = GROUPS_PER_WAVE; }
+			if (GAME_STATE.groupIndex < GROUPS_PER_WAVE - 1) {
+				GAME_STATE.groupIndex += 1; GAME_STATE.groupMobIndex = 0; GAME_STATE.groupIntervalTimer = GROUP_INTERVAL_BASE; GAME_STATE.mobIntervalTimer = 0;
+			} else { GAME_STATE.groupIndex = GROUPS_PER_WAVE; }
 		}
 	}
 	function maybeStartNextWave() {
-		if (state.groupIndex < GROUPS_PER_WAVE) return;
-		const anyAlive = state.enemies.some(e => !e.dead);
+		if (GAME_STATE.groupIndex < GROUPS_PER_WAVE) return;
+		const anyAlive = GAME_STATE.enemies.some(e => !e.dead);
 		if (!anyAlive) {
-			const nextCount = Math.max(1, Math.ceil(waveCountFor(state.wave + 1)));
-			window.openShopOverlay(state.wave + 1, nextCount);
+			const nextCount = Math.max(1, Math.ceil(waveCountFor(GAME_STATE.wave + 1)));
+			openShopOverlay(GAME_STATE.wave + 1, nextCount);
 		}
 	}
 	function startWave(n, totalCount) {
-		state.wave = n; waveNumEl.textContent = String(n);
-		state.toSpawn = totalCount; state.groupIndex = 0; state.groupMobIndex = 0;
-		state.specialsSpawned = false; state.specialsProgress = 0; state.specialsTimer = 0;
-		state.groupIntervalTimer = 0; state.mobIntervalWave = computeMobIntervalForWave(n); state.mobIntervalTimer = 0;
-		state.groupSizes = splitIntoGroups(totalCount, GROUPS_PER_WAVE);
-		state.specialsQueued.mini = (n % 5 === 0);
-		state.specialsQueued.boss = (n % 10 === 0);
+		GAME_STATE.wave = n; waveNumEl.textContent = String(n);
+		GAME_STATE.toSpawn = totalCount; GAME_STATE.groupIndex = 0; GAME_STATE.groupMobIndex = 0;
+		GAME_STATE.specialsSpawned = false; GAME_STATE.specialsProgress = 0; GAME_STATE.specialsTimer = 0;
+		GAME_STATE.groupIntervalTimer = 0; GAME_STATE.mobIntervalWave = computeMobIntervalForWave(n); GAME_STATE.mobIntervalTimer = 0;
+		GAME_STATE.groupSizes = splitIntoGroups(totalCount, GROUPS_PER_WAVE);
+		GAME_STATE.specialsQueued.mini = (n % 5 === 0);
+		GAME_STATE.specialsQueued.boss = (n % 10 === 0);
 	}
 	function spawnOneNormalMob() {
 		const s = MOBS["A"].size;
 		const x = Math.max(0, Math.min(W - s, Math.random() * (W - s)));
 		const y = -s - (Math.random() * 140 + 20);
-		state.enemies.push(new Mob(MOBS["A"], x, y));
+		GAME_STATE.enemies.push(new Mob(MOBS["A"], x, y));
 	}
 	function spawnSpecial(type) {
 		const s = type.size;
 		const x = Math.max(0, Math.min(W - s, Math.random() * (W - s)));
 		const y = -s - (Math.random() * 130 + 30);
-		state.enemies.push(new Mob(type, x, y));
+		GAME_STATE.enemies.push(new Mob(type, x, y));
 	}
 	function showBossWarning(text = "BOSS APPROACHING") {
 		bossWarn.textContent = text;
@@ -2601,93 +2448,118 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		bossWarn._hideTO = setTimeout(()=>{ bossWarn.classList.remove('show'); bossWarn.style.animation='none'; }, Math.max(0, BOSS_WARN_TOTAL_DURATION)*1000 + 50);
 	}
 	function updateSpawning(dt) {
-		if (state.groupIndex >= GROUPS_PER_WAVE) return;
+		if (GAME_STATE.groupIndex >= GROUPS_PER_WAVE) return;
 		
-		if (state.groupMobIndex === 0 && state.groupIndex > 0 && state.groupIntervalTimer > 0) {
-			state.groupIntervalTimer -= dt; return;
+		if (GAME_STATE.groupMobIndex === 0 && GAME_STATE.groupIndex > 0 && GAME_STATE.groupIntervalTimer > 0) {
+			GAME_STATE.groupIntervalTimer -= dt; return;
 		}
-		const isLastGroup = (state.groupIndex === GROUPS_PER_WAVE - 1);
-		const groupSize = state.groupSizes[state.groupIndex] || 0;
-		if (isLastGroup && (state.specialsQueued.mini || state.specialsQueued.boss) && !state.specialsSpawned) {
-			if (state.specialsProgress === 0) {
-				if (state.specialsQueued.boss) showBossWarning();
-				if (state.specialsQueued.mini) {
+		const isLastGroup = (GAME_STATE.groupIndex === GROUPS_PER_WAVE - 1);
+		const groupSize = GAME_STATE.groupSizes[GAME_STATE.groupIndex] || 0;
+		if (isLastGroup && (GAME_STATE.specialsQueued.mini || GAME_STATE.specialsQueued.boss) && !GAME_STATE.specialsSpawned) {
+			if (GAME_STATE.specialsProgress === 0) {
+				if (GAME_STATE.specialsQueued.boss) showBossWarning();
+				if (GAME_STATE.specialsQueued.mini) {
 					spawnSpecial(MINI_BOSS_A);
-					state.specialsProgress = 1;
-					if (state.specialsQueued.boss) { state.specialsTimer = BOSS_MINI_TO_BOSS_INTERVAL; return; }
-					else { state.specialsSpawned = true; }
+					GAME_STATE.specialsProgress = 1;
+					if (GAME_STATE.specialsQueued.boss) { GAME_STATE.specialsTimer = BOSS_MINI_TO_BOSS_INTERVAL; return; }
+					else { GAME_STATE.specialsSpawned = true; }
 				}
 				else {
-					if (state.specialsQueued.boss) spawnSpecial(BOSS_A);
-					state.specialsSpawned = true; state.specialsProgress = 2;
+					if (GAME_STATE.specialsQueued.boss) spawnSpecial(BOSS_A);
+					GAME_STATE.specialsSpawned = true; GAME_STATE.specialsProgress = 2;
 				}
 			}
-			else if (state.specialsProgress === 1 && state.specialsQueued.boss) {
-				state.specialsTimer -= dt;
-				if (state.specialsTimer <= 0) { spawnSpecial(BOSS_A); state.specialsSpawned = true; state.specialsProgress = 2; }
+			else if (GAME_STATE.specialsProgress === 1 && GAME_STATE.specialsQueued.boss) {
+				GAME_STATE.specialsTimer -= dt;
+				if (GAME_STATE.specialsTimer <= 0) { spawnSpecial(BOSS_A); GAME_STATE.specialsSpawned = true; GAME_STATE.specialsProgress = 2; }
 				else return;
 			}
 		}
-		if (state.groupMobIndex < groupSize) {
-			state.mobIntervalTimer -= dt;
-			if (state.mobIntervalTimer <= 0) {
+		if (GAME_STATE.groupMobIndex < groupSize) {
+			GAME_STATE.mobIntervalTimer -= dt;
+			if (GAME_STATE.mobIntervalTimer <= 0) {
 				spawnOneNormalMob();
-				state.groupMobIndex += 1; state.toSpawn -= 1; state.mobIntervalTimer = state.mobIntervalWave;
+				GAME_STATE.groupMobIndex += 1; GAME_STATE.toSpawn -= 1; GAME_STATE.mobIntervalTimer = GAME_STATE.mobIntervalWave;
 			}
 		}
 		else {
-			if (state.groupIndex < GROUPS_PER_WAVE - 1) {
-				state.groupIndex += 1; state.groupMobIndex = 0; state.groupIntervalTimer = GROUP_INTERVAL_BASE; state.mobIntervalTimer = 0;
-			}else { state.groupIndex = GROUPS_PER_WAVE; }
+			if (GAME_STATE.groupIndex < GROUPS_PER_WAVE - 1) {
+				GAME_STATE.groupIndex += 1; GAME_STATE.groupMobIndex = 0; GAME_STATE.groupIntervalTimer = GROUP_INTERVAL_BASE; GAME_STATE.mobIntervalTimer = 0;
+			}else { GAME_STATE.groupIndex = GROUPS_PER_WAVE; }
 		}
 	}
 	
-	//Game Over
-	function gameOver() {
-		if (state.gameOver) return;
-		state.gameOver = true;
-		state.paused = true;
-		setHUDEnabled(false);
-		setOverlay(true, "Game Over");
-	}
-
-	// ============== UI ============== //
-	function setHUDEnabled(enabled){ speedBtn.disabled=!enabled; pauseBtn.disabled=!enabled; }
 	
-	//Pause / Game Over Overlay
-	function setOverlay(show, title="Paused") {
-		const resumeVisible = !(state.gameOver && title === "Game Over");
+	function show_pauseOverlay() {
+		updatePauseTraitGrid();
+		renderWeaponRemovalRemovedList(overlay_pause_removal_list);
 		
-		const resumeBtn = document.getElementById('resumeBtn');
-		resumeBtn.style.display = resumeVisible ? 'inline-block' : 'none';
+		console.log(GAME_STATE)//here
 		
-		if(show) {
-			fadeAudio(bgm, 0, 200);
-			pauseOverlay.classList.remove('hidden');
-		}
-		else {
-			fadeAudio(bgm, 0.4,200);
-			pauseOverlay.classList.add('hidden');
-		}
-	}
-	function pauseToggle() {
-		if (state.gameOver) return;
+		SFX_BTN_PAUSE();
+		GAME_STATE.paused = true;
 		
-		state.paused = !state.paused;
-		setOverlay(state.paused);
+        if (pauseOverlay) pauseOverlay.classList.remove('hidden');
+    }
+    function hidden_pauseOverlay() {
+		SFX_PLAY_BGM();
+		GAME_STATE.paused = false;
 		
-		if (state.paused) {
-			updatePauseTraitGrid();
-		}
-	}
+        if (pauseOverlay) pauseOverlay.classList.add('hidden');
+    }
+	
+	function show_gameoverOverlay() {
+		const fmt = n => Number(n).toLocaleString('en-US');
+		
+		SFX_GAMEOVER();
+		GAME_STATE.paused = true;
+		
+		const container = document.getElementById('gameover_scoreboard_list');
+		if (!container) return;
+		
+		container.innerHTML = "";
+		
+		const rows = [
+			{ title: "Wave",              score: GAME_STATE.wave },
+			{ title: "Enemies Killed",    score: GAME_STATE.kills },
+			{ title: "Total Gold Earned", score: "0" },
+			{ title: "Gold Spent",        score: "0" },
+			{ title: "Remaining Gold",    score: GAME_STATE.coins },
+		];
+		
+		rows.forEach(row => {
+			const rowDiv   = document.createElement("div");
+			const titleDiv = document.createElement("div");
+			const scoreDiv = document.createElement("div");
+			
+			rowDiv.className   = "gameover-scoreboard-row";
+			titleDiv.className = "gameover-scoreboard-title";
+			scoreDiv.className = "gameover-scoreboard-score";
+			
+			titleDiv.textContent = row.title;
+			
+			const val = row.score;
+			scoreDiv.textContent = (val === undefined || val === null) ? 0 : val;
 
+			rowDiv.appendChild(titleDiv);
+			rowDiv.appendChild(scoreDiv);
+			container.appendChild(rowDiv);
+		});
+		
+		document.getElementById('gameover_total_point').textContent = fmt(GAME_STATE.score);
+		
+        if (gameoverOverlay) gameoverOverlay.classList.remove('hidden');
+    }
+	
+	
 	
 	// ----------------- Overlay Select Traits ----------------- //
 	function openTraitOverlay() {
-		state.traitOverlayOpen = true;
-		state.paused = true;
-		fadeAudio(bgm, 0, 200);
-		makeSfx('src/sfx/overlay_appear_trait.mp3', { volume: 0.8, pool: 2 })();
+		GAME_STATE.traitOverlayOpen = true;
+		GAME_STATE.paused = true;
+		
+		SFX_PAUSE_BGM();
+		SFX_OVERLAY_APPEAR_TRAIT();
 		
 		// How many cards? 3 + maybe 1 extra
 		const count = TRAIT_BASE_CARD_COUNT + (Math.random() < TRAIT_EXTRA_CARD_CHANCE ? 1 : 0);
@@ -2697,7 +2569,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 
 		while (offer.length < count && guard-- > 0) {
 			const def = TRAITS[(Math.random() * TRAITS.length) | 0];
-			const tier = pickTierForLevel(state.player.level);
+			const tier = pickTierForLevel(GAME_STATE.player.level);
 			const key = def.id + '|' + tier;
 
 			if (usedPairs.has(key)) continue; // skip exact (id,tier) duplicates
@@ -2706,7 +2578,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			usedPairs.add(key);
 		}
 		
-		state.traitSelected = null;
+		GAME_STATE.traitSelected = null;
 		
 		// Render cards
 		traitCardsBox.innerHTML = "";
@@ -2763,9 +2635,9 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			card.addEventListener('click', () => {
 				traitCardsBox.querySelectorAll('.trait-card.selected').forEach(el => el.classList.remove('selected'));
 				card.classList.add('selected');
-				state.traitSelected = { id: o.id, tier: o.tier };
-				traitStart.classList.toggle('is-disabled', false);
-				makeSfx('src/sfx/buttons/trait_overlay_btn_select.mp3', { volume: 0.6, pool: 2 })();
+				GAME_STATE.traitSelected = { id: o.id, tier: o.tier };
+				traitStart.classList.toggle('disabled', false);
+				SFX_BTN_TRAIT_CARD();
 			});
 			
 			traitCardsBox.appendChild(card);
@@ -2779,12 +2651,12 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		}
 	}
 	function closeTraitOverlay() {
-		state.traitOverlayOpen = false;
+		GAME_STATE.traitOverlayOpen = false;
 		traitOverlay.classList.add('hidden');
-		traitStart.classList.toggle('is-disabled', true);
+		traitStart.classList.toggle('disabled', true);
 		
-		state.traitQueue = Math.max(0, (state.traitQueue || 0) - 1);
-		if (state.traitQueue > 0) {
+		GAME_STATE.traitQueue = Math.max(0, (GAME_STATE.traitQueue || 0) - 1);
+		if (GAME_STATE.traitQueue > 0) {
 			openTraitOverlay();
 			return;
 		}
@@ -2792,42 +2664,43 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	}
 	function onTraitStartConfirm() {
 		const btn = this; // #traitStartBtn
-		if (!state.traitSelected) return;
+		if (!GAME_STATE.traitSelected) return;
 		
-		const { id, tier } = state.traitSelected;
+		const { id, tier } = GAME_STATE.traitSelected;
 		applyTrait(id, tier);
 		
-		state.traitSelected = null;
+		GAME_STATE.traitSelected = null;
 		btn.disabled = true;
 		closeTraitOverlay();
 	}
 	function maybeResumeGameIfNoOverlays() {
 		const anyShopOpen = !document.getElementById('shopOverlay')?.classList.contains('hidden');
-		const anyTraitOpen = state.traitOverlayOpen === true;
-		const traitStillQueued = (state.traitQueue || 0) > 0;
+		const anyTraitOpen = GAME_STATE.traitOverlayOpen === true;
+		const traitStillQueued = (GAME_STATE.traitQueue || 0) > 0;
 
 		// If anything is still pending, keep paused and keep bgm low.
 		if (anyShopOpen || anyTraitOpen || traitStillQueued) {
-			state.paused = true;
+			GAME_STATE.paused = true;
 			return;
 		}
-		state.paused = false;
-		fadeAudio(bgm, 0.4, 200);
+		GAME_STATE.paused = false;
+		SFX_PLAY_BGM();
 	}
 	function enqueueTraitChoice(n = 1) {
-		state.traitQueue = (state.traitQueue || 0) + n;
-		if (!state.traitOverlayOpen) {
+		GAME_STATE.traitQueue = (GAME_STATE.traitQueue || 0) + n;
+		if (!GAME_STATE.traitOverlayOpen) {
 			openTraitOverlay();
 		}
 	}
 	function updateTraitViewer() {
 		traitListBox.innerHTML = "";
-		
+
 		const groups = new Map(); // id -> tiers[]
-		for (const t of (state.traitsOwned || [])) {
+		for (const t of (GAME_STATE.traitsOwned || [])) {
 			if (!groups.has(t.id)) groups.set(t.id, []);
 			groups.get(t.id).push(t.tier);
 		}
+
 		if (groups.size === 0) {
 			const empty = document.createElement('div');
 			empty.className = 'trait-pill';
@@ -2839,29 +2712,25 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		for (const [id, tiers] of groups) {
 			const def = TRAITS.find(x => x.id === id);
 			if (!def) continue;
-			
-			const maxTier = Math.max(...tiers);
-			const nameTxt = typeof def.name === 'function' ? def.name(maxTier) : def.name;
-			const descTxt = typeof def.desc === 'function' ? def.desc(maxTier) : (def.desc || '');
-			
-			let totalText = '';
-			if (def.statKey) {
-				const base = def.statBase ?? 0;
-				const val = (state[def.statKey] ?? base) - base;
-				totalText = def.formatTotal ? def.formatTotal(val) : String(val);
-			}
-			else if (typeof def.totalFromTiers === 'function') {
-				const val = def.totalFromTiers(tiers);
-				totalText = def.formatTotal ? def.formatTotal(val) : String(val);
-			}
-			else {
-				totalText = `${tiers.length}×`;
-			}
-			
+
+			const maxTier  = Math.max(...tiers);
+			const total    = getTraitTotal(def);// from GAME_STATE.buffs
+			const descTxt  = def.desc(maxTier);
+			const suffix   = '%';
+			const totalTxt = total + suffix;
+
 			const row = document.createElement('div');
 			row.className = 'trait-pill';
-			row.innerHTML = '<div>' + descTxt + '<span>' + totalText + '</span></div>';
+			row.innerHTML = '<div>' + descTxt + '<span>' + totalTxt + '</span></div>';
 			traitListBox.appendChild(row);
+		}
+		
+		function getTraitTotal(def) {
+			if (def.buff_type === 'unique') {
+				return GAME_STATE.buffs?.[def.id] ?? 0;
+			}
+			const node = GAME_STATE.buffs?.[def.gun_type] || {};
+			return node[def.buff_type] ?? 0;
 		}
 	}
 	function openTraitViewer() {
@@ -2879,15 +2748,9 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 
 		pauseTraitsGrid.innerHTML = '';
 
-		const owned = state.traitsOwned || [];
-
-		if (!owned.length) {
-			const empty = document.createElement('div');
-			empty.className = 'pause-traits-empty';
-			empty.textContent = 'No traits yet.';
-			pauseTraitsGrid.appendChild(empty);
-			return;
-		}
+		const owned = GAME_STATE.traitsOwned || [];
+		if (!owned.length) return; // 0 trait
+		
 		for (const t of owned) {
 			const slot = document.createElement('div');
 			slot.className = 'pause-trait-slot';
@@ -2913,44 +2776,22 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	
 	
 	// ----------------- Overlay DPS ----------------- //
-    function formatWeaponName(key) {
-        // readable labels per gun type
-        switch (key) {
-            case 'grenade':          return 'Grenade';
-            case 'grenadeLauncher':  return 'Grenade Launcher';
-            case 'shotgun':          return 'Shotgun';
-            case 'laserCannon':      return 'Laser Cannon';
-            case 'submachinegun':    return 'Submachine Gun';
-            case 'pistol':           return 'Pistol';
-            default:
-                // Split camelCase: "laserCannon" -> "Laser Cannon"
-                return String(key)
-                    .replace(/([A-Z])/g, ' $1')
-                    .replace(/^./, c => c.toUpperCase());
-        }
-    }
     function updateDpsOverlay() {
         if (!dpsList) return;
         const fmt = n => Number(n).toLocaleString('en-US');
 		
-        const dmgMap = state.damageByGun || {};
-        const entries = Object.entries(dmgMap).filter(([_, dmg]) => dmg > 0);
-
-        if (entries.length === 0) {
-            dpsList.innerHTML = '<div class="dps-empty">No weapon damage yet.</div>';
-            return;
-        }
+		const dmgMap  = GAME_STATE.damageByGun || {};
+		const weapons = GAME_STATE.weapons || [];
+		
+		const entries = Object.entries(dmgMap).filter(([_, dmg]) => dmg > 0);
+        if (entries.length === 0) return; //no dps
 
         // sort by total damage desc
         entries.sort((a, b) => b[1] - a[1]);
         const maxDamage = entries[0][1] || 1;
-
-        const totalDamage = entries.reduce((sum, [, dmg]) => sum + dmg, 0);
-        const t = state.combatTime || 0;
-        const avgDps = t > 0 ? totalDamage / t : 0;
 		
         dpsList.innerHTML = '';
-
+		
         for (const [key, dmg] of entries) {
             const pct = Math.max(4, Math.min(100, (dmg / maxDamage) * 100)); // min width so tiny damage still visible
 
@@ -2960,7 +2801,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
                 <div class="dps-card-icon overlay-background-stripe"><img src="src/img/item/icon/icon_gun_${key}.png"></div>
 				<div class="dps-card-detail">
 					<div class="dps-card-header">
-						<span class="dps-name">${formatWeaponName(key)}</span>
+						<span class="dps-name">${GUN_CONFIG[key].name}</span>
 						<span class="dps-damage">${fmt(dmg.toFixed(0))}</span>
 					</div>
 					<div class="dps-bar">
@@ -2982,12 +2823,14 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	
   
 	//Buttons
-	resumeBtn.addEventListener('click', ()=>{ if (state.gameOver) return; state.paused=false; setOverlay(false); });
-	restartBtn.addEventListener('click', ()=>{ restart(); });
-	pauseBtn.addEventListener('click', pauseToggle);
-	speedBtn.addEventListener('click', openTraitOverlay);
+	btn_resume.addEventListener('click', hidden_pauseOverlay);
+	btn_quickend.addEventListener('click', show_gameoverOverlay);
+	btn_restart.addEventListener('click', restart);
+	
+	pauseBtn.addEventListener('click', show_pauseOverlay);
+	speedBtn.addEventListener('click', core_game_speed);
 	document.querySelectorAll('.btn_viewTraits').forEach(btn => {btn.addEventListener('click', openTraitViewer);});
-	document.querySelectorAll('.btn_viewInventory').forEach(btn => {btn.addEventListener('click', ()=>{ window.openShopOverlay(0,0,false,true);});});
+	document.querySelectorAll('.btn_viewInventory').forEach(btn => {btn.addEventListener('click', ()=>{ openShopOverlay(0,0,false,true);});});
 	closeTraitViewerBtn.addEventListener('click', closeTraitViewer);
 	document.querySelectorAll('.btn_view_dps').forEach(btn => {btn.addEventListener('click', openDpsOverlay);});
     btnDPS_close_view.addEventListener('click', closeDpsOverlay);
@@ -2997,11 +2840,11 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	function core_game_speed() {
 		if (speedBtn.disabled) return; 
 		
-		state.speedMult = state.speedMult % 3 + 1;
-		speedBtn.innerHTML = state.speedMult + "x";
+		GAME_STATE.speedMult = GAME_STATE.speedMult % 3 + 1;
+		speedBtn.innerHTML = GAME_STATE.speedMult + "x";
 		
 		try {
-			localStorage.setItem(SPEED_STORAGE_KEY, String(state.speedMult));
+			localStorage.setItem(SPEED_STORAGE_KEY, String(GAME_STATE.speedMult));
 		} catch (_) {}
 	}
 	
@@ -3010,11 +2853,11 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	function applyTrait(id, tier) {
 		const def = TRAITS.find(t => t.id === id);
 		if (!def) return;
-		if (def.scope === 'global') def.apply(tier);
-		else for (const w of (state.weapons || [])) def.apply(tier, w);
+		
+		def.apply(tier);
 
-		if (!state.traitsOwned) state.traitsOwned = [];
-		state.traitsOwned.push({ id, name: def.name, tier });
+		if (!GAME_STATE.traitsOwned) GAME_STATE.traitsOwned = [];
+		GAME_STATE.traitsOwned.push({ id, name: def.name, tier });
 
 		updateTraitViewer();
 		updatePauseTraitGrid();
@@ -3027,7 +2870,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		invGrid.innerHTML = "";
 
 		for (let i = 0; i < 16; i++) {
-			const item = state.inventory[i];
+			const item = GAME_STATE.inventory[i];
 			const d = document.createElement('div');
 			d.className = "slot" + (item ? " filled" : "");
 
@@ -3044,8 +2887,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 				//gun image
 				const gun = document.createElement('img');
 				gun.className = 'slot-layer slot-gun';
-				gun.alt = item.name;
-				gun.src = 'src/img/item/icon/icon_gun_' + String(item.name) + '.png';
+				gun.src = 'src/img/item/icon/icon_gun_' + String(item.key) + '.png';
 				gun.draggable = false;
 				gun.addEventListener('dragstart', e => e.preventDefault());
 				d.appendChild(gun);
@@ -3062,12 +2904,12 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	
 	function updateInventoryCooldownUI(){
 		const grid = document.getElementById('inventoryGrid');
-		if (!grid || !state.weapons) return;
+		if (!grid || !GAME_STATE.weapons) return;
 		
 		const cds = grid.querySelectorAll('.slot-cd');
 		cds.forEach(el => {
 			const wi = +el.dataset.wi;
-			const w = state.weapons[wi];
+			const w = GAME_STATE.weapons[wi];
 			if (!w) { el.style.opacity = 0; return; }
 			
 			const busy = (w.mode === 'burst' || w.mode === 'cooldown');
@@ -3084,41 +2926,35 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	}
 	
 	
-	// ------- Restart/Reset Game ------- //
+	// ------- Restart/Reset Game ------- //here
 	function restart() 
 	{
-		state.paused=false;
-		state.gameOver=false;
+		GAME_STATE = structuredClone(INITIAL_GAME_STATE);
+		INITIATE_GAME_STATE_BUFFS(GAME_STATE);
+		
+		GAME_STATE.paused=false;
 		
 		//reset game properties
-		state.enemies.length=0; state.bullets.length=0;
-		state.coins=0; state.score=0; state.kills=0;
-		state.player.level=1; state.player.exp=0; state.player.expToNext=50; state.player.mode='idle'; state.player.burstLeft=0; state.player.timer=0;
-		state.damageByGun = {};
-		state.combatTime = 0;
-		state.dmgNums = [];
-		state.goldGainBonus = 0;
-		state.expGainBonus = 0;
-		state.normal_dmg_increase = 0;
-		state.aoe_dmg_increase = 0;
-		state.pierce_dmg_increase = 0;
-		state.normal_reload_decrease = 0;
-		state.aoe_reload_decrease = 0;
-		state.pierce_reload_decrease = 0;
-		state.traitQueue = 0;
-		state.traitOverlayOpen = false;
+		GAME_STATE.enemies.length=0; GAME_STATE.bullets.length=0;
+		GAME_STATE.coins=0; GAME_STATE.score=0; GAME_STATE.kills=0;
+		GAME_STATE.player.level=1; GAME_STATE.player.exp=0; GAME_STATE.player.expToNext=50; GAME_STATE.player.mode='idle'; GAME_STATE.player.burstLeft=0; GAME_STATE.player.timer=0;
+		GAME_STATE.damageByGun = {};
+		GAME_STATE.combatTime = 0;
+		GAME_STATE.dmgNums = [];
+		GAME_STATE.traitQueue = 0;
+		GAME_STATE.traitOverlayOpen = false;
 		
 		//empty inventory
-		state.inventory = new Array(16).fill(null);
+		GAME_STATE.inventory = new Array(16).fill(null);
 		renderInventory();
 		
 		//get game speed
 		const saved = parseInt(localStorage.getItem(SPEED_STORAGE_KEY) || "1", 10);
-		state.speedMult = [1,2,3].includes(saved) ? saved : 1;
-		speedBtn.innerHTML = state.speedMult+"x";
+		GAME_STATE.speedMult = [1,2,3].includes(saved) ? saved : 1;
+		speedBtn.innerHTML = GAME_STATE.speedMult+"x";
 		
 		//reset scoreboard
-		coinNumEl.textContent=state.coins;
+		coinNumEl.textContent=GAME_STATE.coins;
 		scoreNumEl.textContent="0";
 		
 		//reset EXP
@@ -3126,23 +2962,21 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		expFill.style.width='0%';
 		
 		//reset barrrage HP
-		state.barricadeHP = BARRICADE_HP_MAX;
+		GAME_STATE.barricadeHP = BARRICADE_HP_MAX;
 		document.getElementById('hpFill').style.width='100%';
 		document.getElementById('hpText').textContent='100%';
 		
 		//reset traits
-		state.traitsOwned = [];
+		GAME_STATE.traitsOwned = [];
 		updateTraitViewer();
 		updatePauseTraitGrid();
 		
 		//restart game
-		const startWaveNum = Math.max(1, Math.floor(CURRENT_WAVE));
-		const startCount = waveCountFor(startWaveNum);
-		state.pendingWave = { n: startWaveNum, count: startCount };
-		window.openShopOverlay(state.pendingWave.n, state.pendingWave.count, true);
 		ensureBgmPlaying(true);
-		setHUDEnabled(true);
-		setOverlay(false);
+		SFX_PLAY_BGM();
+		document.querySelectorAll('.game-overlay').forEach(n => n.classList.add('hidden'));
+		
+		openShopOverlay(CURRENT_WAVE, waveCountFor(CURRENT_WAVE), true);
 	}
 	
 	
@@ -3151,14 +2985,14 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	requestAnimationFrame(function loop(now)
 	{
 		const rawDt = Math.min((now - (loop.t||now)) / 1000, 0.05); loop.t = now;
-		if (!state.paused && !state.gameOver)
+		if (!GAME_STATE.paused)
 		{
-			const dt = rawDt * state.speedMult * (__dm||1);
-			state.combatTime += dt;
+			const dt = rawDt * GAME_STATE.speedMult * (__dm||1);
+			GAME_STATE.combatTime += dt;
 			updateSpawning(dt);
-			for (const m of state.enemies) m.update(dt);
-			for (const b of state.bullets) b.update(dt);
-			state.bullets = state.bullets.filter(b => !b.dead);
+			for (const m of GAME_STATE.enemies) m.update(dt);
+			for (const b of GAME_STATE.bullets) b.update(dt);
+			GAME_STATE.bullets = GAME_STATE.bullets.filter(b => !b.dead);
 			updateDamageNumbers(dt);
 			updateSoldier(dt);
 			updateInventoryCooldownUI();
@@ -3176,8 +3010,8 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		}
 		ctx.clearRect(0,0,W,H);
 		drawBarrage(ctx);
-		for (const m of state.enemies) m.draw(ctx);
-		for (const b of state.bullets) b.draw(ctx);
+		for (const m of GAME_STATE.enemies) m.draw(ctx);
+		for (const b of GAME_STATE.bullets) b.draw(ctx);
 		drawDamageNumbers(ctx);
 		drawSoldier(ctx);
 		requestAnimationFrame(loop);
@@ -3187,14 +3021,21 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	
 	//Bridge
 	try {
-		window.GUNS = GUNS;
-		window.__gameState = state;
-		window.fadeAudio = fadeAudio;
+		window.bgm = bgm;
+		window.GUN_CONFIG = GUN_CONFIG;
+		window.GAME_STATE = GAME_STATE;
 		window.makeSfx = makeSfx;
-		window.SFX_ERROR = SFX_ERROR;
 		window.startWave = startWave;
 		window.renderInventory = renderInventory;
 		window.makeWeaponInstance = makeWeaponInstance;
+		
+		window.SFX_ERROR = SFX_ERROR;
+		window.SFX_BTN_SHOP_REROLL = SFX_BTN_SHOP_REROLL;
+		window.SFX_BTN_SHOP_CLOSE = SFX_BTN_SHOP_CLOSE;
+		window.SFX_OVERLAY_APPEAR_SHOP = SFX_OVERLAY_APPEAR_SHOP;
+		window.SFX_PLAY_BGM = SFX_PLAY_BGM;
+		window.SFX_PAUSE_BGM = SFX_PAUSE_BGM;
+		
 	} catch(_) {}
 })();
 
@@ -3203,8 +3044,8 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	const shopOverlay = document.getElementById('shopOverlay');
 	const shopGridEl  = document.getElementById('shopGrid');
 	const shopOfferEl = document.getElementById('shopOffer');
-	const shopStartBtn = document.getElementById('shopStartBtn');
-	const btnRerollOffer = document.getElementById('btnShop_rerollOffer');
+	const btn_shop_close = document.getElementById('btn_shop_close');
+	const btnRerollOffer = document.getElementById('btn_shop_reroll');
 	
 	//weapon removal
 	const btnShopWeaponRemovalMain = document.getElementById('btnShop_weaponRemoval');
@@ -3246,8 +3087,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	};
 	
 	// shop weapon removal
-	let weaponRemovalUses = 5;
-	const removedWeaponKeys = new Set(); 
+	const shop_removal_max_use = 5;
 	let weaponRemovalSelectedItem = null; 
 
 	
@@ -3264,13 +3104,6 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		2: 42,
 		3: 7.5,
 		4: 0.5
-	};
-	const SHAPES = {
-		submachinegun: [[0,0],[0,1],[0,2],[1,0]],
-		pistol: [[0,0],[0,1],[1,0]],
-		sniperriffle: [[0,0],[1,0],[2,0],[3,0],[3,1]],
-		assaultriffle: [[0,0],[0,1],[1,1],[0,2],[0,3]],
-		grenadelauncher: [[1,0],[1,1],[0,1],[0,2]],
 	};
 	
 	// ------- Drag & Drop -------
@@ -3308,7 +3141,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			slot.style.top = (r * (CELL + CELL_GAP)) + 'px';
 			slot.style.width = CELL + 'px';
 			slot.style.height = CELL + 'px';
-			slot.style.backgroundImage = "url('src/img/UI_shop_slot_background_empty.png')";
+			slot.style.backgroundImage = "url('src/img/UI/UI_shop_slot_default.png')";
 			slot.style.backgroundRepeat = 'no-repeat';
 			slot.style.backgroundSize = '100% 100%';
 			slot.style.backgroundPosition = 'center';
@@ -3321,7 +3154,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	
 	
 	function shapeCells(item, anchorR, anchorC){
-		const shape = SHAPES[item.key] || [];
+		const shape = GUN_CONFIG[item.key].shape || [];
 		return shape.map(([dr,dc]) => [anchorR + dr, anchorC + dc]);
 	}
 	function inBounds(r,c){
@@ -3372,7 +3205,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		}
 	}
 	function getShapeBounds(key) {
-		const shape = SHAPES[key] || [];
+		const shape = GUN_CONFIG[key].shape || [];
 		let maxDR = 0;
 		let maxDC = 0;
 		for (const [dr, dc] of shape) {
@@ -3396,7 +3229,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			
 			const anchorX = it.c * cellStep;
 			const anchorY = it.r * cellStep;
-			const shapeCoords = SHAPES[it.key];
+			const shapeCoords = GUN_CONFIG[it.key].shape;
 			let maxDR = 0;
 			let maxDC = 0;
 			for (const [dr, dc] of shapeCoords) {
@@ -3416,7 +3249,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			wrap.style.height = wrapH + 'px';
 			wrap.style.pointerEvents = 'auto'; // so we can drag it
 			
-			for (const [dr,dc] of SHAPES[it.key]){
+			for (const [dr,dc] of GUN_CONFIG[it.key].shape){
 				const cell = document.createElement('div');
 				cell.className = 'p-cell';
 				cell.dataset.dr = dr;
@@ -3444,7 +3277,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			sprite.style.objectFit = 'contain';
 			wrap.appendChild(sprite);
 			
-			appendOutlineBorderFull(wrap, SHAPES[it.key]);
+			appendOutlineBorderFull(wrap, GUN_CONFIG[it.key].shape);
 			wrap.addEventListener('pointerdown', e => {
 				if(document.getElementById('shopGrid').classList.contains('viewMode')) return;
 				onDragStart(e, it, 'grid', wrap);
@@ -3471,27 +3304,29 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			chip.dataset.id = it.id;
 			
 			//gun image size calculate
-			const MINI_STEP = MINI_CELL;
 			const { cellCols, cellRows } = getShapeBounds(it.key);
-			const miniWidthPx  = (cellCols - 1) * MINI_CELL + MINI_CELL;
-			const miniHeightPx = (cellRows - 1) * MINI_CELL + MINI_CELL;
+			const cellSize = MINI_CELL;
+			const chipWidth  = cellCols * cellSize;
+			const chipHeight = cellRows * cellSize;
+
+			chip.style.width  = chipWidth  + 'px';
+			chip.style.height = chipHeight + 'px';
 			
-			for (const [dr,dc] of SHAPES[it.key]) {
+			for (const [dr,dc] of GUN_CONFIG[it.key].shape) {
 				const d = document.createElement('div');
 				d.className = 'mini-cell';
 				d.style.position = 'absolute';
-				d.dataset.dr = dr;
-				d.dataset.dc = dc;
-				d.style.left = (15 + dc*MINI_CELL) + 'px';
-				d.style.top  = (20 + dr*MINI_CELL) + 'px';
-				d.style.width = MINI_CELL + 'px';
-				d.style.height = MINI_CELL + 'px';
-				d.style.backgroundImage = "url('src/img/UI_shop_slot_background_tier_" + it.tier + ".png')";
-				d.style.backgroundSize = '100% 100%';
+
+				// each cell is one MINI_CELL step
+				d.style.left   = (dc * cellSize) + 'px';
+				d.style.top    = (dr * cellSize) + 'px';
+				d.style.width  = cellSize + 'px';
+				d.style.height = cellSize + 'px';
+
+				d.style.backgroundImage  = "url('src/img/UI_shop_slot_background_tier_" + it.tier + ".png')";
+				d.style.backgroundSize   = '100% 100%';
 				d.style.backgroundRepeat = 'no-repeat';
 				d.style.backgroundPosition = 'center';
-				d.style.borderRadius = '0';
-				d.style.boxShadow = 'none';
 				chip.appendChild(d);
 			}
 			
@@ -3500,15 +3335,15 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			spriteMini.className = 'gun-sprite-mini';
 			spriteMini.src = 'src/img/item/shop/gun_shop_' + it.key + '.png';
 			spriteMini.style.position = 'absolute';
-			spriteMini.style.left   = '15px';
-			spriteMini.style.top    = '20px';
-			spriteMini.style.width  = miniWidthPx  + 'px';
-			spriteMini.style.height = miniHeightPx + 'px';
+			spriteMini.style.left = '0px';
+			spriteMini.style.top = '0px';
+			spriteMini.style.width = chipWidth  + 'px';
+			spriteMini.style.height = chipHeight + 'px';
 			spriteMini.style.objectFit = 'contain';
 			spriteMini.style.pointerEvents = 'none';
 			chip.appendChild(spriteMini);
 			
-			appendOutlineBorderMini(chip, SHAPES[it.key]);
+			appendOutlineBorderMini(chip, GUN_CONFIG[it.key].shape, cellSize);
 			chip.addEventListener('pointerdown', e => onDragStart(e, it, 'offer', chip));
 			shopOfferEl.appendChild(chip);
 		}
@@ -3527,9 +3362,9 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		// 6–10 guns: smaller so 2 rows look good
 		let scale = 1;
 		if (count > 3 && count <= 5) {
-			scale = 0.8;
+			scale = 0.9;
 		} else if (count > 5) {
-			scale = 0.7;
+			scale = 0.8;
 		}
 
 		root.style.setProperty('--shop-gun-offer-scale', String(scale));
@@ -3811,17 +3646,14 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			container.appendChild(edgeDiv);
 		}
 	}
-	function appendOutlineBorderMini(container, shapeCoords) {
-		const MINI_OFFSET_X = 15;
-		const MINI_OFFSET_Y = 20;
-
+	function appendOutlineBorderMini(container, shapeCoords, cellSize) {
 		const segs = buildOutlineSegments(shapeCoords, {
-			cellStepX: MINI_CELL,
-			cellStepY: MINI_CELL,
-			cellSize: MINI_CELL,
+			cellStepX: cellSize,
+			cellStepY: cellSize,
+			cellSize: cellSize,
 			borderPx: 1,
-			offX: MINI_OFFSET_X,
-			offY: MINI_OFFSET_Y,
+			offX: 0,
+			offY: 0,
 		});
 
 		for (const seg of segs) {
@@ -3840,7 +3672,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	
 	// -------------------- Drag and Drop ----------------------------- //
 	function getShapeExtents(item) {
-		const shape = SHAPES[item.key] || [];
+		const shape = GUN_CONFIG[item.key].shape || [];
 		let maxDR = 0;
 		let maxDC = 0;
 		for (const [dr, dc] of shape) {
@@ -3974,7 +3806,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		ghostCurrX = ghostTargetX;
 		ghostCurrY = ghostTargetY;
 		startGhostAnim();
-		window.makeSfx(`src/sfx/shop/shop_item_pickup_${item.key}.mp3`, { volume: 0.8, pool: 2 })();
+		makeSfx(`src/sfx/shop/shop_item_pickup_${item.key}.mp3`, { volume: 0.8, pool: 2 })();
 	}
 	function onDragMove(e) {
 		if (activePointerId != null && e.pointerId !== activePointerId) return;
@@ -4051,14 +3883,14 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		lastSnap = null;
 		renderPlaced();
 		renderOffer();
-		window.makeSfx(`src/sfx/shop/shop_item_place_${item.key}.mp3`, { volume: 0.8, pool: 2 })();
+		makeSfx(`src/sfx/shop/shop_item_place_${item.key}.mp3`, { volume: 0.8, pool: 2 })();
 	}
 	function applyTierColor(it) {
 		const grad = TIER_COLORS[Math.min(it.tier,4)] || TIER_COLORS[1];
 		it.color = grad;
 	}
 	function getShapeCellsAt(item, baseR, baseC) {
-		const shape = SHAPES[item.key] || [];
+		const shape = GUN_CONFIG[item.key].shape || [];
 		const out = [];
 		for (const [dr, dc] of shape) {
 			out.push([baseR + dr, baseC + dc]);
@@ -4100,7 +3932,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		applyTierColor(target);
 		
 		shopState.items = shopState.items.filter(it => it !== source);
-		window.makeSfx('src/sfx/shop/shop_item_merge.mp3', { volume: 0.8, pool: 2 })();
+		makeSfx('src/sfx/shop/shop_item_merge.mp3', { volume: 0.8, pool: 2 })();
 	}
 	// -------------- Glow Animation -------------- //
 	function applyMergeHighlights() {
@@ -4131,7 +3963,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		const shapeWidthPx  = (cellCols - 1) * cellStep + CELL;
 		const shapeHeightPx = (cellRows - 1) * cellStep + CELL;
 		
-		for (const [dr, dc] of SHAPES[item.key]) {
+		for (const [dr, dc] of GUN_CONFIG[item.key].shape) {
 			const cell = document.createElement('div');
 			cell.className = 'p-cell';
 			cell.style.position = 'absolute';
@@ -4169,7 +4001,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		ensurePreviewWrap();
 		previewWrap.innerHTML = '';
 
-		for (const [dr, dc] of SHAPES[item.key]) {
+		for (const [dr, dc] of GUN_CONFIG[item.key].shape) {
 			const cell = document.createElement('div');
 			cell.className = 'placement-preview-cell' + (valid ? '' : ' invalid');
 			
@@ -4180,7 +4012,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			cell.style.width  = CELL + 'px';
 			cell.style.height = CELL + 'px';
 			cell.style.position = 'absolute';
-			cell.style.backgroundImage = "url('src/img/UI_shop_slot_background_preview.png')";
+			cell.style.backgroundImage = "url('src/img/UI/UI_shop_slot_preview.png')";
 			cell.style.backgroundRepeat = 'no-repeat';
 			cell.style.backgroundSize = '100% 100%';
 			cell.style.backgroundPosition = 'center';
@@ -4224,68 +4056,68 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	
 	// -------------------------- Shop Reroll -------------------------- //
 	function hasFreeReroll() {
-		return rerollState.freeLeft > 0;
+		return GAME_STATE.shop.reroll_count > 0;
 	}
-	function canPayForReroll(state) {
-		return state.coins >= rerollState.price;
+	function canPayForReroll() {
+		return GAME_STATE.coins >= GAME_STATE.shop.reroll_price;
 	}
-	function shop_offer_rerollItem(state, isButton = false) {
+	function shop_offer_rerollItem(isButton = false) {
 		if (isButton) {
 			const hasFree = hasFreeReroll();
-			const canPay  = canPayForReroll(state);
+			const canPay  = canPayForReroll();
 			
 			if (!hasFree && !canPay) {
-				shop_offer_updateRerollUI(state);
+				shop_offer_updateRerollUI();
 				SFX_ERROR();
 				return;
 			}
 			
 			//charge for reroll
 			if (hasFreeReroll()) {
-				rerollState.freeLeft -= 1;
+				GAME_STATE.shop.reroll_count -= 1;
 			}
 			else {
-				state.coins -= rerollState.price;
-				rerollState.price += REROLL_CONFIG.increment;
+				GAME_STATE.coins -= GAME_STATE.shop.reroll_price;
+				GAME_STATE.shop.reroll_price += REROLL_CONFIG.increment;
 			}
 		}
-		shop_offer_addNewOffers(state);
+		shop_offer_addNewOffers();
 		renderOffer();
-		shop_offer_updateRerollUI(state);
+		shop_offer_updateRerollUI();
 		
-		window.makeSfx('src/sfx/buttons/shop_btn_reroll.mp3', { volume: 0.8, pool: 2 })();
+		SFX_BTN_SHOP_REROLL();
 	}
-	function shop_offer_updateRerollUI(state) {
+	function shop_offer_updateRerollUI() {
 		const fmt = n => Number(n).toLocaleString('en-US');
-		const labelEl = document.querySelector('#btnShop_rerollOffer .subtitle-label');
-		const valueEl = document.getElementById('btn_subtitle_reroll');
+		const labelEl = document.querySelector('#btn_shop_reroll .subtitle-label');
+		const valueEl = document.getElementById('subtitle_btn_shop_reroll');
 		
 		if (hasFreeReroll()) {
 			labelEl.classList.remove('is-coin');
 			labelEl.textContent = 'Remaining attempt(s):';
 
-			valueEl.textContent = rerollState.freeLeft;
+			valueEl.textContent = GAME_STATE.shop.reroll_count;
 			btnRerollOffer.classList.remove('disabled');
 		}
 		else {
 			labelEl.textContent = '';
 			labelEl.classList.add('is-coin');
 
-			valueEl.textContent = `${fmt(state.coins)} / ${fmt(rerollState.price)}`;
+			valueEl.textContent = `${fmt(GAME_STATE.coins)} / ${fmt(GAME_STATE.shop.reroll_price)}`;
 
-			const disabled = !canPayForReroll(state);
+			const disabled = !canPayForReroll();
 			btnRerollOffer.classList.toggle('disabled', disabled);
 		}
 	}
-	function shop_offer_addNewOffers(state){
+	function shop_offer_addNewOffers(){
 		shopState.items = shopState.items.filter(it => it.r != null && it.c != null);
 		for (let i = 0; i < num_shop_offer_base_item; i++) {
 			shopState.items.push(shop_offer_makeOfferItem());
 		}
 	}
 	function shop_offer_makeOfferItem() {
-		const allKeys = Object.keys(window.GUNS);
-		const availableKeys = allKeys.filter(k => !removedWeaponKeys.has(k));
+		const allKeys = Object.keys(GUN_CONFIG);
+		const availableKeys = allKeys.filter(k => !GAME_STATE.shop.removal_set.has(k));
 		const key = availableKeys[(Math.random() * availableKeys.length) | 0];
 		const tier = pickTierForShop();
 		const colorPair = TIER_COLORS[tier] || TIER_COLORS[1];
@@ -4304,21 +4136,20 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	// ----------------- Shop Weapon Removal ----------------- //
 	function update_btn_subtitle_removal() {
 		btn_subtitle_removal.forEach(el => {
-			el.textContent = String(weaponRemovalUses);
+			el.textContent = String(GAME_STATE.shop.removal_count);
 		});
 	}
 	function openWeaponRemovalOverlay() {
-		// no uses or no guns in offer → do nothing (or play error SFX)
 		const offerItems = shopState.items.filter(it => it.r == null && it.c == null);
-		if (!offerItems.length || weaponRemovalUses <= 0) {
-			// e.g. SFX_ERROR && maybe a small message
+		if (!offerItems.length || GAME_STATE.shop.removal_count <= 0) {
+			SFX_ERROR();
 			return;
 		}
 
 		weaponRemovalSelectedItem = null;
 		update_btn_subtitle_removal();
 		renderWeaponRemovalOffer();
-		renderWeaponRemovalRemovedList();
+		renderWeaponRemovalRemovedList(weaponRemovalRemovedListEl);
 
 		weaponRemovalOverlay.classList.remove('hidden');
 	}
@@ -4346,26 +4177,29 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 
 			// --- mini background cells (like shop-offer) ---
 			const { cellCols, cellRows } = getShapeBounds(it.key);
-			const BASE_VISIBLE_CELLS = 3;
-			const maxDim = Math.max(cellCols, cellRows);
-			const scaleFactor = maxDim > BASE_VISIBLE_CELLS ? BASE_VISIBLE_CELLS / maxDim : 1;
-			const miniCell = MINI_CELL * scaleFactor;
+			const cellSize = MINI_CELL;
+			const chipWidth  = cellCols * cellSize;
+			const chipHeight = cellRows * cellSize;
+			
+			chip.style.width  = chipWidth  + 'px';
+			chip.style.height = chipHeight + 'px';
 
-			const miniWidthPx  = cellCols * miniCell;
-			const miniHeightPx = cellRows * miniCell;
-
-			for (const [dr, dc] of SHAPES[it.key]) {
+			for (const [dr, dc] of GUN_CONFIG[it.key].shape) {
 				const d = document.createElement('div');
 				d.className = 'mini-cell';
 				d.style.position = 'absolute';
-				d.style.left   = (15 + dc * miniCell) + 'px';
-				d.style.top    = (20 + dr * miniCell) + 'px';
-				d.style.width  = miniCell + 'px';
-				d.style.height = miniCell + 'px';
-				d.style.backgroundImage = "url('src/img/UI_shop_slot_background_tier_" + it.tier + ".png')";
-				d.style.backgroundSize = '100% 100%';
+
+				// each cell is one MINI_CELL step
+				d.style.left   = (dc * cellSize) + 'px';
+				d.style.top    = (dr * cellSize) + 'px';
+				d.style.width  = cellSize + 'px';
+				d.style.height = cellSize + 'px';
+
+				d.style.backgroundImage  = "url('src/img/UI_shop_slot_background_tier_" + it.tier + ".png')";
+				d.style.backgroundSize   = '100% 100%';
 				d.style.backgroundRepeat = 'no-repeat';
 				d.style.backgroundPosition = 'center';
+
 				chip.appendChild(d);
 			}
 
@@ -4373,12 +4207,13 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			spriteMini.className = 'gun-sprite-mini';
 			spriteMini.src = 'src/img/item/shop/gun_shop_' + it.key + '.png';
 			spriteMini.style.position = 'absolute';
-			spriteMini.style.left   = '15px';
-			spriteMini.style.top    = '20px';
-			spriteMini.style.width  = miniWidthPx  + 'px';
-			spriteMini.style.height = miniHeightPx + 'px';
+			spriteMini.style.left   = '0px';
+			spriteMini.style.top    = '0px';
+			spriteMini.style.width  = chipWidth  + 'px';
+			spriteMini.style.height = chipHeight + 'px';
 			spriteMini.style.objectFit = 'contain';
 			spriteMini.style.pointerEvents = 'none';
+
 			chip.appendChild(spriteMini);
 
 			// selection behaviour
@@ -4394,41 +4229,49 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			weaponRemovalOfferEl.appendChild(chip);
 		}
 	}
-	function renderWeaponRemovalRemovedList() {
-		if (!weaponRemovalRemovedListEl) return;
-		weaponRemovalRemovedListEl.innerHTML = '';
-
-		if (!removedWeaponKeys.size) {
-			const span = document.createElement('span');
-			span.style.fontSize = '12px';
-			span.style.opacity = '0.7';
-			span.textContent = 'No weapons removed yet.';
-			weaponRemovalRemovedListEl.appendChild(span);
-			return;
+	function renderWeaponRemovalRemovedList(elementId) {
+		if (!elementId) return;
+		elementId.innerHTML = '';
+		
+		const keysAll = Array.from(GAME_STATE.shop.removal_set);
+		const count = Math.min(keysAll.length, shop_removal_max_use);
+		
+		if (!count) return; // 0 removal
+		
+		let rowScale = 1;
+		if (count > 3 && count <= 5) {
+			rowScale = 0.8;
 		}
+		
+		for (let i = 0; i < count; i++) {
+			const key = keysAll[i];
 
-		for (const key of removedWeaponKeys) {
 			const itemDiv = document.createElement('div');
 			itemDiv.className = 'weapon-removal-removed-item';
-
-			const tier = 1; // visual only; or store per-removed tier if you want
+			itemDiv.style.transform = `scale(${rowScale})`;
+			
+			const default_tier = 1;
 			const { cellCols, cellRows } = getShapeBounds(key);
-			const BASE_VISIBLE_CELLS = 2.5;
-			const maxDim = Math.max(cellCols, cellRows);
-			const scaleFactor = maxDim > BASE_VISIBLE_CELLS ? BASE_VISIBLE_CELLS / maxDim : 1;
-			const miniCell = (MINI_CELL * 0.7) * scaleFactor;
 
+			const BASE_VISIBLE_CELLS = 3;
+			const maxDim = Math.max(cellCols, cellRows);
+			const shapeScale = maxDim > BASE_VISIBLE_CELLS ? BASE_VISIBLE_CELLS / maxDim : 1;
+
+			const miniCell = MINI_CELL * shapeScale;
 			const miniWidthPx  = cellCols * miniCell;
 			const miniHeightPx = cellRows * miniCell;
-
-			for (const [dr, dc] of SHAPES[key]) {
+			
+			const OFFSET_X = 15;
+			const OFFSET_Y = 20;
+			
+			for (const [dr, dc] of GUN_CONFIG[key].shape) {
 				const d = document.createElement('div');
 				d.className = 'mini-cell';
-				d.style.left   = (10 + dc * miniCell) + 'px';
-				d.style.top    = (10 + dr * miniCell) + 'px';
+				d.style.left = (OFFSET_X + dc * miniCell) + 'px';
+				d.style.top = (OFFSET_Y + dr * miniCell) + 'px';
 				d.style.width  = miniCell + 'px';
 				d.style.height = miniCell + 'px';
-				d.style.backgroundImage = "url('src/img/UI_shop_slot_background_tier_" + tier + ".png')";
+				d.style.backgroundImage = "url('src/img/UI_shop_slot_background_tier_" + default_tier + ".png')";
 				d.style.backgroundSize = '100% 100%';
 				d.style.backgroundRepeat = 'no-repeat';
 				d.style.backgroundPosition = 'center';
@@ -4438,48 +4281,47 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 			const spriteMini = document.createElement('img');
 			spriteMini.className = 'gun-sprite-mini';
 			spriteMini.src = 'src/img/item/shop/gun_shop_' + key + '.png';
-			spriteMini.style.left   = '10px';
-			spriteMini.style.top    = '10px';
-			spriteMini.style.width  = miniWidthPx  + 'px';
+			spriteMini.style.left = OFFSET_X + 'px';
+			spriteMini.style.top = OFFSET_Y + 'px';
+			spriteMini.style.width = miniWidthPx  + 'px';
 			spriteMini.style.height = miniHeightPx + 'px';
 			spriteMini.style.position = 'absolute';
 			spriteMini.style.objectFit = 'contain';
 			itemDiv.appendChild(spriteMini);
 
-			weaponRemovalRemovedListEl.appendChild(itemDiv);
+			elementId.appendChild(itemDiv);
 		}
 	}
 	weaponRemovalConfirmBtn.addEventListener('click', () => {
-		if (weaponRemovalUses <= 0) {
+		if (GAME_STATE.shop.removal_count <= 0) {
 			return;// no uses left
 		}
 		if (!weaponRemovalSelectedItem) {
 			return;// nothing selected
 		}
 
+		const id = weaponRemovalSelectedItem.id;
 		const key = weaponRemovalSelectedItem.key;
-
-		// add to removed set
-		removedWeaponKeys.add(key);
-
-		// consume a use
-		weaponRemovalUses -= 1;
-		update_btn_subtitle_removal();
-
-		// remove all offer chips of this type from current shop-offer,
-		// but keep already-placed weapons in the 9x9 grid
+		
+		if (!GAME_STATE.shop.removal_set.has(key)) {
+			// add
+			GAME_STATE.shop.removal_set.add(key);
+			
+			// consume a use
+			GAME_STATE.shop.removal_count -= 1;
+			update_btn_subtitle_removal();
+		}
+		
+		// remove item
 		shopState.items = shopState.items.filter(it => {
-			if (it.key !== key) return true;
-			// keep weapons that are placed (on grid)
-			if (it.r != null && it.c != null) return true;
-			// drop offer instances of this type
+			if (it.id !== id) return true;
 			return false;
 		});
 
 		// re-render shop offer + this overlay’s offer mirror
 		renderOffer();
 		renderWeaponRemovalOffer();
-		renderWeaponRemovalRemovedList();
+		renderWeaponRemovalRemovedList(weaponRemovalRemovedListEl);
 		
 		closeWeaponRemovalOverlay();
 	});
@@ -4489,16 +4331,14 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	
 	// -------------------------- Open / Close Shop -------------------------- //
 	function openShopOverlay(nextWave, nextCount, initial=false, view=false) {
-		const state = window.__gameState;
-		const currentWave = window.__gameState.wave;
-		if (!state) {
-			// Queue until game state exists
+		if (!GAME_STATE) {
+			// Queue until game GAME_STATE exists
 			window.__pendingShopCalls = window.__pendingShopCalls || [];
 			window.__pendingShopCalls.push([nextWave, nextCount, initial]);
 			if (!window.__shopWaiter2) {
 				window.__shopWaiter2 = true;
 				const wait = () => {
-					if (window.__gameState && typeof window.openShopOverlay === 'function') {
+					if (GAME_STATE && typeof window.openShopOverlay === 'function') {
 						const q = window.__pendingShopCalls.splice(0);
 						for (const a of q) window.openShopOverlay.apply(null, a);
 					}
@@ -4512,9 +4352,9 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		}
 		
 		shopState.pending = { n: nextWave, count: nextCount };
-		state.paused = true;
-		fadeAudio(bgm, 0, 200);
-		window.makeSfx('src/sfx/overlay_appear_shop_overlay.mp3', { volume: 0.8, pool: 2 })();
+		GAME_STATE.paused = true;
+		SFX_PAUSE_BGM();
+		SFX_OVERLAY_APPEAR_SHOP();
 		
 		if (initial) {
 			shopState.items = [];
@@ -4533,29 +4373,28 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		shopOverlay.classList.remove('hidden');
 		
 		//View Mode / Shop Mode
-		if(!view) shop_offer_rerollItem(state,false);
+		if(!view) shop_offer_rerollItem(false);
 		document.querySelector('.shop-panel-body').classList.toggle('viewMode', view);
 		document.getElementById('shopGrid').classList.toggle('viewMode',view); //If "Viewing Inventory" or "Shopping"
 		document.getElementById('shopLayoutOffer').classList.toggle('viewMode',view);
-		document.getElementById('shopStartBtn').classList.toggle('viewMode',view);
+		document.getElementById('btn_shop_close').classList.toggle('viewMode',view);
 		document.getElementById('btnShop_weaponRemoval').classList.toggle('viewMode',view);
-		document.getElementById('btnShop_rerollOffer').classList.toggle('viewMode',view);
+		document.getElementById('btn_shop_reroll').classList.toggle('viewMode',view);
 		document.getElementById('btnShop_close_view').classList.toggle('viewMode',!view);
 	}
 	function closeShopOverlayAndStart() {
-		const state = window.__gameState;
-		if (!state) return;
+		if (!GAME_STATE) return;
 
 		// Collect guns that are placed on shop grid
 		const placed = shopState.items.filter(it => it.r != null && it.c != null);
 		if (placed.length < 1) {return;}
 
 		// Convert placed guns into in game
-		state.weapons = placed.map(it => {return makeWeaponInstance(it.key, it.tier);});
-		state.inventory = new Array(16).fill(null);
+		GAME_STATE.weapons = placed.map(it => {return makeWeaponInstance(it.key, it.tier);});
+		GAME_STATE.inventory = new Array(16).fill(null);
 		for (let i = 0; i < placed.length && i < 16; i++) {
-			state.inventory[i] = {
-				name: placed[i].key,
+			GAME_STATE.inventory[i] = {
+				key: placed[i].key,
 				tier: placed[i].tier
 			};
 		}
@@ -4564,20 +4403,20 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 		const shopOverlayEl = document.getElementById('shopOverlay');
 		if (shopOverlayEl) {shopOverlayEl.classList.add('hidden');}
 
-		const nextWaveNum   = (shopState.pending && shopState.pending.n) || (state.wave + 1);
+		const nextWaveNum   = (shopState.pending && shopState.pending.n) || (GAME_STATE.wave + 1);
 		const nextWaveCount = (shopState.pending && shopState.pending.count) || 1;
 		startWave(nextWaveNum, nextWaveCount);
 
 		//close shop
-		const traitsStillPending =(state.traitOverlayOpen === true) || ((state.traitQueue || 0) > 0);
+		const traitsStillPending =(GAME_STATE.traitOverlayOpen === true) || ((GAME_STATE.traitQueue || 0) > 0);
 		if (traitsStillPending) {
-			state.paused = true;
+			GAME_STATE.paused = true;
 		}
 		else {
-			state.paused = false;
-			window.fadeAudio(bgm, 0.4, 200);
+			GAME_STATE.paused = false;
+			SFX_PLAY_BGM();
 		}
-		window.makeSfx('src/sfx/overlay_close_shop_overlay.mp3', { volume: 0.8, pool: 2 })();
+		SFX_BTN_SHOP_CLOSE();
 	}
 	function closeViewInventory() {
 		document.getElementById('shopOverlay').classList.add('hidden');
@@ -4585,9 +4424,9 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	
 	
 	//Buttons
-	shopStartBtn?.addEventListener('click', closeShopOverlayAndStart);
+	btn_shop_close?.addEventListener('click', closeShopOverlayAndStart);
 	document.getElementById('btnShop_close_view')?.addEventListener('click', closeViewInventory);
-	btnRerollOffer?.addEventListener('click', ()=>{ shop_offer_rerollItem(window.__gameState,true); });
+	btnRerollOffer?.addEventListener('click', ()=>{ shop_offer_rerollItem(true); });
 	
 	
 	
@@ -4599,7 +4438,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	//Open Shop on start / restart
 	let openedOnce = false;
 	requestAnimationFrame(()=>{
-		if (!openedOnce && window.__gameState && window.__gameState.wave>=1 && ((window.__gameState.weapons||[]).length||0)===1) {
+		if (!openedOnce && GAME_STATE && GAME_STATE.wave>=1 && ((GAME_STATE.weapons||[]).length||0)===1) {
 			openedOnce=true;
 		}
 	});
@@ -4608,6 +4447,7 @@ function formatGunLabel(w){ return `${w.stats.name} T${w.tier}`; }
 	//Bridge
 	try {
 		window.openShopOverlay = openShopOverlay;
+		window.renderWeaponRemovalRemovedList = renderWeaponRemovalRemovedList;
 	} catch(_) {}
 })();
 
